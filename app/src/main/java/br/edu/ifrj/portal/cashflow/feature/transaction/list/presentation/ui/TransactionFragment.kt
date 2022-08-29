@@ -1,10 +1,11 @@
-package br.edu.ifrj.portal.cashflow
+package br.edu.ifrj.portal.cashflow.feature.transaction.list.presentation.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import br.edu.ifrj.portal.cashflow.R
 
 class TransactionFragment : Fragment() {
 
