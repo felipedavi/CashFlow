@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import br.edu.ifrj.portal.cashflow.R
 import br.edu.ifrj.portal.cashflow.databinding.FragmentTransactionAddBinding
 import br.edu.ifrj.portal.cashflow.util.CurrencyTextWatcher
 import br.edu.ifrj.portal.cashflow.util.DatePickerFragment
 import br.edu.ifrj.portal.cashflow.util.extension.hideKeyboard
 
-class TransactionAddFragment : Fragment() {
+class TransactionAddFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentTransactionAddBinding? = null
     private val binding get() = _binding!!
 
@@ -21,6 +23,13 @@ class TransactionAddFragment : Fragment() {
         _binding = FragmentTransactionAddBinding.inflate(inflater, container, false)
         setListeners()
         return binding.root
+    }
+
+    override fun onClick(v: View?) {
+        val id: Int? = v?.id
+        if (id == R.id.button_save) {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {
@@ -43,6 +52,8 @@ class TransactionAddFragment : Fragment() {
                 binding.editDate.clearFocus()
             }
         }
+
+        binding.buttonSave.setOnClickListener(this)
     }
 
 }
