@@ -2,6 +2,11 @@
     <string name="app_name">Cash Flow</string>
     <!-- General -->
     <string name="fab_content_desc">add new transaction</string>
+    <!-- TransactionFragment -->
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancel</string>
+    <string name="want_remove">Do you wish to remove transaction from list?</string>
+    <string name="transaction_removal">Transaction removal</string>
     <!-- TransactionAddFragment -->
     <string name="transaction_add_fragment">Add Transaction</string>
     <string name="button_save">Save</string>
