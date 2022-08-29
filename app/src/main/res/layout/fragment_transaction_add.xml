@@ -90,6 +90,7 @@
         app:layout_constraintTop_toBottomOf="@id/edit_date" />
 
     <RadioGroup
+        android:id="@+id/group_radio_transaction_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
