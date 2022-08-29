@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/transactionAddFragment"
-        android:name="br.edu.ifrj.portal.cashflow.feature.transaction.add.TransactionAddFragment"
+        android:name="br.edu.ifrj.portal.cashflow.feature.transaction.add.ui.TransactionAddFragment"
         android:label="@string/transaction_add_fragment"
         tools:layout="@layout/fragment_transaction_add" />
 </navigation>
