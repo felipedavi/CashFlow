@@ -14,10 +14,24 @@
             android:id="@+id/navigateToTransactionAddFragment"
             app:destination="@id/transactionAddFragment"
             app:launchSingleTop="true" />
+        <action
+            android:id="@+id/navigateToTransactionDetailFragment"
+            app:destination="@id/transactionDetailFragment"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/transactionAddFragment"
         android:name="br.edu.ifrj.portal.cashflow.feature.transaction.add.ui.TransactionAddFragment"
         android:label="@string/transaction_add_fragment"
         tools:layout="@layout/fragment_transaction_add" />
+    <fragment
+        android:id="@+id/transactionDetailFragment"
+        android:name="br.edu.ifrj.portal.cashflow.feature.transaction.detail.ui.TransactionDetailFragment"
+        android:label="@string/transaction_detail_fragment"
+        tools:layout="@layout/fragment_transaction_detail">
+        <argument
+            android:name="transactionID"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
 </navigation>
