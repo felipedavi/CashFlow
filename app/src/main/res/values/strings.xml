@@ -16,4 +16,5 @@
     <string name="radio_income">Income</string>
     <string name="radio_expense">Expense</string>
     <string name="edit_error">Field can not be empty</string>
+    <string name="group_radio_error">You have not selected any transaction type</string>
 </resources>

@@ -34,8 +34,8 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
             if (!binding.editDescription.isValid() or  !binding.editMoney.isValid() or
                 !binding.editDate.isValid())
                 Log.i("Validation", null.toString())
-            else if(!binding.radioExpense.isChecked and !binding.radioIncome.isChecked)
-                Toast.makeText(context, "You have not selected any transaction type", Toast.LENGTH_SHORT).show()
+            else if(binding.groupRadioTransactionType.checkedRadioButtonId == -1)
+                Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
             else
                 findNavController().navigateUp()
         }
