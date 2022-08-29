@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Cash Flow</string>
+    <!-- General -->
+    <string name="fab_content_desc">add new transaction</string>
+    <!-- TransactionAddFragment -->
+    <string name="transaction_add_fragment">Add Transaction</string>
+    <string name="button_save">Save</string>
+    <!-- TransactionDetailFragment -->
+    <string name="transaction_detail_fragment">Edit Transaction</string>
+    <string name="button_update">Update</string>
+    <!-- TransactionAddFragment and TransactionDetailFragment -->
+    <string name="text_description">Description</string>
+    <string name="text_money">Value</string>
+    <string name="text_date">Date</string>
+    <string name="text_transaction_type">Transaction Type</string>
+    <string name="radio_income">Income</string>
+    <string name="radio_expense">Expense</string>
+</resources>

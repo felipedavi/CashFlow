@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:padding="16dp"
+    tools:context=".TransactionAddFragment">
+
+    <TextView
+        android:id="@+id/text_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edit_description"
+        android:text="@string/text_description"
+        android:textColor="#546E7A"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_description"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/text_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edit_money"
+        android:text="@string/text_money"
+        android:textColor="#546E7A"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_description" />
+
+    <EditText
+        android:id="@+id/edit_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="19"
+        android:minHeight="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_money" />
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edit_date"
+        android:text="@string/text_date"
+        android:textColor="#546E7A"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_money" />
+
+    <EditText
+        android:id="@+id/edit_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="no"
+        android:inputType="date"
+        android:maxLength="10"
+        android:minHeight="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_date"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/text_transaction_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_transaction_type"
+        android:textColor="#546E7A"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_date" />
+
+    <RadioGroup
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_transaction_type">
+
+        <RadioButton
+            android:id="@+id/radio_income"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/radio_income" />
+
+        <RadioButton
+            android:id="@+id/radio_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/radio_expense" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
