@@ -1,5 +1,6 @@
 package br.edu.ifrj.portal.cashflow.data.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import br.edu.ifrj.portal.cashflow.data.entity.TransactionEntity
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,9 @@ interface TransactionDAO {
 
     @Query("SELECT * FROM transaction_table")
     fun getAllTransactions(): Flow<List<TransactionEntity>>
+
+    @Query("SELECT * FROM transaction_table WHERE transaction_id = :id")
+    fun getById(id: Int): LiveData<TransactionEntity>
 
     @Update
     suspend fun update(transaction: TransactionEntity)
