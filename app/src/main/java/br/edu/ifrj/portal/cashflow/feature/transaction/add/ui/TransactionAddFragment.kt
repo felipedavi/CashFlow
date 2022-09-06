@@ -21,6 +21,7 @@ import br.edu.ifrj.portal.cashflow.util.DatePickerFragment
 import br.edu.ifrj.portal.cashflow.util.extension.fromCurrency
 import br.edu.ifrj.portal.cashflow.util.extension.hideKeyboard
 import br.edu.ifrj.portal.cashflow.util.extension.isValid
+import br.edu.ifrj.portal.cashflow.util.extension.toFormattedDate
 
 class TransactionAddFragment : Fragment(), View.OnClickListener {
     private lateinit var viewModel: TransactionAddViewModel
@@ -49,7 +50,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
             else {
                 val description = binding.editDescription.text.toString().trim()
-                val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString())
+                val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString().toFormattedDate())
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
                 val transaction = TransactionEntity(0, description, date, monetaryValue, transactionType)

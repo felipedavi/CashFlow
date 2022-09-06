@@ -19,10 +19,7 @@ import br.edu.ifrj.portal.cashflow.feature.transaction.detail.TransactionDetailV
 import br.edu.ifrj.portal.cashflow.feature.transaction.detail.TransactionDetailViewModelFactory
 import br.edu.ifrj.portal.cashflow.util.CurrencyTextWatcher
 import br.edu.ifrj.portal.cashflow.util.DatePickerFragment
-import br.edu.ifrj.portal.cashflow.util.extension.fromCurrency
-import br.edu.ifrj.portal.cashflow.util.extension.hideKeyboard
-import br.edu.ifrj.portal.cashflow.util.extension.isValid
-import br.edu.ifrj.portal.cashflow.util.extension.toCurrency
+import br.edu.ifrj.portal.cashflow.util.extension.*
 
 class TransactionDetailFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentTransactionDetailBinding? = null
@@ -60,7 +57,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
             else {
                 val description = binding.editDescription.text.toString().trim()
-                val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString())
+                val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString().toFormattedDate())
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
 
@@ -83,7 +80,8 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
         viewModel.transaction.observe(viewLifecycleOwner) {
             selectedTransaction = it
             binding.editDescription.setText(selectedTransaction.description)
-            binding.editDate.setText(DateConverters.fromOffsetDateTime(selectedTransaction.date))
+            binding.editDate.setText(DateConverters.fromOffsetDateTime(selectedTransaction.date).toString()
+                .fromFormattedDate())
             binding.editMoney.setText(selectedTransaction.monetaryValue.toCurrency())
             if (selectedTransaction.transactionType) {
                 binding.radioIncome.isChecked = true

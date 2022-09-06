@@ -9,11 +9,14 @@ import br.edu.ifrj.portal.cashflow.base.DateConverters
 import br.edu.ifrj.portal.cashflow.data.entity.TransactionEntity
 import br.edu.ifrj.portal.cashflow.databinding.ItemTransactionBinding
 import br.edu.ifrj.portal.cashflow.feature.transaction.list.presentation.TransactionViewModel
+import br.edu.ifrj.portal.cashflow.util.extension.fromFormattedDate
 import br.edu.ifrj.portal.cashflow.util.extension.toCurrency
 
-class TransactionViewHolder(private val itemBinding: ItemTransactionBinding, private val listener: (Int) -> Unit,
-                            private val viewModel: TransactionViewModel) :
-    RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener  {
+class TransactionViewHolder(
+    private val itemBinding: ItemTransactionBinding, private val listener: (Int) -> Unit,
+    private val viewModel: TransactionViewModel
+) :
+    RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
 
     private lateinit var transaction: TransactionEntity
 
@@ -21,7 +24,8 @@ class TransactionViewHolder(private val itemBinding: ItemTransactionBinding, pri
         transaction = data
 
         itemBinding.textItemTransaction.text = transaction.description
-        itemBinding.textItemTransactionDate.text = DateConverters.fromOffsetDateTime(transaction.date)
+        itemBinding.textItemTransactionDate.text =
+            DateConverters.fromOffsetDateTime(transaction.date).toString().fromFormattedDate()
         itemBinding.textItemTransactionMonetaryValue.text = transaction.monetaryValue.toCurrency()
 
         if (transaction.transactionType) {
