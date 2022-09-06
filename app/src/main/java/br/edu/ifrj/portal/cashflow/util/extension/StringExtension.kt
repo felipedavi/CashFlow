@@ -15,3 +15,13 @@ fun String.isDateValid(): Boolean {
     }
     return true
 }
+
+fun String.toFormattedDate(): String {
+    val date = this.split('/')
+    return "${date[2]}-${date[1]}-${date[0]}"
+}
+
+fun String.fromFormattedDate(): String {
+    val date = this.split('-')
+    return "${date[2]}/${date[1]}/${date[0]}"
+}
