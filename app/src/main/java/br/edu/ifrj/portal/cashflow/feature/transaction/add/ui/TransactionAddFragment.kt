@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import br.edu.ifrj.portal.cashflow.MainApplication
 import br.edu.ifrj.portal.cashflow.R
+import br.edu.ifrj.portal.cashflow.base.DateConverters
 import br.edu.ifrj.portal.cashflow.data.entity.TransactionEntity
 import br.edu.ifrj.portal.cashflow.databinding.FragmentTransactionAddBinding
 import br.edu.ifrj.portal.cashflow.feature.transaction.add.TransactionAddViewModel
@@ -48,7 +49,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
             else {
                 val description = binding.editDescription.text.toString().trim()
-                val date = binding.editDate.text.toString()
+                val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString())
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
                 val transaction = TransactionEntity(0, description, date, monetaryValue, transactionType)

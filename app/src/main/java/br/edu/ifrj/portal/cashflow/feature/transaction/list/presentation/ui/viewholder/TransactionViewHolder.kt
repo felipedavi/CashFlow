@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ifrj.portal.cashflow.R
+import br.edu.ifrj.portal.cashflow.base.DateConverters
 import br.edu.ifrj.portal.cashflow.data.entity.TransactionEntity
 import br.edu.ifrj.portal.cashflow.databinding.ItemTransactionBinding
 import br.edu.ifrj.portal.cashflow.feature.transaction.list.presentation.TransactionViewModel
@@ -20,7 +21,7 @@ class TransactionViewHolder(private val itemBinding: ItemTransactionBinding, pri
         transaction = data
 
         itemBinding.textItemTransaction.text = transaction.description
-        itemBinding.textItemTransactionDate.text = transaction.date
+        itemBinding.textItemTransactionDate.text = DateConverters.fromOffsetDateTime(transaction.date)
         itemBinding.textItemTransactionMonetaryValue.text = transaction.monetaryValue.toCurrency()
 
         if (transaction.transactionType) {

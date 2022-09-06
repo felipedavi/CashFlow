@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import br.edu.ifrj.portal.cashflow.MainApplication
 import br.edu.ifrj.portal.cashflow.R
+import br.edu.ifrj.portal.cashflow.base.DateConverters
 import br.edu.ifrj.portal.cashflow.data.entity.TransactionEntity
 import br.edu.ifrj.portal.cashflow.databinding.FragmentTransactionDetailBinding
 import br.edu.ifrj.portal.cashflow.feature.transaction.detail.TransactionDetailViewModel
@@ -59,7 +60,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
             else {
                 val description = binding.editDescription.text.toString().trim()
-                val date = binding.editDate.text.toString()
+                val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString())
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
 
@@ -82,7 +83,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
         viewModel.transaction.observe(viewLifecycleOwner) {
             selectedTransaction = it
             binding.editDescription.setText(selectedTransaction.description)
-            binding.editDate.setText(selectedTransaction.date)
+            binding.editDate.setText(DateConverters.fromOffsetDateTime(selectedTransaction.date))
             binding.editMoney.setText(selectedTransaction.monetaryValue.toCurrency())
             if (selectedTransaction.transactionType) {
                 binding.radioIncome.isChecked = true
