@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import br.edu.ifrj.portal.cashflow.data.entity.TransactionEntity
 import br.edu.ifrj.portal.cashflow.data.local.TransactionDAO
 
 @Database(entities = [TransactionEntity::class], version = 1)
+@TypeConverters(DateConverters::class)
 abstract class TransactionDatabase : RoomDatabase() {
     abstract fun transactionDAO() : TransactionDAO
 
