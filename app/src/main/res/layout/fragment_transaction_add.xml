@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:padding="16dp"
-    tools:context=".feature.transaction.add.ui.TransactionAddFragment">
+    tools:context="meimaonamassa.cashflow.feature.transaction.add.ui.TransactionAddFragment">
 
     <TextView
         android:id="@+id/text_description"

@@ -9,7 +9,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "br.edu.ifrj.portal.cashflow"
+        applicationId "meimaonamassa.cashflow"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -38,7 +38,7 @@ android {
     viewBinding {
         enabled = true
     }
-    namespace 'br.edu.ifrj.portal.cashflow'
+    namespace 'meimaonamassa.cashflow'
 }
 
 dependencies {
