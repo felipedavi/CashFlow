@@ -1,25 +1,26 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="pt">
     <string name="app_name">Cash Flow</string>
     <!-- General -->
     <string name="fab_content_desc">add new transaction</string>
     <!-- TransactionFragment -->
-    <string name="remove">Remove</string>
-    <string name="cancel">Cancel</string>
-    <string name="want_remove">Do you wish to remove transaction from list?</string>
-    <string name="transaction_removal">Transaction removal</string>
+    <string name="remove">Remover</string>
+    <string name="cancel">Cancelar</string>
+    <string name="want_remove">Deseja remover a transação da lista?</string>
+    <string name="transaction_removal">Remoção de transação</string>
     <!-- TransactionAddFragment -->
-    <string name="transaction_add_fragment">Add Transaction</string>
-    <string name="button_save">Save</string>
+    <string name="transaction_add_fragment">Adicionar Transação</string>
+    <string name="button_save">Salvar</string>
     <!-- TransactionDetailFragment -->
-    <string name="transaction_detail_fragment">Edit Transaction</string>
-    <string name="button_update">Update</string>
+    <string name="transaction_detail_fragment">Editar Transação</string>
+    <string name="button_update">Atualizar</string>
     <!-- TransactionAddFragment and TransactionDetailFragment -->
-    <string name="text_description">Description</string>
-    <string name="text_money">Value</string>
-    <string name="text_date">Date</string>
-    <string name="text_transaction_type">Transaction Type</string>
-    <string name="radio_income">Income</string>
-    <string name="radio_expense">Expense</string>
-    <string name="edit_error">Field can not be empty</string>
-    <string name="group_radio_error">You have not selected any transaction type</string>
+    <string name="text_description">Descrição</string>
+    <string name="text_money">Valor</string>
+    <string name="text_date">Data</string>
+    <string name="text_transaction_type">Tipo de Transação</string>
+    <string name="radio_income">Receita</string>
+    <string name="radio_expense">Despesa</string>
+    <string name="edit_error">Esse campo não pode ficar vazio</string>
+    <string name="group_radio_error">Você não selecionou nenhum tipo de transação</string>
 </resources>
