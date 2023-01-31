@@ -25,6 +25,6 @@
     <string name="group_radio_error">Você não selecionou nenhum tipo de transação</string>
     <!-- Empty List Screen -->
     <string name="desc_icon_empty">something wrong icon</string>
-    <string name="text_title_empty">Whoops! Algo deu errado</string>
-    <string name="text_subtitle_empty">Itens não encontrados, tente fazer a busca novamente</string>
+    <string name="text_title_empty">Whoops!!!</string>
+    <string name="text_subtitle_empty">Sem transações cadastradas, tente cadastrar uma.</string>
 </resources>
