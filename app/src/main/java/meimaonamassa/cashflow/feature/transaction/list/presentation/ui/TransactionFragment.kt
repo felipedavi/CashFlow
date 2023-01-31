@@ -40,11 +40,17 @@ class TransactionFragment : Fragment() {
         recycler.adapter = adapter
 
         viewModel.allTransactions.observe(requireActivity()) { transactions ->
-            transactions?.let {
-                adapter.submitList(it)
+            if (transactions.isNullOrEmpty()) {
+                recycler.visibility = View.GONE
+                binding.emptyContainer.root.visibility = View.VISIBLE
+            } else {
+                recycler.visibility = View.VISIBLE
+                binding.emptyContainer.root.visibility = View.GONE
+                transactions.let {
+                    adapter.submitList(it)
+                }
             }
         }
-
         setListeners()
 
         return binding.root
