@@ -1,4 +1,5 @@
 [versions]
+agp = "8.5.2"
 ktx = "1.13.1"
 appcompat = "1.7.0"
 material = "1.12.0"
@@ -25,3 +26,4 @@ androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-view
 threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
