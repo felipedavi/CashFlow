@@ -59,5 +59,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     // Backport Android ThreeTen
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.7")
+    implementation(libs.threetenabp)
 }
