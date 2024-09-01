@@ -5,6 +5,7 @@ material = "1.12.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.7.7"
 navigationUiKtx = "2.7.7"
+coroutines = "1.8.1"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -13,5 +14,6 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 
 [plugins]
