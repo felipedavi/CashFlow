@@ -1,6 +1,7 @@
 [versions]
 agp = "8.5.2"
 ktx = "1.13.1"
+kotlin = "2.0.20"
 appcompat = "1.7.0"
 material = "1.12.0"
 constraintlayout = "2.1.4"
@@ -27,3 +28,4 @@ threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
