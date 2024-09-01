@@ -7,6 +7,7 @@ navigation = "2.7.7"
 coroutines = "1.8.1"
 room = "2.6.1"
 lifecycle = "2.8.4"
+threetenabp = "1.4.7"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -20,5 +21,6 @@ navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
 
 [plugins]
