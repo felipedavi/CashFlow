@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     // Room components
     implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     // Lifecycle components
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
