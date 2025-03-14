@@ -2,6 +2,9 @@
 .gradle/
 build/
 
+# Ignore Kotlin build artifacts in buildSrc
+buildSrc/.kotlin/
+
 # Local configuration file (sdk path, etc)
 local.properties
 
