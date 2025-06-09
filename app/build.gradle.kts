@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "meimaonamassa.cashflow"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "meimaonamassa.cashflow"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 3
         versionName = "1.0.0"
     }
@@ -71,4 +71,9 @@ dependencies {
 
     // Backport Android ThreeTen
     implementation(libs.threetenabp)
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
