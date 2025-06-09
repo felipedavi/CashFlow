@@ -2,12 +2,18 @@
     tools:locale="pt">
     <string name="app_name">Cash Flow</string>
     <!-- General -->
+    <string name="rc_content_desc">Transaction Listing</string>
     <string name="fab_content_desc">add new transaction</string>
+    <string name="hint_real_money">R$ 0,00</string>
     <!-- TransactionFragment -->
     <string name="remove">Remover</string>
     <string name="cancel">Cancelar</string>
     <string name="want_remove">Deseja remover a transação da lista?</string>
     <string name="transaction_removal">Remoção de transação</string>
+    <!-- BalanceTransactions -->
+    <string name="text_label_balance">Saldo</string>
+    <string name="text_label_income">Receitas</string>
+    <string name="text_label_expense">Despesas</string>
     <!-- TransactionAddFragment -->
     <string name="transaction_add_fragment">Adicionar Transação</string>
     <string name="button_save">Salvar</string>
