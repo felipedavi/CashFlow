@@ -2,8 +2,8 @@ package meimaonamassa.cashflow.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import meimaonamassa.cashflow.data.entity.TransactionEntity
 import kotlinx.coroutines.flow.Flow
+import meimaonamassa.cashflow.data.entity.TransactionEntity
 
 @Dao
 interface TransactionDAO {
@@ -21,4 +21,10 @@ interface TransactionDAO {
 
     @Delete
     suspend fun delete(transaction: TransactionEntity)
+
+    @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 1")
+    fun getTotalIncome(): Flow<Double?>
+
+    @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 0")
+    fun getTotalExpense(): Flow<Double?>
 }
