@@ -1,8 +1,8 @@
 package meimaonamassa.cashflow.feature.transaction.list.presentation.ui.viewholder
 
 import android.app.AlertDialog
-import android.graphics.Color
 import android.view.View
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import meimaonamassa.cashflow.R
 import meimaonamassa.cashflow.base.DateConverters
@@ -31,7 +31,7 @@ class TransactionViewHolder(
         if (transaction.transactionType) {
             itemBinding.itemView.setBackgroundColor(0xFF00FF00.toInt())
         } else {
-            itemBinding.itemView.setBackgroundColor(Color.parseColor("#FF0000"))
+            itemBinding.itemView.setBackgroundColor("#FF0000".toColorInt())
         }
 
         itemView.setOnClickListener {
