@@ -14,6 +14,7 @@ import meimaonamassa.cashflow.databinding.FragmentTransactionBinding
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
 import meimaonamassa.cashflow.feature.transaction.list.presentation.ui.adapter.TransactionAdapter
+import meimaonamassa.cashflow.util.extension.toCurrency
 
 class TransactionFragment : Fragment() {
     private lateinit var viewModel: TransactionViewModel
@@ -51,6 +52,19 @@ class TransactionFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.totalIncome.observe(viewLifecycleOwner) { totalIncome ->
+            binding.balanceContainer.textIncome.text = totalIncome.toCurrency()
+        }
+
+        viewModel.totalExpense.observe(viewLifecycleOwner) { totalExpense ->
+            binding.balanceContainer.textExpense.text = totalExpense.toCurrency()
+        }
+
+        viewModel.balance.observe(viewLifecycleOwner) { balance ->
+            binding.balanceContainer.textBalance.text = balance.toCurrency()
+        }
+
         setListeners()
 
         return binding.root
