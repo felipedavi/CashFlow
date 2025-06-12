@@ -44,9 +44,11 @@ class TransactionFragment : Fragment() {
             if (transactions.isNullOrEmpty()) {
                 recycler.visibility = View.GONE
                 binding.emptyContainer.root.visibility = View.VISIBLE
+                binding.balanceContainer.root.visibility = View.GONE
             } else {
                 recycler.visibility = View.VISIBLE
                 binding.emptyContainer.root.visibility = View.GONE
+                binding.balanceContainer.root.visibility = View.VISIBLE
                 transactions.let {
                     adapter.submitList(it)
                 }
