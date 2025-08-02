@@ -1,3 +1,5 @@
+import com.android.sdklib.AndroidVersion.VersionCodes.VANILLA_ICE_CREAM
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -8,12 +10,12 @@ plugins {
 
 android {
     namespace = "meimaonamassa.cashflow"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "meimaonamassa.cashflow"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = VANILLA_ICE_CREAM
         versionCode = 4
         versionName = "1.1.0"
     }
