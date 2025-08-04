@@ -25,7 +25,7 @@ abstract class TransactionDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) = Room.databaseBuilder(context,
             TransactionDatabase::class.java, "transaction_database")
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 }
