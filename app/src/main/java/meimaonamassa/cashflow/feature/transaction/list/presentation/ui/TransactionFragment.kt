@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -29,17 +31,27 @@ class TransactionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
-
         viewModel = ViewModelProvider(this, TransactionViewModelFactory((requireActivity().application
                 as MainApplication).repository)
         )[TransactionViewModel::class.java]
 
         adapter = GroupedTransactionAdapter(::transactionListClickListener, viewModel)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val recycler = binding.recyclerTransactions
         recycler.layoutManager = LinearLayoutManager(context)
-
         recycler.adapter = adapter
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, systemBars.bottom)
+            insets
+        }
 
         viewModel.allTransactions.observe(requireActivity()) { transactions ->
             if (transactions.isNullOrEmpty()) {
@@ -84,8 +96,6 @@ class TransactionFragment : Fragment() {
         }
 
         setListeners()
-
-        return binding.root
     }
 
     override fun onDestroyView() {
@@ -104,5 +114,4 @@ class TransactionFragment : Fragment() {
         directions.transactionID = id
         findNavController().navigate(directions)
     }
-
 }
