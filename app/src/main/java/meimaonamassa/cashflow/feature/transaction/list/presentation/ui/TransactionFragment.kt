@@ -10,15 +10,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.R
+import meimaonamassa.cashflow.base.DateConverters
 import meimaonamassa.cashflow.databinding.FragmentTransactionBinding
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
-import meimaonamassa.cashflow.feature.transaction.list.presentation.ui.adapter.TransactionAdapter
+import meimaonamassa.cashflow.feature.transaction.list.presentation.ui.adapter.GroupedTransactionAdapter
+import meimaonamassa.cashflow.util.extension.fromFormattedDate
 import meimaonamassa.cashflow.util.extension.toCurrency
 
 class TransactionFragment : Fragment() {
     private lateinit var viewModel: TransactionViewModel
-    private lateinit var adapter: TransactionAdapter
+    private lateinit var adapter: GroupedTransactionAdapter
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding!!
 
@@ -32,8 +34,7 @@ class TransactionFragment : Fragment() {
                 as MainApplication).repository)
         )[TransactionViewModel::class.java]
 
-        adapter = TransactionAdapter(::transactionListClickListener)
-        adapter.setViewModel(viewModel)
+        adapter = GroupedTransactionAdapter(::transactionListClickListener, viewModel)
 
         val recycler = binding.recyclerTransactions
         recycler.layoutManager = LinearLayoutManager(context)
@@ -49,9 +50,24 @@ class TransactionFragment : Fragment() {
                 recycler.visibility = View.VISIBLE
                 binding.emptyContainer.root.visibility = View.GONE
                 binding.balanceContainer.root.visibility = View.VISIBLE
-                transactions.let {
-                    adapter.submitList(it)
+
+                val groupedList = mutableListOf<ListItem>()
+                val groupedByDate = transactions.groupBy {
+                    it.date?.let { date ->
+                        DateConverters.fromOffsetDateTime(date)
+                    }
                 }
+                groupedByDate.keys.sortedByDescending { it }.forEach { date ->
+                    date?.let { d ->
+                        groupedList.add(ListItem.Header(d.fromFormattedDate()))
+                        val sortedItems = groupedByDate[d]?.sortedByDescending { it.monetaryValue }
+                        sortedItems?.forEach { transaction ->
+                            groupedList.add(ListItem.TransactionItem(transaction))
+                        }
+                    }
+                }
+
+                adapter.submitList(groupedList)
             }
         }
 
