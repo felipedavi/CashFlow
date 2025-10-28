@@ -33,4 +33,8 @@
     <string name="desc_icon_empty">something wrong icon</string>
     <string name="text_title_empty">Whoops!!!</string>
     <string name="text_subtitle_empty">Sem transações cadastradas, tente cadastrar uma.</string>
+    <!-- balance_transactions.xml -->
+    <string name="text_label_saldo">Saldo</string>
+    <string name="text_label_despesas">Despesas</string>
+    <string name="text_label_receitas">Receitas</string>
 </resources>
