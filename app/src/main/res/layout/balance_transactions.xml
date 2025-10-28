@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,12 +7,11 @@
     android:background="@drawable/rounded_border"
     android:padding="16dp" >
 
-
     <TextView
         android:id="@+id/text_label_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saldo"
+        android:text="@string/text_label_balance"
         android:textColor="#a7a6a9"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,19 +21,20 @@
         android:id="@+id/text_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="R$ 0,00"
-        android:textColor="@android:color/white" android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_marginTop="4dp"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_label_balance" />
+        app:layout_constraintTop_toBottomOf="@+id/text_label_balance"
+        tools:text="R$ 0,00" />
 
     <TextView
         android:id="@+id/text_label_income"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Receitas"
+        android:text="@string/text_label_income"
         android:textColor="#a7a6a9"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,16 +44,19 @@
         android:id="@+id/text_income"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="R$ 0,00"
-        android:textColor="@android:color/white" android:textSize="18sp"
         android:layout_marginTop="4dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_label_income"
-        app:layout_constraintBottom_toBottomOf="parent" /> <TextView
+        tools:text="R$ 0,00" />
+
+    <TextView
         android:id="@+id/text_label_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Despesas"
+        android:text="@string/text_label_expense"
         android:textColor="#a7a6a9"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,11 +66,12 @@
         android:id="@+id/text_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="R$ 0,00"
-        android:textColor="@android:color/white" android:textSize="18sp"
         android:layout_marginTop="4dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_label_expense"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        tools:text="R$ 0,00" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
