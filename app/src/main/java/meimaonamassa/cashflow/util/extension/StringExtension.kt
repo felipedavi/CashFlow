@@ -5,12 +5,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun String.isDateValid(): Boolean {
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR")).apply {
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.forLanguageTag("pt-BR")).apply {
         this.isLenient = false
     }
     try {
         dateFormat.parse(this.trim())
-    } catch (pe: ParseException) {
+    } catch (_: ParseException) {
         return false
     }
     return true
