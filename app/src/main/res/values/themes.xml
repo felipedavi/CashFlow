@@ -11,5 +11,7 @@
         <item name="android:statusBarColor">@color/statusBarColor</item>
         <!-- Navigation bar color -->
         <item name="android:navigationBarColor" >@color/black</item>
+        <!-- Use dark status bar icons on light background -->
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
     </style>
 </resources>
