@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#002F6D</color>
     <color name="colorSecondary">#6889A6</color>
+    <color name="statusBarColor">#001A3D</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
