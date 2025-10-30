@@ -17,8 +17,8 @@ android {
         applicationId = "meimaonamassa.cashflow"
         minSdk = 21
         targetSdk = VANILLA_ICE_CREAM
-        versionCode = 4
-        versionName = "1.1.0"
+        versionCode = 5
+        versionName = "1.1.2"
     }
 
     buildTypes {
