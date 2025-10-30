@@ -33,7 +33,11 @@ class DatePickerFragment(private val editText: EditText, val callback: (result: 
     }
 
     override fun onDateSet(picker: DatePicker?, year: Int, month: Int, day: Int) {
-        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR"))
+        val locale = Locale.Builder()
+            .setLanguage("pt")
+            .setRegion("BR")
+            .build()
+        val formatter = SimpleDateFormat("dd/MM/yyyy", locale)
         val newDate = Calendar.getInstance()
         newDate.set(year, month, day)
         val selectedDate = formatter.format(newDate.time)
