@@ -1,6 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-    tools:locale="pt">
-    <string name="app_name">Cash Flow</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="app_name">Fluxo de Caixa do MEI</string>
     <!-- General -->
     <string name="rc_content_desc">Transaction Listing</string>
     <string name="fab_content_desc">add new transaction</string>
