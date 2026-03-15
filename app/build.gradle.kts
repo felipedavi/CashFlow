@@ -3,15 +3,22 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.ksp)
-    id("androidx.navigation.safeargs")
+    id("androidx.navigation.safeargs.kotlin")
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 android {
     namespace = "meimaonamassa.cashflow"
-    compileSdk = 36
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "meimaonamassa.cashflow"
@@ -22,29 +29,20 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
-        }
-    }
-
     buildFeatures {
         viewBinding = true
-    }
-
-    room {
-        schemaDirectory("$projectDir/schemas")
     }
 
 }
