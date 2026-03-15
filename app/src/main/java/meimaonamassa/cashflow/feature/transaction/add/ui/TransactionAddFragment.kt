@@ -29,12 +29,13 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTransactionAddBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this, TransactionAddViewModelFactory((requireActivity().application
-                as MainApplication).repository)
+        viewModel = ViewModelProvider(
+            this, TransactionAddViewModelFactory(
+                (requireActivity().application as MainApplication).repository
+            )
         )[TransactionAddViewModel::class.java]
         setListeners()
         return binding.root
@@ -43,17 +44,23 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         val id: Int? = v?.id
         if (id == R.id.button_save) {
-            if (!binding.editDescription.isValid() or  !binding.editMoney.isValid() or
-                !binding.editDate.isValid())
-                Log.i("Validation", null.toString())
-            else if(binding.groupRadioTransactionType.checkedRadioButtonId == -1)
-                Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
+            if (!binding.editDescription.isValid() or !binding.editMoney.isValid() or !binding.editDate.isValid() or !binding.editPayerPayee.isValid()) Log.i(
+                "Validation", null.toString()
+            )
+            else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) Toast.makeText(
+                context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT
+            ).show()
             else {
                 val description = binding.editDescription.text.toString().trim()
-                val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString().toFormattedDate())
+                val date = DateConverters.toOffsetDateTime(
+                    binding.editDate.text.toString().toFormattedDate()
+                )
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
-                val transaction = TransactionEntity(0, description, date, monetaryValue, transactionType)
+                val payerPayer = binding.editPayerPayee.text.toString().trim()
+                val transaction = TransactionEntity(
+                    0, description, payerPayer, date, monetaryValue, transactionType
+                )
                 viewModel.insert(transaction)
                 findNavController().navigateUp()
             }
@@ -75,8 +82,9 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
         binding.editDate.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
             hideKeyboard(view)
             if (hasFocus) {
-                DatePickerFragment(binding.editDate) { binding.editDate.setText(it) }
-                    .show(requireActivity().supportFragmentManager, "datePicker")
+                DatePickerFragment(binding.editDate) { binding.editDate.setText(it) }.show(
+                    requireActivity().supportFragmentManager, "datePicker"
+                )
                 binding.editDate.clearFocus()
             }
         }
@@ -88,6 +96,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 R.id.radio_income -> {
                     binding.textPayerPayee.text = getString(R.string.text_payer)
                 }
+
                 R.id.radio_expense -> {
                     binding.textPayerPayee.text = getString(R.string.text_payee)
                 }
