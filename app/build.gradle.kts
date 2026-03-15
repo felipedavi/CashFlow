@@ -1,5 +1,4 @@
 import com.android.sdklib.AndroidVersion.VersionCodes.VANILLA_ICE_CREAM
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
@@ -43,6 +42,17 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+
+    sourceSets {
+        getByName("release") {
+            java.directories.add("build/generated/ksp/release/kotlin")
+            java.directories.add("build/generated/ksp/release/java")
+        }
+        getByName("debug") {
+            java.directories.add("build/generated/ksp/debug/kotlin")
+            java.directories.add("build/generated/ksp/debug/java")
+        }
     }
 
 }
