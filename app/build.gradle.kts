@@ -20,72 +20,59 @@ android {
         }
     }
 
-    defaultConfig {
-        applicationId = "meimaonamassa.cashflow"
-        minSdk = M
-        targetSdk = VANILLA_ICE_CREAM
-        versionCode = 5
-        versionName = "1.1.2"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        defaultConfig {
+            applicationId = "meimaonamassa.cashflow"
+            minSdk = M
+            targetSdk = VANILLA_ICE_CREAM
+            versionCode = 5
+            versionName = "1.1.2"
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    buildFeatures {
-        viewBinding = true
-    }
 
-    sourceSets {
-        getByName("release") {
-            java.directories.add("build/generated/ksp/release/kotlin")
-            java.directories.add("build/generated/ksp/release/java")
+        buildTypes {
+            release {
+                isMinifyEnabled = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
         }
-        getByName("debug") {
-            java.directories.add("build/generated/ksp/debug/kotlin")
-            java.directories.add("build/generated/ksp/debug/java")
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
+        }
+        buildFeatures {
+            viewBinding = true
         }
     }
 
-}
+    dependencies {
+        // AndroidX Core Components
+        implementation(libs.androidx.ktx)
+        implementation(libs.androidx.appcompat)
+        implementation(libs.androidx.constraintlayout)
 
-dependencies {
-    // AndroidX Core Components
-    implementation(libs.androidx.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
+        // Material Design
+        implementation(libs.material)
 
-    // Material Design
-    implementation(libs.material)
+        // Navigation Component
+        implementation(libs.androidx.navigation.fragment.ktx)
+        implementation(libs.navigation.ui.ktx)
 
-    // Navigation Component
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.navigation.ui.ktx)
+        // Coroutines
+        implementation(libs.kotlinx.coroutines.core)
 
-    // Coroutines
-    implementation(libs.kotlinx.coroutines.core)
+        // Room components
+        implementation(libs.androidx.room.ktx)
+        ksp(libs.androidx.room.compiler)
 
-    // Room components
-    implementation(libs.androidx.room.ktx)
-    annotationProcessor(libs.androidx.room.compiler)
-    ksp(libs.androidx.room.compiler)
+        // Lifecycle components
+        implementation(libs.androidx.lifecycle.viewmodel.ktx)
+        implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    // Lifecycle components
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-    // Backport Android ThreeTen
-    implementation(libs.threetenabp)
-}
+        // Backport Android ThreeTen
+        implementation(libs.threetenabp)
+    }
 
 java {
     toolchain {
