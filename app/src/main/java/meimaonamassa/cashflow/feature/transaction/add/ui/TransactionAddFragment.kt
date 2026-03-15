@@ -82,6 +82,17 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
         }
 
         binding.buttonSave.setOnClickListener(this)
+
+        binding.groupRadioTransactionType.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radio_income -> {
+                    binding.textPayerPayee.text = getString(R.string.text_payer)
+                }
+                R.id.radio_expense -> {
+                    binding.textPayerPayee.text = getString(R.string.text_payee)
+                }
+            }
+        }
     }
 
 }
