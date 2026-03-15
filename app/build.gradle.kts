@@ -1,3 +1,4 @@
+import com.android.sdklib.AndroidVersion.VersionCodes.M
 import com.android.sdklib.AndroidVersion.VersionCodes.VANILLA_ICE_CREAM
 
 plugins {
@@ -21,7 +22,7 @@ android {
 
     defaultConfig {
         applicationId = "meimaonamassa.cashflow"
-        minSdk = 23
+        minSdk = M
         targetSdk = VANILLA_ICE_CREAM
         versionCode = 5
         versionName = "1.1.2"
