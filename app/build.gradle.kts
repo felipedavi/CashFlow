@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "meimaonamassa.cashflow"
-        minSdk = 21
+        minSdk = 23
         targetSdk = VANILLA_ICE_CREAM
         versionCode = 5
         versionName = "1.1.2"
