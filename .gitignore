@@ -1,6 +1,8 @@
 # Gradle files
 .gradle/
 build/
+app/build/
+app/release/
 
 # Ignore Kotlin build artifacts in buildSrc
 buildSrc/.kotlin/
