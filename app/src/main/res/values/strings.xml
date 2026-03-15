@@ -20,6 +20,8 @@
     <string name="transaction_detail_fragment">Editar Transação</string>
     <string name="button_update">Atualizar</string>
     <!-- TransactionAddFragment and TransactionDetailFragment -->
+    <string name="text_payer">Recebedor</string>
+    <string name="text_debtor">Pagador</string>
     <string name="text_description">Descrição</string>
     <string name="text_money">Valor</string>
     <string name="text_date">Data</string>
