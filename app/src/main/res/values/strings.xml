@@ -44,5 +44,10 @@
     <string name="button_import">Importar</string>
     <string name="button_export">Exportar</string>
     <string name="button_delete">Apagar Tudo</string>
+    <string name="alert_reset_data">Zerar dados?</string>
+    <string name="alert_reset_data_details">Iso apagará todas as suas transações permanentemente. Deseja continuar?</string>
+    <string name="alert_reset_data_positive">Sim, apagar</string>
+    <string name="alert_reset_data_success">Todos os dados foram removidos.</string>
+    <string name="alert_reset_data_cancel">Cancelar</string>
 
 </resources>

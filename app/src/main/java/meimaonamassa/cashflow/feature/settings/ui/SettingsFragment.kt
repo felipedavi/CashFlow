@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import meimaonamassa.cashflow.MainApplication
+import meimaonamassa.cashflow.R
 import meimaonamassa.cashflow.databinding.FragmentSettingsBinding
 import meimaonamassa.cashflow.feature.settings.SettingsViewModel
 import meimaonamassa.cashflow.feature.settings.SettingsViewModelFactory
@@ -68,13 +69,14 @@ class SettingsFragment : Fragment() {
     }
     private fun showClearDataDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Zerar dados?")
-            .setMessage("Iso apagará todas as suas transações permanentemente. Deseja continuar?")
-            .setPositiveButton("Sim, apagar") { _, _ ->
+            .setTitle(getString(R.string.alert_reset_data))
+            .setMessage(getString(R.string.alert_reset_data_details))
+            .setPositiveButton(getString(R.string.alert_reset_data_positive)) { _, _ ->
                 viewModel.clearAllData()
-                Toast.makeText(context, "Todos os dados foram removidos.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    getString(R.string.alert_reset_data_success), Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.alert_reset_data_cancel), null)
             .show()
     }
 
