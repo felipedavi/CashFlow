@@ -49,5 +49,6 @@
     <string name="alert_reset_data_positive">Sim, apagar</string>
     <string name="alert_reset_data_success">Todos os dados foram removidos.</string>
     <string name="alert_reset_data_cancel">Cancelar</string>
+    <string name="alert_import_data_success">Dados importados com sucesso!</string>
 
 </resources>
