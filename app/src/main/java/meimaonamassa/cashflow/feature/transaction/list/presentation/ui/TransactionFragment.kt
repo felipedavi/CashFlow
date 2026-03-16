@@ -43,9 +43,8 @@ class TransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recycler = binding.recyclerTransactions
-        recycler.layoutManager = LinearLayoutManager(context)
-        recycler.adapter = adapter
+        binding.recyclerTransactions.layoutManager = LinearLayoutManager(context)
+        binding.recyclerTransactions.adapter = adapter
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -53,46 +52,47 @@ class TransactionFragment : Fragment() {
             insets
         }
 
-        viewModel.allTransactions.observe(requireActivity()) { transactions ->
-            if (transactions.isNullOrEmpty()) {
-                recycler.visibility = View.GONE
-                binding.emptyContainer.root.visibility = View.VISIBLE
-                binding.balanceContainer.root.visibility = View.GONE
-            } else {
-                recycler.visibility = View.VISIBLE
-                binding.emptyContainer.root.visibility = View.GONE
-                binding.balanceContainer.root.visibility = View.VISIBLE
+        viewModel.allTransactions.observe(viewLifecycleOwner) { transactions ->
+            _binding?.let { safeBinding ->
+                if (transactions.isNullOrEmpty()) {
+                    safeBinding.recyclerTransactions.visibility = View.GONE
+                    safeBinding.emptyContainer.root.visibility = View.VISIBLE
+                    safeBinding.balanceContainer.root.visibility = View.GONE
+                } else {
+                    safeBinding.recyclerTransactions.visibility = View.VISIBLE
+                    safeBinding.emptyContainer.root.visibility = View.GONE
+                    safeBinding.balanceContainer.root.visibility = View.VISIBLE
 
-                val groupedList = mutableListOf<ListItem>()
-                val groupedByDate = transactions.groupBy {
-                    it.date?.let { date ->
-                        DateConverters.fromOffsetDateTime(date)
-                    }
-                }
-                groupedByDate.keys.sortedByDescending { it }.forEach { date ->
-                    date?.let { d ->
-                        groupedList.add(ListItem.Header(d.fromFormattedDate()))
-                        val sortedItems = groupedByDate[d]?.sortedByDescending { it.monetaryValue }
-                        sortedItems?.forEach { transaction ->
-                            groupedList.add(ListItem.TransactionItem(transaction))
+                    val groupedList = mutableListOf<ListItem>()
+                    val groupedByDate = transactions.groupBy {
+                        it.date?.let { date ->
+                            DateConverters.fromOffsetDateTime(date)
                         }
                     }
+                    groupedByDate.keys.sortedByDescending { it }.forEach { date ->
+                        date?.let { d ->
+                            groupedList.add(ListItem.Header(d.fromFormattedDate()))
+                            val sortedItems = groupedByDate[d]?.sortedByDescending { it.monetaryValue }
+                            sortedItems?.forEach { transaction ->
+                                groupedList.add(ListItem.TransactionItem(transaction))
+                            }
+                        }
+                    }
+                    adapter.submitList(groupedList)
                 }
-
-                adapter.submitList(groupedList)
             }
         }
 
         viewModel.totalIncome.observe(viewLifecycleOwner) { totalIncome ->
-            binding.balanceContainer.textIncome.text = totalIncome.toCurrency()
+            _binding?.balanceContainer?.textIncome?.text = totalIncome.toCurrency()
         }
 
         viewModel.totalExpense.observe(viewLifecycleOwner) { totalExpense ->
-            binding.balanceContainer.textExpense.text = totalExpense.toCurrency()
+            _binding?.balanceContainer?.textExpense?.text = totalExpense.toCurrency()
         }
 
         viewModel.balance.observe(viewLifecycleOwner) { balance ->
-            binding.balanceContainer.textBalance.text = balance.toCurrency()
+            _binding?.balanceContainer?.textBalance?.text = balance.toCurrency()
         }
 
         setListeners()
