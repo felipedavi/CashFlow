@@ -43,5 +43,6 @@
     <string name="transaction_settings_fragment">Configurações</string>
     <string name="button_import">Importar</string>
     <string name="button_export">Exportar</string>
+    <string name="button_delete">Apagar Tudo</string>
 
 </resources>
