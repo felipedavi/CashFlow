@@ -15,10 +15,10 @@ import meimaonamassa.cashflow.databinding.FragmentSettingsBinding
 import meimaonamassa.cashflow.feature.settings.SettingsViewModel
 import meimaonamassa.cashflow.feature.settings.SettingsViewModelFactory
 
-
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: SettingsViewModel by viewModels {
         val repository = (requireActivity().application as MainApplication).repository
         SettingsViewModelFactory(repository)
@@ -27,19 +27,20 @@ class SettingsFragment : Fragment() {
     private val exportCsvLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri ->
         uri?.let {
             val outputStream = requireContext().contentResolver.openOutputStream(it)
-            if (outputStream != null) {
-                viewModel.exportData(outputStream) {
+            outputStream?.let { stream ->
+                viewModel.exportData(stream) {
                     Toast.makeText(context, "Backup exportado com sucesso!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
+
     private val importCsvLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
             val inputStream = requireContext().contentResolver.openInputStream(it)
-            if (inputStream != null) {
-                viewModel.importData(inputStream) {
-                    Toast.makeText(context, "Dados importados com sucesso!", Toast.LENGTH_SHORT).show()
+            inputStream?.let { stream ->
+                viewModel.importData(stream) {
+                    Toast.makeText(context, getString(R.string.alert_import_data_success), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -47,15 +48,16 @@ class SettingsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonExport.setOnClickListener {
-            exportCsvLauncher.launch("cashflow_backup.csv")
+            val dateFormat = java.text.SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.getDefault())
+            val currentTime = dateFormat.format(java.util.Date())
+            exportCsvLauncher.launch("cashflow_backup_$currentTime.csv")
         }
 
         binding.buttonImport.setOnClickListener {
@@ -65,16 +67,15 @@ class SettingsFragment : Fragment() {
         binding.buttonDelete.setOnClickListener {
             showClearDataDialog()
         }
-
     }
+
     private fun showClearDataDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.alert_reset_data))
             .setMessage(getString(R.string.alert_reset_data_details))
             .setPositiveButton(getString(R.string.alert_reset_data_positive)) { _, _ ->
                 viewModel.clearAllData()
-                Toast.makeText(context,
-                    getString(R.string.alert_reset_data_success), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.alert_reset_data_success), Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(getString(R.string.alert_reset_data_cancel), null)
             .show()
@@ -84,5 +85,4 @@ class SettingsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
