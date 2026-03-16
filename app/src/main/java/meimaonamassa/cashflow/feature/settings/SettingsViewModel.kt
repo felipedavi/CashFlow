@@ -20,7 +20,7 @@ class SettingsViewModel(private val repository: TransactionRepository) : ViewMod
             try {
                 val transactions = repository.getAllTransactionsStatic()
                 val csvString = CSVHelper.exportTransactions(transactions)
-                outputStream.use { it.write(csvString.toByteArray()) }
+                outputStream.use { it.write(csvString.toByteArray(Charsets.UTF_8)) }
                 withContext(Dispatchers.Main) {
                     onSuccess()
                 }
