@@ -27,4 +27,10 @@ interface TransactionDAO {
 
     @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 0")
     fun getTotalExpense(): Flow<Double?>
+
+    @Query("DELETE FROM transaction_table")
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM transaction_table")
+    suspend fun getAllList(): List<TransactionEntity>
 }
