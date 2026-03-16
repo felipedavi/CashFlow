@@ -31,6 +31,27 @@
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
+        android:id="@+id/text_payer_payee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_payer_payee"
+        android:textColor="#546E7A"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_description" />
+
+    <EditText
+        android:id="@+id/edit_payer_payee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_payer_payee" />
+
+    <TextView
         android:id="@+id/text_money"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -39,7 +60,7 @@
         android:textColor="#546E7A"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_description" />
+        app:layout_constraintTop_toBottomOf="@id/edit_payer_payee" />
 
     <EditText
         android:id="@+id/edit_money"

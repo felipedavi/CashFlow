@@ -51,7 +51,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         val id: Int? = v?.id
         if (id == R.id.button_update) {
-            if (!binding.editDescription.isValid() or !binding.editMoney.isValid() or !binding.editDate.isValid()) Log.i(
+            if (!binding.editDescription.isValid() or !binding.editMoney.isValid() or !binding.editDate.isValid() or !binding.editPayerPayee.isValid()) Log.i(
                 "Validation",
                 null.toString()
             )
@@ -67,9 +67,11 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 )
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
+                val payerPayee = binding.editPayerPayee.text.toString().trim()
 
                 val updatedTransaction = selectedTransaction.copy(
                     description = description,
+                    payerPayee = payerPayee,
                     date = date,
                     monetaryValue = monetaryValue,
                     transactionType = transactionType
@@ -90,6 +92,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
         viewModel.transaction.observe(viewLifecycleOwner) {
             selectedTransaction = it
             binding.editDescription.setText(selectedTransaction.description)
+            binding.editPayerPayee.setText(selectedTransaction.payerPayee)
             binding.editDate.setText(
                 DateConverters.fromOffsetDateTime(selectedTransaction.date).toString()
                     .fromFormattedDate()
@@ -118,6 +121,18 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                         "datePicker"
                     )
                 binding.editDate.clearFocus()
+            }
+        }
+
+        binding.groupRadioTransactionType.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radio_income -> {
+                    binding.textPayerPayee.text = getString(R.string.text_payer)
+                }
+
+                R.id.radio_expense -> {
+                    binding.textPayerPayee.text = getString(R.string.text_payee)
+                }
             }
         }
 
