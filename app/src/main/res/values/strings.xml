@@ -39,4 +39,7 @@
     <string name="text_label_saldo">Saldo</string>
     <string name="text_label_despesas">Despesas</string>
     <string name="text_label_receitas">Receitas</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="transaction_settings_fragment">Configurações</string>
 </resources>

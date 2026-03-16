@@ -18,6 +18,9 @@
             android:id="@+id/navigateToTransactionDetailFragment"
             app:destination="@id/transactionDetailFragment"
             app:launchSingleTop="true" />
+        <action
+            android:id="@+id/navigateToTransactionSettingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/transactionAddFragment"
@@ -34,4 +37,10 @@
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="meimaonamassa.cashflow.feature.settings.ui.SettingsFragment"
+        android:label="@string/transaction_settings_fragment"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
