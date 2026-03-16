@@ -59,7 +59,6 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
 
-
                 val isInstallment = binding.checkInstallment.isChecked
                 val installmentsCountString = binding.editInstallmentsCount.text.toString()
 
@@ -71,7 +70,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                         val installmentDescription = "$description - Par. $i/$installments"
                         val installmentDate = date?.plusMonths((i - 1).toLong())
 
-                        val transaction = TransactionEntity(
+                        val transactions = TransactionEntity(
                             id = 0,
                             description = installmentDescription,
                             payerPayee = payerPayer,
@@ -80,7 +79,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                             transactionType = transactionType
                         )
 
-                        viewModel.insert(transaction)
+                        viewModel.insert(transactions)
                     }
                 } else {
                     val transaction = TransactionEntity(
