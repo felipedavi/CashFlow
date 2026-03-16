@@ -1,14 +1,15 @@
 package meimaonamassa.cashflow.util
 
 import meimaonamassa.cashflow.data.entity.TransactionEntity
-import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.format.DateTimeFormatter
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import org.threeten.bp.LocalDate
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.format.DateTimeFormatter
 
 object CSVHelper {
-    private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+    private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     private const val DELIMITER = ";"
     private const val HEADER = "id${DELIMITER}payerPayee${DELIMITER}description${DELIMITER}date${DELIMITER}monetaryValue${DELIMITER}transactionType"
 
@@ -20,7 +21,8 @@ object CSVHelper {
             csv.append("${it.id}$DELIMITER")
             csv.append("${it.payerPayee}$DELIMITER")
             csv.append("${it.description}$DELIMITER")
-            csv.append("${formatter.format(it.date)}$DELIMITER")
+            val dateStr = it.date?.format(formatter) ?: ""
+            csv.append("$dateStr$DELIMITER")
             csv.append("${it.monetaryValue}$DELIMITER")
             csv.append("${it.transactionType}\n")
         }
@@ -39,11 +41,18 @@ object CSVHelper {
                 val tokens = line.split(DELIMITER)
                 if (tokens.size >= 6) {
                     try {
+                        val dateStr = tokens[3]
+                        val parsedDate = if (dateStr.isNotEmpty()) {
+                            LocalDate.parse(dateStr, formatter).atStartOfDay(ZoneOffset.UTC).toOffsetDateTime()
+                        } else {
+                            null
+                        }
+
                         val entity = TransactionEntity(
                             id = 0,
                             payerPayee = tokens[1],
                             description = tokens[2],
-                            date = OffsetDateTime.parse(tokens[3], formatter),
+                            date = parsedDate,
                             monetaryValue = tokens[4].toDoubleOrNull() ?: 0.0,
                             transactionType = tokens[5].toBoolean()
                         )
