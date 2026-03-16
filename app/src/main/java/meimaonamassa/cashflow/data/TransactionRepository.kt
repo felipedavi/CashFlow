@@ -36,7 +36,11 @@ class TransactionRepository(private val dao: TransactionDAO) {
         return dao.getTotalExpense()
     }
 
-    suspend fun getAllTransactionsList(): List<TransactionEntity> = dao.getAllList()
+    suspend fun getAllTransactionsStatic(): List<TransactionEntity> {
+        return dao.getAllStatic()
+    }
 
-    suspend fun deleteAll() = dao.deleteAll()
+    suspend fun deleteAll() {
+        dao.deleteAll()
+    }
 }
