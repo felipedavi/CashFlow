@@ -35,4 +35,8 @@ class TransactionRepository(private val dao: TransactionDAO) {
     fun getTotalExpense(): Flow<Double?> {
         return dao.getTotalExpense()
     }
+
+    suspend fun getAllTransactionsList(): List<TransactionEntity> = dao.getAllList()
+
+    suspend fun deleteAll() = dao.deleteAll()
 }
