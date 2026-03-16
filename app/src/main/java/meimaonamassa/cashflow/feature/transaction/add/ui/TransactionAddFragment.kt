@@ -51,17 +51,44 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT
             ).show()
             else {
+                val payerPayer = binding.editPayerPayee.text.toString().trim()
                 val description = binding.editDescription.text.toString().trim()
                 val date = DateConverters.toOffsetDateTime(
                     binding.editDate.text.toString().toFormattedDate()
                 )
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
-                val payerPayer = binding.editPayerPayee.text.toString().trim()
-                val transaction = TransactionEntity(
-                    0, description, payerPayer, date, monetaryValue, transactionType
-                )
-                viewModel.insert(transaction)
+
+
+                val isInstallment = binding.checkInstallment.isChecked
+                val installmentsCountString = binding.editInstallmentsCount.text.toString()
+
+                if (isInstallment && installmentsCountString.isNotEmpty()) {
+                    val installments = installmentsCountString.toInt()
+                    val installmentValue = monetaryValue / installments
+
+                    for (i in 1..installments) {
+                        val installmentDescription = "$description - Par. $i/$installments"
+                        val installmentDate = date?.plusMonths((i - 1).toLong())
+
+                        val transaction = TransactionEntity(
+                            id = 0,
+                            description = installmentDescription,
+                            payerPayee = payerPayer,
+                            date = installmentDate,
+                            monetaryValue = installmentValue,
+                            transactionType = transactionType
+                        )
+
+                        viewModel.insert(transaction)
+                    }
+                } else {
+                    val transaction = TransactionEntity(
+                        0, description, payerPayer, date, monetaryValue, transactionType
+                    )
+                    viewModel.insert(transaction)
+                }
+
                 findNavController().navigateUp()
             }
         }
@@ -89,8 +116,6 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        binding.buttonSave.setOnClickListener(this)
-
         binding.groupRadioTransactionType.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radio_income -> {
@@ -102,6 +127,18 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+
+        binding.checkInstallment.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.editInstallmentsCount.visibility = View.VISIBLE
+            } else {
+                binding.editInstallmentsCount.visibility = View.GONE
+                binding.editInstallmentsCount.text.clear()
+            }
+        }
+
+        binding.buttonSave.setOnClickListener(this)
+
     }
 
 }
