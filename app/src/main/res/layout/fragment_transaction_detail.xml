@@ -8,6 +8,27 @@
     tools:context="meimaonamassa.cashflow.feature.transaction.detail.ui.TransactionDetailFragment">
 
     <TextView
+        android:id="@+id/text_payer_payee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_payer_payee"
+        android:textColor="#546E7A"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_payer_payee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_payer_payee" />
+
+    <TextView
         android:id="@+id/text_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,7 +37,7 @@
         android:textColor="#546E7A"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/edit_payer_payee" />
 
     <EditText
         android:id="@+id/edit_description"
@@ -31,51 +52,6 @@
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
-        android:id="@+id/text_payer_payee"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/text_payer_payee"
-        android:textColor="#546E7A"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_description" />
-
-    <EditText
-        android:id="@+id/edit_payer_payee"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:autofillHints="name"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_payer_payee" />
-
-    <TextView
-        android:id="@+id/text_money"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/edit_money"
-        android:text="@string/text_money"
-        android:textColor="#546E7A"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_payer_payee" />
-
-    <EditText
-        android:id="@+id/edit_money"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:maxLength="19"
-        android:minHeight="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_money" />
-
-    <TextView
         android:id="@+id/text_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -84,7 +60,7 @@
         android:textColor="#546E7A"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_money" />
+        app:layout_constraintTop_toBottomOf="@id/edit_description" />
 
     <EditText
         android:id="@+id/edit_date"
@@ -100,6 +76,30 @@
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
+        android:id="@+id/text_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edit_money"
+        android:text="@string/text_money"
+        android:textColor="#546E7A"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_date" />
+
+    <EditText
+        android:id="@+id/edit_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="19"
+        android:minHeight="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_money" />
+
+    <TextView
         android:id="@+id/text_transaction_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
         android:textColor="#546E7A"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_date" />
+        app:layout_constraintTop_toBottomOf="@id/edit_money" />
 
     <RadioGroup
         android:id="@+id/group_radio_transaction_type"
