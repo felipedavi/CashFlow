@@ -61,7 +61,7 @@ class TransactionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.currentMonth.collect { month ->
                 val formattedMonth = month.format(monthFormatter).replaceFirstChar { it.uppercase() }
-                _binding?.textCurrentMonth?.text = formattedMonth
+                _binding?.monthSelectorContainer?.textCurrentMonth?.text = formattedMonth
             }
         }
 
@@ -121,11 +121,11 @@ class TransactionFragment : Fragment() {
             findNavController().navigate(R.id.navigateToTransactionAddFragment)
         }
 
-        binding.btnNextMonth.setOnClickListener {
+        binding.monthSelectorContainer.btnNextMonth.setOnClickListener {
             viewModel.nextMonth()
         }
 
-        binding.btnPreviousMonth.setOnClickListener {
+        binding.monthSelectorContainer.btnPreviousMonth.setOnClickListener {
             viewModel.previousMonth()
         }
     }
