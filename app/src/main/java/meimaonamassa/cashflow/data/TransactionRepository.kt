@@ -40,6 +40,10 @@ class TransactionRepository(private val dao: TransactionDAO) {
         return dao.getAllStatic()
     }
 
+    fun getTransactionsByMonth(monthPrefix: String) = dao.getTransactionsByMonth(monthPrefix)
+    fun getTotalIncomeByMonth(monthPrefix: String) = dao.getTotalIncomeByMonth(monthPrefix)
+    fun getTotalExpenseByMonth(monthPrefix: String) = dao.getTotalExpenseByMonth(monthPrefix)
+
     suspend fun deleteAll() {
         dao.deleteAll()
     }
