@@ -31,6 +31,15 @@ interface TransactionDAO {
     @Query("SELECT * FROM transaction_table ORDER BY date DESC")
     suspend fun getAllStatic(): List<TransactionEntity>
 
+    @Query("SELECT * FROM transaction_table WHERE date LIKE :monthPrefix || '%' ORDER BY date DESC")
+    fun getTransactionsByMonth(monthPrefix: String): Flow<List<TransactionEntity>>
+
+    @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 1 AND date LIKE :monthPrefix || '%'")
+    fun getTotalIncomeByMonth(monthPrefix: String): Flow<Double?>
+
+    @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 0 AND date LIKE :monthPrefix || '%'")
+    fun getTotalExpenseByMonth(monthPrefix: String): Flow<Double?>
+
     @Query("DELETE FROM transaction_table")
     suspend fun deleteAll()
 }
