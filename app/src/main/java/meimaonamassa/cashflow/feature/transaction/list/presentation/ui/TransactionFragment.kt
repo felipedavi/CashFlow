@@ -8,8 +8,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.launch
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.R
 import meimaonamassa.cashflow.base.DateConverters
@@ -19,12 +21,16 @@ import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionV
 import meimaonamassa.cashflow.feature.transaction.list.presentation.ui.adapter.GroupedTransactionAdapter
 import meimaonamassa.cashflow.util.extension.fromFormattedDate
 import meimaonamassa.cashflow.util.extension.toCurrency
+import org.threeten.bp.format.DateTimeFormatter
+import java.util.Locale
 
 class TransactionFragment : Fragment() {
     private lateinit var viewModel: TransactionViewModel
     private lateinit var adapter: GroupedTransactionAdapter
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding!!
+
+    private val monthFormatter = DateTimeFormatter.ofPattern("MMMM / yyyy", Locale.forLanguageTag("pt-BR"))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +56,13 @@ class TransactionFragment : Fragment() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, systemBars.bottom)
             insets
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.currentMonth.collect { month ->
+                val formattedMonth = month.format(monthFormatter).replaceFirstChar { it.uppercase() }
+                _binding?.textCurrentMonth?.text = formattedMonth
+            }
         }
 
         viewModel.allTransactions.observe(viewLifecycleOwner) { transactions ->
@@ -106,6 +119,14 @@ class TransactionFragment : Fragment() {
     private fun setListeners() {
         binding.floatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.navigateToTransactionAddFragment)
+        }
+
+        binding.btnNextMonth.setOnClickListener {
+            viewModel.nextMonth()
+        }
+
+        binding.btnPreviousMonth.setOnClickListener {
+            viewModel.previousMonth()
         }
     }
 
