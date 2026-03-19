@@ -1,6 +1,9 @@
 package meimaonamassa.cashflow.feature.transaction.list.presentation.ui
 
 import android.os.Bundle
+import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
+import org.threeten.bp.YearMonth
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,15 +33,17 @@ class TransactionFragment : Fragment() {
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding!!
 
-    private val monthFormatter = DateTimeFormatter.ofPattern("MMMM / yyyy", Locale.forLanguageTag("pt-BR"))
+    private val monthFormatter =
+        DateTimeFormatter.ofPattern("MMMM / yyyy", Locale.forLanguageTag("pt-BR"))
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this, TransactionViewModelFactory((requireActivity().application
-                as MainApplication).repository)
+        viewModel = ViewModelProvider(
+            this, TransactionViewModelFactory(
+                (requireActivity().application as MainApplication).repository
+            )
         )[TransactionViewModel::class.java]
 
         adapter = GroupedTransactionAdapter(::transactionListClickListener, viewModel)
@@ -48,6 +53,18 @@ class TransactionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setFragmentResultListener("importRequest") { _, bundle ->
+            val success = bundle.getBoolean("success")
+            if (success) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.alert_import_data_success),
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.currentMonth.value = YearMonth.now()
+            }
+        }
 
         binding.recyclerTransactions.layoutManager = LinearLayoutManager(context)
         binding.recyclerTransactions.adapter = adapter
@@ -60,7 +77,8 @@ class TransactionFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.currentMonth.collect { month ->
-                val formattedMonth = month.format(monthFormatter).replaceFirstChar { it.uppercase() }
+                val formattedMonth =
+                    month.format(monthFormatter).replaceFirstChar { it.uppercase() }
                 _binding?.monthSelectorContainer?.textCurrentMonth?.text = formattedMonth
             }
         }
@@ -85,7 +103,8 @@ class TransactionFragment : Fragment() {
                     groupedByDate.keys.sortedByDescending { it }.forEach { date ->
                         date?.let { d ->
                             groupedList.add(ListItem.Header(d.fromFormattedDate()))
-                            val sortedItems = groupedByDate[d]?.sortedByDescending { it.monetaryValue }
+                            val sortedItems =
+                                groupedByDate[d]?.sortedByDescending { it.monetaryValue }
                             sortedItems?.forEach { transaction ->
                                 groupedList.add(ListItem.TransactionItem(transaction))
                             }
@@ -131,8 +150,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun transactionListClickListener(id: Int) {
-        val action = TransactionFragmentDirections
-            .navigateToTransactionDetailFragment(id)
+        val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(id)
         findNavController().navigate(action)
     }
 }

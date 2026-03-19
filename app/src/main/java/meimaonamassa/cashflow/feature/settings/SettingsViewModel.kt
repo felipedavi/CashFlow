@@ -45,9 +45,12 @@ class SettingsViewModel(private val repository: TransactionRepository) : ViewMod
         }
     }
 
-    fun clearAllData() {
+    fun clearAllData(onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAll()
+            withContext(Dispatchers.Main) {
+                onSuccess()
+            }
         }
     }
 }

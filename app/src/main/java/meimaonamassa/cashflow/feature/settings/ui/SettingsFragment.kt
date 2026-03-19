@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.R
 import meimaonamassa.cashflow.databinding.FragmentSettingsBinding
@@ -29,7 +31,8 @@ class SettingsFragment : Fragment() {
             val outputStream = requireContext().contentResolver.openOutputStream(it)
             outputStream?.let { stream ->
                 viewModel.exportData(stream) {
-                    Toast.makeText(context, "Backup exportado com sucesso!", Toast.LENGTH_SHORT).show()
+                    setFragmentResult("settingsAction", bundleOf("action" to "export"))
+                    findNavController().popBackStack()
                 }
             }
         }
@@ -40,7 +43,8 @@ class SettingsFragment : Fragment() {
             val inputStream = requireContext().contentResolver.openInputStream(it)
             inputStream?.let { stream ->
                 viewModel.importData(stream) {
-                    Toast.makeText(context, getString(R.string.alert_import_data_success), Toast.LENGTH_SHORT).show()
+                    setFragmentResult("importRequest", bundleOf("success" to true))
+                    findNavController().popBackStack()
                 }
             }
         }
@@ -74,8 +78,10 @@ class SettingsFragment : Fragment() {
             .setTitle(getString(R.string.alert_reset_data))
             .setMessage(getString(R.string.alert_reset_data_details))
             .setPositiveButton(getString(R.string.alert_reset_data_positive)) { _, _ ->
-                viewModel.clearAllData()
-                Toast.makeText(context, getString(R.string.alert_reset_data_success), Toast.LENGTH_SHORT).show()
+                viewModel.clearAllData {
+                    setFragmentResult("settingsAction", bundleOf("action" to "delete"))
+                    findNavController().popBackStack()
+                }
             }
             .setNegativeButton(getString(R.string.alert_reset_data_cancel), null)
             .show()
