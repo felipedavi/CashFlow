@@ -83,7 +83,12 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                     }
                 } else {
                     val transaction = TransactionEntity(
-                        0, description, payerPayer, date, monetaryValue, transactionType
+                        id = id,
+                        payerPayee = payerPayer,
+                        description = description,
+                        date = date,
+                        monetaryValue = monetaryValue,
+                        transactionType = transactionType
                     )
                     viewModel.insert(transaction)
                 }
