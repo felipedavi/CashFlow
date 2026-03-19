@@ -72,8 +72,8 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
 
                         val transactions = TransactionEntity(
                             id = 0,
-                            description = installmentDescription,
                             payerPayee = payerPayer,
+                            description = installmentDescription,
                             date = installmentDate,
                             monetaryValue = installmentValue,
                             transactionType = transactionType

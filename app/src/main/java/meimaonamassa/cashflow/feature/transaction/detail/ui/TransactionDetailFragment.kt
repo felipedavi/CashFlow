@@ -61,17 +61,17 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 Toast.LENGTH_SHORT
             ).show()
             else {
+                val payerPayee = binding.editPayerPayee.text.toString().trim()
                 val description = binding.editDescription.text.toString().trim()
                 val date = DateConverters.toOffsetDateTime(
                     binding.editDate.text.toString().toFormattedDate()
                 )
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
-                val payerPayee = binding.editPayerPayee.text.toString().trim()
 
                 val updatedTransaction = selectedTransaction.copy(
-                    description = description,
                     payerPayee = payerPayee,
+                    description = description,
                     date = date,
                     monetaryValue = monetaryValue,
                     transactionType = transactionType
@@ -91,8 +91,8 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
     private fun observe() {
         viewModel.transaction.observe(viewLifecycleOwner) {
             selectedTransaction = it
-            binding.editDescription.setText(selectedTransaction.description)
             binding.editPayerPayee.setText(selectedTransaction.payerPayee)
+            binding.editDescription.setText(selectedTransaction.description)
             binding.editDate.setText(
                 DateConverters.fromOffsetDateTime(selectedTransaction.date).toString()
                     .fromFormattedDate()
