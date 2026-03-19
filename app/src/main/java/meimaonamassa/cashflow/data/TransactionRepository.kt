@@ -21,6 +21,7 @@ class TransactionRepository(private val dao: TransactionDAO) {
 
     suspend fun deleteAll() {
         dao.deleteAllTransactions()
+        dao.resetTransactionPrimaryKeySequence()
     }
 
     fun get(id: Int): LiveData<TransactionEntity> = dao.getTransactionById(id)

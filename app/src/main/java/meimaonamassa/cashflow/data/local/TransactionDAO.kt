@@ -33,4 +33,7 @@ interface TransactionDAO {
 
     @Query("DELETE FROM transaction_table")
     suspend fun deleteAllTransactions()
+
+    @Query("DELETE FROM sqlite_sequence WHERE name = 'transaction_table'")
+    suspend fun resetTransactionPrimaryKeySequence()
 }
