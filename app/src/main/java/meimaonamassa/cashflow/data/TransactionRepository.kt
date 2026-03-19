@@ -3,7 +3,9 @@ package meimaonamassa.cashflow.data
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import meimaonamassa.cashflow.data.entity.TransactionEntity
+import meimaonamassa.cashflow.data.export.CSVHelper
 import meimaonamassa.cashflow.data.local.TransactionDAO
+import java.io.InputStream
 
 class TransactionRepository(private val dao: TransactionDAO) {
     @WorkerThread
@@ -18,6 +20,14 @@ class TransactionRepository(private val dao: TransactionDAO) {
     fun getTransactionsByMonth(monthPrefix: String) = dao.getTransactionsByMonth(monthPrefix)
     fun getTotalIncomeByMonth(monthPrefix: String) = dao.getTotalIncomeByMonth(monthPrefix)
     fun getTotalExpenseByMonth(monthPrefix: String) = dao.getTotalExpenseByMonth(monthPrefix)
+
+    fun exportTransactionsToCSV(transactions: List<TransactionEntity>): String {
+        return CSVHelper.exportTransactions(transactions)
+    }
+
+    fun importTransactionsFromCSV(inputStream: InputStream): List<TransactionEntity> {
+        return CSVHelper.importTransactions(inputStream)
+    }
 
     suspend fun deleteAll() {
         dao.deleteAllTransactions()
