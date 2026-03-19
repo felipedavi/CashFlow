@@ -1,9 +1,6 @@
 package meimaonamassa.cashflow.feature.transaction.list.presentation.ui
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.fragment.app.setFragmentResultListener
-import org.threeten.bp.YearMonth
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +23,9 @@ import meimaonamassa.cashflow.util.extension.fromFormattedDate
 import meimaonamassa.cashflow.util.extension.toCurrency
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale
+import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
+import org.threeten.bp.YearMonth
 
 class TransactionFragment : Fragment() {
     private lateinit var viewModel: TransactionViewModel
@@ -54,15 +54,19 @@ class TransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener("importRequest") { _, bundle ->
-            val success = bundle.getBoolean("success")
-            if (success) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.alert_import_data_success),
-                    Toast.LENGTH_SHORT
-                ).show()
-                viewModel.currentMonth.value = YearMonth.now()
+        setFragmentResultListener("settingsAction") { _, bundle ->
+            when (bundle.getString("action")) {
+                "import" -> {
+                    Toast.makeText(requireContext(), getString(R.string.alert_import_data_success), Toast.LENGTH_SHORT).show()
+                    viewModel.currentMonth.value = YearMonth.now()
+                }
+                "delete" -> {
+                    Toast.makeText(requireContext(), getString(R.string.alert_reset_data_success), Toast.LENGTH_SHORT).show()
+                    viewModel.currentMonth.value = YearMonth.now()
+                }
+                "export" -> {
+                    Toast.makeText(requireContext(), "Backup exportado com sucesso!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -77,8 +81,7 @@ class TransactionFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.currentMonth.collect { month ->
-                val formattedMonth =
-                    month.format(monthFormatter).replaceFirstChar { it.uppercase() }
+                val formattedMonth = month.format(monthFormatter).replaceFirstChar { it.uppercase() }
                 _binding?.monthSelectorContainer?.textCurrentMonth?.text = formattedMonth
             }
         }
@@ -103,8 +106,7 @@ class TransactionFragment : Fragment() {
                     groupedByDate.keys.sortedByDescending { it }.forEach { date ->
                         date?.let { d ->
                             groupedList.add(ListItem.Header(d.fromFormattedDate()))
-                            val sortedItems =
-                                groupedByDate[d]?.sortedByDescending { it.monetaryValue }
+                            val sortedItems = groupedByDate[d]?.sortedByDescending { it.monetaryValue }
                             sortedItems?.forEach { transaction ->
                                 groupedList.add(ListItem.TransactionItem(transaction))
                             }

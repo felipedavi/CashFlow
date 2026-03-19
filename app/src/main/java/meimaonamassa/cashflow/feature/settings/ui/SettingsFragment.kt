@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -26,31 +25,41 @@ class SettingsFragment : Fragment() {
         SettingsViewModelFactory(repository)
     }
 
-    private val exportCsvLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri ->
-        uri?.let {
-            val outputStream = requireContext().contentResolver.openOutputStream(it)
-            outputStream?.let { stream ->
-                viewModel.exportData(stream) {
-                    setFragmentResult("settingsAction", bundleOf("action" to "export"))
-                    findNavController().popBackStack()
+    private val exportCsvLauncher =
+        registerForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri ->
+            uri?.let {
+                val outputStream = requireContext().contentResolver.openOutputStream(it)
+                outputStream?.let { stream ->
+                    viewModel.exportData(stream) {
+                        val result = Bundle()
+                        result.putString("action", "export")
+                        setFragmentResult("settingsAction", result)
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }
-    }
 
-    private val importCsvLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        uri?.let {
-            val inputStream = requireContext().contentResolver.openInputStream(it)
-            inputStream?.let { stream ->
-                viewModel.importData(stream) {
-                    setFragmentResult("importRequest", bundleOf("success" to true))
-                    findNavController().popBackStack()
+    private val importCsvLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            uri?.let {
+                val inputStream = requireContext().contentResolver.openInputStream(it)
+                inputStream?.let { stream ->
+                    viewModel.importData(stream) {
+                        val result = Bundle()
+                        result.putString("action", "import")
+                        setFragmentResult("settingsAction", result)
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }
-    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -59,7 +68,8 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonExport.setOnClickListener {
-            val dateFormat = java.text.SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.getDefault())
+            val dateFormat =
+                java.text.SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.getDefault())
             val currentTime = dateFormat.format(java.util.Date())
             exportCsvLauncher.launch("cashflow_backup_$currentTime.csv")
         }
@@ -79,7 +89,9 @@ class SettingsFragment : Fragment() {
             .setMessage(getString(R.string.alert_reset_data_details))
             .setPositiveButton(getString(R.string.alert_reset_data_positive)) { _, _ ->
                 viewModel.clearAllData {
-                    setFragmentResult("settingsAction", bundleOf("action" to "delete"))
+                    val result = Bundle()
+                    result.putString("action", "delete")
+                    setFragmentResult("settingsAction", result)
                     findNavController().popBackStack()
                 }
             }
