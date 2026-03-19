@@ -51,16 +51,11 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         val id: Int? = v?.id
         if (id == R.id.button_update) {
-            if (!binding.editDescription.isValid() or !binding.editMoney.isValid() or !binding.editDate.isValid() or !binding.editPayerPayee.isValid()) Log.i(
-                "Validation",
-                null.toString()
-            )
-            else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) Toast.makeText(
-                context,
-                getText(R.string.group_radio_error),
-                Toast.LENGTH_SHORT
-            ).show()
-            else {
+            if (!binding.editDescription.isValid() || !binding.editMoney.isValid() || !binding.editDate.isValid() || !binding.editPayerPayee.isValid()) {
+                Log.i("Validation", "Field validation failed.")
+            } else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
+                Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
+            } else {
                 val payerPayee = binding.editPayerPayee.text.toString().trim()
                 val description = binding.editDescription.text.toString().trim()
                 val date = DateConverters.toOffsetDateTime(
