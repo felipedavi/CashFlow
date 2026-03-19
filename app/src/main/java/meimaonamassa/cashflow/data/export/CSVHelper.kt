@@ -1,12 +1,12 @@
 package meimaonamassa.cashflow.data.export
 
 import meimaonamassa.cashflow.data.entity.TransactionEntity
-import org.threeten.bp.LocalDate
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.format.DateTimeFormatter
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import org.threeten.bp.LocalDate
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.format.DateTimeFormatter
 
 object CSVHelper {
     private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -19,8 +19,8 @@ object CSVHelper {
 
         transactions.forEach {
             csv.append("${it.id}$DELIMITER")
-            csv.append("${it.payerPayee}$DELIMITER")
-            csv.append("${it.description}$DELIMITER")
+            csv.append("${escapeCSV(it.payerPayee)}$DELIMITER")
+            csv.append("${escapeCSV(it.description)}$DELIMITER")
             val dateStr = it.date?.format(formatter) ?: ""
             csv.append("$dateStr$DELIMITER")
             csv.append("${it.monetaryValue}$DELIMITER")
@@ -38,7 +38,7 @@ object CSVHelper {
 
             var line: String? = reader.readLine()
             while (line != null) {
-                val tokens = line.split(DELIMITER)
+                val tokens = parseCSVLine(line)
                 if (tokens.size >= 6) {
                     try {
                         val dateStr = tokens[3]
@@ -65,5 +65,38 @@ object CSVHelper {
             }
         }
         return transactions
+    }
+
+    private fun escapeCSV(value: String): String {
+        if (value.contains(DELIMITER) || value.contains("\"") || value.contains("\n")) {
+            return "\"${value.replace("\"", "\"\"")}\""
+        }
+        return value
+    }
+
+    private fun parseCSVLine(line: String): List<String> {
+        val tokens = mutableListOf<String>()
+        var currentToken = StringBuilder()
+        var inQuotes = false
+
+        for (i in line.indices) {
+            val char = line[i]
+            if (char == '"') {
+                if (inQuotes && i + 1 < line.length && line[i + 1] == '"') {
+                    continue
+                } else if (i > 0 && line[i - 1] == '"' && inQuotes) {
+                    currentToken.append('"')
+                } else {
+                    inQuotes = !inQuotes
+                }
+            } else if (char.toString() == DELIMITER && !inQuotes) {
+                tokens.add(currentToken.toString())
+                currentToken = StringBuilder()
+            } else {
+                currentToken.append(char)
+            }
+        }
+        tokens.add(currentToken.toString())
+        return tokens
     }
 }
