@@ -16,18 +16,6 @@ class TransactionRepository(private val dao: TransactionDAO) {
         return dao.getAllTransactions()
     }
 
-    fun get(id: Int): LiveData<TransactionEntity> = dao.getById(id)
-
-    @WorkerThread
-    suspend fun update(transaction: TransactionEntity) {
-        dao.update(transaction)
-    }
-
-    @WorkerThread
-    suspend fun delete(transaction: TransactionEntity) {
-        dao.delete(transaction)
-    }
-
     fun getTotalIncome(): Flow<Double?> {
         return dao.getTotalIncome()
     }
@@ -46,5 +34,17 @@ class TransactionRepository(private val dao: TransactionDAO) {
 
     suspend fun deleteAll() {
         dao.deleteAll()
+    }
+
+    fun get(id: Int): LiveData<TransactionEntity> = dao.getById(id)
+
+    @WorkerThread
+    suspend fun update(transaction: TransactionEntity) {
+        dao.update(transaction)
+    }
+
+    @WorkerThread
+    suspend fun delete(transaction: TransactionEntity) {
+        dao.delete(transaction)
     }
 }
