@@ -18,13 +18,6 @@ interface TransactionDAO {
 
     @Delete
     suspend fun delete(transaction: TransactionEntity)
-
-    @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 1")
-    fun getTotalIncome(): Flow<Double?>
-
-    @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 0")
-    fun getTotalExpense(): Flow<Double?>
-
     @Query("SELECT * FROM transaction_table ORDER BY date DESC")
     suspend fun getAllStatic(): List<TransactionEntity>
 
