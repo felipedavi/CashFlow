@@ -11,14 +11,13 @@ import org.threeten.bp.format.DateTimeFormatter
 object CSVHelper {
     private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     private const val DELIMITER = ";"
-    private const val HEADER = "id${DELIMITER}payerPayee${DELIMITER}description${DELIMITER}date${DELIMITER}monetaryValue${DELIMITER}transactionType"
+    private const val HEADER = "payerPayee${DELIMITER}description${DELIMITER}date${DELIMITER}monetaryValue${DELIMITER}transactionType"
 
     fun exportTransactions(transactions: List<TransactionEntity>): String {
         val csv = StringBuilder()
         csv.append("$HEADER\n")
 
         transactions.forEach {
-            csv.append("${it.id}$DELIMITER")
             csv.append("${escapeCSV(it.payerPayee)}$DELIMITER")
             csv.append("${escapeCSV(it.description)}$DELIMITER")
             val dateStr = it.date?.format(formatter) ?: ""
@@ -39,9 +38,9 @@ object CSVHelper {
             var line: String? = reader.readLine()
             while (line != null) {
                 val tokens = parseCSVLine(line)
-                if (tokens.size >= 6) {
+                if (tokens.size >= 5) {
                     try {
-                        val dateStr = tokens[3]
+                        val dateStr = tokens[2]
                         val parsedDate = if (dateStr.isNotEmpty()) {
                             LocalDate.parse(dateStr, formatter).atStartOfDay(ZoneOffset.UTC).toOffsetDateTime()
                         } else {
@@ -50,11 +49,11 @@ object CSVHelper {
 
                         val entity = TransactionEntity(
                             id = 0,
-                            payerPayee = tokens[1],
-                            description = tokens[2],
+                            payerPayee = tokens[0],
+                            description = tokens[1],
                             date = parsedDate,
-                            monetaryValue = tokens[4].toDoubleOrNull() ?: 0.0,
-                            transactionType = tokens[5].toBoolean()
+                            monetaryValue = tokens[3].toDoubleOrNull() ?: 0.0,
+                            transactionType = tokens[4].toBoolean()
                         )
                         transactions.add(entity)
                     } catch (e: Exception) {
