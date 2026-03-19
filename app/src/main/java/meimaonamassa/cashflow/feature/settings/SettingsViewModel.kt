@@ -16,7 +16,7 @@ class SettingsViewModel(private val repository: TransactionRepository) : ViewMod
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val transactionsList = repository.getAllTransactionsStatic()
-                val csvData = repository.exportTransactionsToCSV(transactionsList)
+                val csvData = CSVHelper.exportTransactions(transactionsList)
 
                 outputStream.bufferedWriter().use { writer ->
                     writer.write(csvData)
@@ -31,16 +31,26 @@ class SettingsViewModel(private val repository: TransactionRepository) : ViewMod
         }
     }
 
-    fun importData(inputStream: InputStream, onSuccess: () -> Unit) {
+    fun importData(inputStream: InputStream, onSuccess: () -> Unit, onError: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val transactions = CSVHelper.importTransactions(inputStream)
-                transactions.forEach { repository.insert(it) }
-                withContext(Dispatchers.Main) {
-                    onSuccess()
+
+                if (transactions.isNotEmpty()) {
+                    transactions.forEach { repository.insert(it) }
+                    withContext(Dispatchers.Main) {
+                        onSuccess()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        onError()
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    onError()
+                }
             }
         }
     }

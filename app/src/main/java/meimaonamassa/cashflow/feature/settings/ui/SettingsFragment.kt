@@ -45,12 +45,22 @@ class SettingsFragment : Fragment() {
             uri?.let {
                 val inputStream = requireContext().contentResolver.openInputStream(it)
                 inputStream?.let { stream ->
-                    viewModel.importData(stream) {
-                        val result = Bundle()
-                        result.putString("action", "import")
-                        setFragmentResult("settingsAction", result)
-                        findNavController().popBackStack()
-                    }
+                    viewModel.importData(
+                        inputStream = stream,
+                        onSuccess = {
+                            val result = Bundle()
+                            result.putString("action", "import")
+                            setFragmentResult("settingsAction", result)
+                            findNavController().popBackStack()
+                        },
+                        onError = {
+                            android.widget.Toast.makeText(
+                                requireContext(),
+                                getString(R.string.error_import_failed),
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
                 }
             }
         }
