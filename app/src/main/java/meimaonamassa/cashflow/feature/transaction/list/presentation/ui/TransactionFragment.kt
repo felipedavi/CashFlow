@@ -65,7 +65,7 @@ class TransactionFragment : Fragment() {
                     viewModel.currentMonth.value = YearMonth.now()
                 }
                 "export" -> {
-                    Toast.makeText(requireContext(), "Backup exportado com sucesso!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.alert_export_data_success), Toast.LENGTH_SHORT).show()
                 }
             }
         }
