@@ -12,10 +12,6 @@ class TransactionRepository(private val dao: TransactionDAO) {
         dao.insert(transaction)
     }
 
-    fun getAllTransactions(): Flow<List<TransactionEntity>> {
-        return dao.getAllTransactions()
-    }
-
     fun getTotalIncome(): Flow<Double?> {
         return dao.getTotalIncome()
     }

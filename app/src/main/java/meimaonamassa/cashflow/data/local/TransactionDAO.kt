@@ -10,9 +10,6 @@ interface TransactionDAO {
     @Insert
     suspend fun insert(transaction: TransactionEntity)
 
-    @Query("SELECT * FROM transaction_table ORDER BY date DESC")
-    fun getAllTransactions(): Flow<List<TransactionEntity>>
-
     @Query("SELECT * FROM transaction_table WHERE transaction_id = :id")
     fun getById(id: Int): LiveData<TransactionEntity>
 
