@@ -44,7 +44,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         val id: Int? = v?.id
         if (id == R.id.button_save) {
-            if (!binding.editDescription.isValid() || !binding.editMoney.isValid() || !binding.editDate.isValid() || !binding.editPayerPayee.isValid()) {
+            if (!binding.editPayerPayee.isValid() || !binding.editDescription.isValid() || !binding.editDate.isValid() || !binding.editMoney.isValid() ) {
                 Log.i("Validation", "Field validation failed.")
             }
             else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
