@@ -11,10 +11,10 @@ interface TransactionDAO {
     suspend fun insert(transaction: TransactionEntity)
 
     @Query("SELECT * FROM transaction_table WHERE transaction_id = :id")
-    fun getById(id: Int): LiveData<TransactionEntity>
+    fun getTransactionById(id: Int): LiveData<TransactionEntity>
 
     @Query("SELECT * FROM transaction_table ORDER BY date DESC")
-    suspend fun getAllStatic(): List<TransactionEntity>
+    suspend fun getAllTransactionsStatic(): List<TransactionEntity>
 
     @Query("SELECT * FROM transaction_table WHERE date LIKE :monthPrefix || '%' ORDER BY date DESC")
     fun getTransactionsByMonth(monthPrefix: String): Flow<List<TransactionEntity>>
@@ -26,11 +26,11 @@ interface TransactionDAO {
     fun getTotalExpenseByMonth(monthPrefix: String): Flow<Double?>
 
     @Update
-    suspend fun update(transaction: TransactionEntity)
+    suspend fun updateTransaction(transaction: TransactionEntity)
 
     @Delete
-    suspend fun delete(transaction: TransactionEntity)
+    suspend fun deleteTransaction(transaction: TransactionEntity)
 
     @Query("DELETE FROM transaction_table")
-    suspend fun deleteAll()
+    suspend fun deleteAllTransactions()
 }

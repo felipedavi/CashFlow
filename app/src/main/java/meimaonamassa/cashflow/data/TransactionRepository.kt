@@ -12,7 +12,7 @@ class TransactionRepository(private val dao: TransactionDAO) {
     }
 
     suspend fun getAllTransactionsStatic(): List<TransactionEntity> {
-        return dao.getAllStatic()
+        return dao.getAllTransactionsStatic()
     }
 
     fun getTransactionsByMonth(monthPrefix: String) = dao.getTransactionsByMonth(monthPrefix)
@@ -20,18 +20,18 @@ class TransactionRepository(private val dao: TransactionDAO) {
     fun getTotalExpenseByMonth(monthPrefix: String) = dao.getTotalExpenseByMonth(monthPrefix)
 
     suspend fun deleteAll() {
-        dao.deleteAll()
+        dao.deleteAllTransactions()
     }
 
-    fun get(id: Int): LiveData<TransactionEntity> = dao.getById(id)
+    fun get(id: Int): LiveData<TransactionEntity> = dao.getTransactionById(id)
 
     @WorkerThread
     suspend fun update(transaction: TransactionEntity) {
-        dao.update(transaction)
+        dao.updateTransaction(transaction)
     }
 
     @WorkerThread
     suspend fun delete(transaction: TransactionEntity) {
-        dao.delete(transaction)
+        dao.deleteTransaction(transaction)
     }
 }
