@@ -15,9 +15,13 @@ class SettingsViewModel(private val repository: TransactionRepository) : ViewMod
     fun exportData(outputStream: OutputStream, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val transactions = repository.getAllTransactionsStatic()
-                val csvString = CSVHelper.exportTransactions(transactions)
-                outputStream.use { it.write(csvString.toByteArray(Charsets.UTF_8)) }
+                val transactionsList = repository.getAllTransactionsStatic()
+                val csvData = repository.exportTransactionsToCSV(transactionsList)
+
+                outputStream.bufferedWriter().use { writer ->
+                    writer.write(csvData)
+                }
+
                 withContext(Dispatchers.Main) {
                     onSuccess()
                 }
