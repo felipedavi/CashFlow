@@ -83,7 +83,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                     }
                 } else {
                     val transaction = TransactionEntity(
-                        id = id,
+                        id = 0,
                         payerPayee = payerPayer,
                         description = description,
                         date = date,
