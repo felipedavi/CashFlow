@@ -12,5 +12,9 @@ data class TransactionEntity(
     var description: String,
     var date: OffsetDateTime?= null,
     @ColumnInfo(name = "monetary_value") var monetaryValue: Double,
-    @ColumnInfo(name = "transaction_type") var transactionType: Boolean
+    @ColumnInfo(name = "transaction_type") var transactionType: Boolean,
+    @ColumnInfo(name = "is_installment") var isInstallment: Boolean = false,
+    @ColumnInfo(name = "installment_current") var installmentCurrent: Int? = null,
+    @ColumnInfo(name = "installment_total") var installmentTotal: Int? = null,
+    @ColumnInfo(name = "installment_group_id") var installmentGroupId: String? = null
 )
