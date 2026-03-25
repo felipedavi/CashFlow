@@ -1,5 +1,6 @@
 package meimaonamassa.cashflow.feature.transaction.add.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import meimaonamassa.cashflow.util.extension.fromCurrency
 import meimaonamassa.cashflow.util.extension.hideKeyboard
 import meimaonamassa.cashflow.util.extension.isValid
 import meimaonamassa.cashflow.util.extension.toFormattedDate
+import java.util.UUID
 
 class TransactionAddFragment : Fragment(), View.OnClickListener {
     private lateinit var viewModel: TransactionAddViewModel
@@ -44,13 +46,11 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         val id: Int? = v?.id
         if (id == R.id.button_save) {
-            if (!binding.editPayerPayee.isValid() || !binding.editDescription.isValid() || !binding.editDate.isValid() || !binding.editMoney.isValid() ) {
+            if (!binding.editPayerPayee.isValid() || !binding.editDescription.isValid() || !binding.editDate.isValid() || !binding.editMoney.isValid()) {
                 Log.i("Validation", "Field validation failed.")
-            }
-            else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
+            } else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
                 Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
                 val payerPayer = binding.editPayerPayee.text.toString().trim()
                 val description = binding.editDescription.text.toString().trim()
                 val date = DateConverters.toOffsetDateTime(
@@ -60,26 +60,28 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 val transactionType = binding.radioIncome.isChecked
 
                 val isInstallment = binding.checkInstallment.isChecked
-                val installmentsCountString = binding.editInstallmentsCount.text.toString()
 
-                if (isInstallment && installmentsCountString.isNotEmpty()) {
-                    val installments = installmentsCountString.toInt()
-                    val installmentValue = monetaryValue / installments
+                if (isInstallment) {
+                    val currentStr = binding.editInstallmentCurrent.text.toString()
+                    val finalStr = binding.editInstallmentFinal.text.toString()
 
-                    for (i in 1..installments) {
-                        val installmentDescription = "$description - Par. $i/$installments"
-                        val installmentDate = date?.plusMonths((i - 1).toLong())
+                    if (currentStr.isNotEmpty() && finalStr.isNotEmpty()) {
+                        val current = currentStr.toInt()
+                        val final = finalStr.toInt()
+                        val groupId = UUID.randomUUID().toString()
 
-                        val transactions = TransactionEntity(
-                            id = 0,
-                            payerPayee = payerPayer,
-                            description = installmentDescription,
-                            date = installmentDate,
-                            monetaryValue = installmentValue,
-                            transactionType = transactionType
-                        )
-
-                        viewModel.insert(transactions)
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Salvar parcelas")
+                            .setMessage("Deseja salvar as demais parcelas automaticamente?")
+                            .setPositiveButton("Sim") { _, _ ->
+                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, groupId, true)
+                            }
+                            .setNegativeButton("Não") { _, _ ->
+                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, groupId, false)
+                            }
+                            .show()
+                    } else {
+                        Toast.makeText(context, "Preencha as parcelas.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     val transaction = TransactionEntity(
@@ -88,14 +90,70 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                         description = description,
                         date = date,
                         monetaryValue = monetaryValue,
-                        transactionType = transactionType
+                        transactionType = transactionType,
+                        isInstallment = false,
+                        installmentCurrent = null,
+                        installmentTotal = null,
+                        installmentGroupId = null
                     )
                     viewModel.insert(transaction)
+                    findNavController().navigateUp()
                 }
-
-                findNavController().navigateUp()
             }
         }
+    }
+
+    private fun saveInstallments(
+        payerPayee: String,
+        description: String,
+        date: org.threeten.bp.OffsetDateTime?,
+        totalValue: Double,
+        transactionType: Boolean,
+        current: Int,
+        final: Int,
+        groupId: String,
+        saveAll: Boolean
+    ) {
+        val totalInstallmentsToSave = final - current + 1
+        val installmentValue = if (totalInstallmentsToSave > 0) totalValue / totalInstallmentsToSave else totalValue
+
+        if (saveAll) {
+            for (i in current..final) {
+                val currentMonthOffset = (i - current).toLong()
+                val installmentDate = date?.plusMonths(currentMonthOffset)
+                val installmentDesc = "$description - Par. $i/$final"
+
+                val transaction = TransactionEntity(
+                    id = 0,
+                    payerPayee = payerPayee,
+                    description = installmentDesc,
+                    date = installmentDate,
+                    monetaryValue = installmentValue,
+                    transactionType = transactionType,
+                    isInstallment = true,
+                    installmentCurrent = i,
+                    installmentTotal = final,
+                    installmentGroupId = groupId
+                )
+                viewModel.insert(transaction)
+            }
+        } else {
+            val installmentDesc = "$description - Par. $current/$final"
+            val transaction = TransactionEntity(
+                id = 0,
+                payerPayee = payerPayee,
+                description = installmentDesc,
+                date = date,
+                monetaryValue = totalValue,
+                transactionType = transactionType,
+                isInstallment = true,
+                installmentCurrent = current,
+                installmentTotal = final,
+                installmentGroupId = groupId
+            )
+            viewModel.insert(transaction)
+        }
+        findNavController().navigateUp()
     }
 
     override fun onDestroyView() {
@@ -134,15 +192,14 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
 
         binding.checkInstallment.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.editInstallmentsCount.visibility = View.VISIBLE
+                binding.layoutInstallments.visibility = View.VISIBLE
             } else {
-                binding.editInstallmentsCount.visibility = View.GONE
-                binding.editInstallmentsCount.text.clear()
+                binding.layoutInstallments.visibility = View.GONE
+                binding.editInstallmentCurrent.text.clear()
+                binding.editInstallmentFinal.text.clear()
             }
         }
 
         binding.buttonSave.setOnClickListener(this)
-
     }
-
 }

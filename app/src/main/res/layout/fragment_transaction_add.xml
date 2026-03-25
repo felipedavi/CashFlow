@@ -141,17 +141,42 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type" />
 
-    <EditText
-        android:id="@+id/edit_installments_count"
+    <LinearLayout
+        android:id="@+id/layout_installments"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:hint="Qtd de parcelas"
-        android:inputType="number"
+        android:orientation="horizontal"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/check_installment"
         app:layout_constraintLeft_toRightOf="@id/check_installment"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type" />
+        app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type">
+
+        <EditText
+            android:id="@+id/edit_installment_current"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Atual"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="4dp"
+            android:text=" / "
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_installment_final"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Final"
+            android:inputType="number" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_save"
