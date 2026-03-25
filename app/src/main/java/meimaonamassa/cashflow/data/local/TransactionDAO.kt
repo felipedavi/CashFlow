@@ -25,11 +25,17 @@ interface TransactionDAO {
     @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 0 AND date LIKE :monthPrefix || '%'")
     fun getTotalExpenseByMonth(monthPrefix: String): Flow<Double?>
 
+    @Query("SELECT * FROM transaction_table WHERE installment_group_id = :groupId")
+    suspend fun getTransactionsByGroupId(groupId: String): List<TransactionEntity>
+
     @Update
     suspend fun updateTransaction(transaction: TransactionEntity)
 
     @Delete
     suspend fun deleteTransaction(transaction: TransactionEntity)
+
+    @Query("DELETE FROM transaction_table WHERE installment_group_id = :groupId")
+    suspend fun deleteTransactionGroup(groupId: String)
 
     @Query("DELETE FROM transaction_table")
     suspend fun deleteAllTransactions()
