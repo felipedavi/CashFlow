@@ -63,4 +63,9 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
             repository.delete(transaction)
         }
     }
+    fun deleteGroup(groupId: String) {
+        viewModelScope.launch {
+            repository.deleteTransactionGroup(groupId)
+        }
+    }
 }
