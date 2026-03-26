@@ -28,6 +28,8 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
     private lateinit var viewModel: TransactionDetailViewModel
     private lateinit var selectedTransaction: TransactionEntity
 
+    private var isEditAllMode = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -40,6 +42,8 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
         )[TransactionDetailViewModel::class.java]
 
         val id = args.transactionID
+        isEditAllMode = args.isGroupEdit
+
         viewModel.start(id)
 
         observe()
@@ -64,15 +68,31 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 val monetaryValue = binding.editMoney.text.toString().fromCurrency()
                 val transactionType = binding.radioIncome.isChecked
 
+                val newCurrentStr = binding.editInstallmentCurrent.text.toString()
+                val newCurrent = if (newCurrentStr.isNotEmpty()) newCurrentStr.toInt() else selectedTransaction.installmentCurrent ?: 1
+
+                val newTotalStr = binding.editInstallmentFinal.text.toString()
+                val newTotal = if (newTotalStr.isNotEmpty()) newTotalStr.toInt() else selectedTransaction.installmentTotal ?: 1
+
                 val updatedTransaction = selectedTransaction.copy(
                     payerPayee = payerPayee,
                     description = description,
                     date = date,
                     monetaryValue = monetaryValue,
-                    transactionType = transactionType
+                    transactionType = transactionType,
+                    installmentCurrent = newCurrent,
+                    installmentTotal = newTotal
                 )
 
-                viewModel.update(updatedTransaction)
+                if (selectedTransaction.isInstallment && selectedTransaction.installmentGroupId != null) {
+                    if (isEditAllMode) {
+                        viewModel.updateGroup(updatedTransaction, newTotal)
+                    } else {
+                        viewModel.update(updatedTransaction)
+                    }
+                } else {
+                    viewModel.update(updatedTransaction)
+                }
                 findNavController().navigateUp()
             }
         }
@@ -86,6 +106,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
     private fun observe() {
         viewModel.transaction.observe(viewLifecycleOwner) {
             selectedTransaction = it
+
             binding.editPayerPayee.setText(selectedTransaction.payerPayee)
             binding.editDescription.setText(selectedTransaction.description)
             binding.editDate.setText(
@@ -93,10 +114,28 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                     .fromFormattedDate()
             )
             binding.editMoney.setText(selectedTransaction.monetaryValue.toCurrency())
+
             if (selectedTransaction.transactionType) {
                 binding.radioIncome.isChecked = true
             } else {
                 binding.radioExpense.isChecked = true
+            }
+
+            if (selectedTransaction.isInstallment) {
+                binding.checkInstallment.isChecked = true
+                binding.checkInstallment.isEnabled = false
+                binding.layoutInstallments.visibility = View.VISIBLE
+
+                binding.editInstallmentCurrent.setText(selectedTransaction.installmentCurrent?.toString())
+                binding.editInstallmentFinal.setText(selectedTransaction.installmentTotal?.toString())
+
+                binding.editInstallmentCurrent.isEnabled = true
+
+                if (isEditAllMode) {
+                    binding.editInstallmentFinal.isEnabled = true
+                } else {
+                    binding.editInstallmentFinal.isEnabled = false
+                }
             }
         }
     }
@@ -112,9 +151,8 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
             hideKeyboard(view)
             if (hasFocus) {
                 DatePickerFragment(binding.editDate) { binding.editDate.setText(it) }.show(
-                        requireActivity().supportFragmentManager,
-                        "datePicker"
-                    )
+                    requireActivity().supportFragmentManager, "datePicker"
+                )
                 binding.editDate.clearFocus()
             }
         }
@@ -133,5 +171,4 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
 
         binding.buttonUpdate.setOnClickListener(this)
     }
-
 }
