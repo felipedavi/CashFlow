@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import meimaonamassa.cashflow.data.entity.TransactionEntity
 import meimaonamassa.cashflow.databinding.ItemTransactionBinding
 import meimaonamassa.cashflow.databinding.ListItemHeaderBinding
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
@@ -11,10 +12,9 @@ import meimaonamassa.cashflow.feature.transaction.list.presentation.ui.ListItem
 import meimaonamassa.cashflow.feature.transaction.list.presentation.ui.viewholder.TransactionViewHolder
 
 class GroupedTransactionAdapter internal constructor(
-    private val listener: (Int) -> Unit,
+    private val listener: (TransactionEntity) -> Unit,
     private val viewModel: TransactionViewModel
-) :
-    ListAdapter<ListItem, RecyclerView.ViewHolder>(ListItemComparator()) {
+) : ListAdapter<ListItem, RecyclerView.ViewHolder>(ListItemComparator()) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
