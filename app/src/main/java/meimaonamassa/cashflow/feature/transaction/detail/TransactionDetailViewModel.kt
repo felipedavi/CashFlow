@@ -33,19 +33,17 @@ class TransactionDetailViewModel(private val repository: TransactionRepository) 
 
             val originalTotal = existingInstallments.size
             val editedCurrent = transaction.installmentCurrent ?: 1
-            val editedDate = transaction.date // A nova data que foi salva na tela
-            val newValuePerInstallment = transaction.monetaryValue
+            val editedDate = transaction.date
+            val newValuePerInstallment = kotlin.math.round(transaction.monetaryValue * 100) / 100.0
 
             for (existing in existingInstallments) {
                 if (existing.installmentCurrent!! <= newTotal) {
-                    val updatedDesc = transaction.description.substringBefore(" - Par.") + " - Par. ${existing.installmentCurrent}/$newTotal"
-
                     val monthOffset = (existing.installmentCurrent!! - editedCurrent).toLong()
                     val updatedDate = editedDate?.plusMonths(monthOffset)
 
                     val updated = existing.copy(
                         payerPayee = transaction.payerPayee,
-                        description = updatedDesc,
+                        description = transaction.description,
                         date = updatedDate,
                         monetaryValue = newValuePerInstallment,
                         transactionType = transaction.transactionType,
@@ -61,12 +59,11 @@ class TransactionDetailViewModel(private val repository: TransactionRepository) 
                 for (i in (originalTotal + 1)..newTotal) {
                     val currentMonthOffset = (i - editedCurrent).toLong()
                     val newDate = editedDate?.plusMonths(currentMonthOffset)
-                    val newDesc = transaction.description.substringBefore(" - Par.") + " - Par. $i/$newTotal"
 
                     val newInstallment = TransactionEntity(
                         id = 0,
                         payerPayee = transaction.payerPayee,
-                        description = newDesc,
+                        description = transaction.description,
                         date = newDate,
                         monetaryValue = newValuePerInstallment,
                         transactionType = transaction.transactionType,
