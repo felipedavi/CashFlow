@@ -13,7 +13,8 @@ import meimaonamassa.cashflow.util.extension.fromFormattedDate
 import meimaonamassa.cashflow.util.extension.toCurrency
 
 class TransactionViewHolder(
-    private val itemBinding: ItemTransactionBinding, private val listener: (Int) -> Unit,
+    private val itemBinding: ItemTransactionBinding,
+    private val listener: (TransactionEntity) -> Unit,
     private val viewModel: TransactionViewModel
 ) :
     RecyclerView.ViewHolder(itemBinding.root), View.OnClickListener {
@@ -35,24 +36,38 @@ class TransactionViewHolder(
         }
 
         itemView.setOnClickListener {
-            listener.invoke(transaction.id)
+            listener.invoke(transaction)
         }
 
         itemView.setOnLongClickListener {
-            AlertDialog.Builder(itemView.context)
-                .setTitle(R.string.transaction_removal)
-                .setMessage(R.string.want_remove)
-                .setPositiveButton(R.string.remove) { _, _ ->
-                    viewModel.delete(transaction)
-                }
-                .setNeutralButton(R.string.cancel, null)
-                .show()
+            if (transaction.isInstallment && transaction.installmentGroupId != null) {
+                AlertDialog.Builder(itemView.context)
+                    .setTitle(R.string.transaction_removal)
+                    .setMessage("Deseja remover apenas esta parcela ou todas do grupo?")
+                    .setPositiveButton("Todas do Grupo") { _, _ ->
+                        viewModel.deleteGroup(transaction.installmentGroupId!!)
+                    }
+                    .setNegativeButton("Apenas Esta") { _, _ ->
+                        viewModel.delete(transaction)
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
+            } else {
+                AlertDialog.Builder(itemView.context)
+                    .setTitle(R.string.transaction_removal)
+                    .setMessage(R.string.want_remove)
+                    .setPositiveButton(R.string.remove) { _, _ ->
+                        viewModel.delete(transaction)
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
+            }
             true
         }
 
     }
 
     override fun onClick(v: View?) {
-        listener.invoke(transaction.id)
+        listener.invoke(transaction)
     }
 }
