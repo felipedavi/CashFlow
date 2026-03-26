@@ -132,6 +132,52 @@
             android:text="@string/radio_expense" />
     </RadioGroup>
 
+    <CheckBox
+        android:id="@+id/check_installment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Parcelado"
+        android:enabled="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type" />
+
+    <LinearLayout
+        android:id="@+id/layout_installments"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@id/check_installment"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/check_installment"
+        app:layout_constraintBottom_toBottomOf="@id/check_installment">
+
+        <EditText
+            android:id="@+id/edit_installment_current"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Atual"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" / "
+            android:paddingHorizontal="4dp"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_installment_final"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Final"
+            android:inputType="number" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/button_update"
         android:layout_width="wrap_content"
@@ -140,6 +186,6 @@
         android:layout_marginTop="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_radio_transaction_type" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_installments" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
