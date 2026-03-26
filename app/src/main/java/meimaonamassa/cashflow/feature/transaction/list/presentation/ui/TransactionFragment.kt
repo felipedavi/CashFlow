@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,17 +17,16 @@ import kotlinx.coroutines.launch
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.R
 import meimaonamassa.cashflow.base.DateConverters
+import meimaonamassa.cashflow.data.entity.TransactionEntity
 import meimaonamassa.cashflow.databinding.FragmentTransactionBinding
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
 import meimaonamassa.cashflow.feature.transaction.list.presentation.ui.adapter.GroupedTransactionAdapter
 import meimaonamassa.cashflow.util.extension.fromFormattedDate
 import meimaonamassa.cashflow.util.extension.toCurrency
+import org.threeten.bp.YearMonth
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale
-import android.widget.Toast
-import androidx.fragment.app.setFragmentResultListener
-import org.threeten.bp.YearMonth
 
 class TransactionFragment : Fragment() {
     private lateinit var viewModel: TransactionViewModel
@@ -151,8 +152,23 @@ class TransactionFragment : Fragment() {
         }
     }
 
-    private fun transactionListClickListener(id: Int) {
-        val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(id)
-        findNavController().navigate(action)
+    private fun transactionListClickListener(transaction: TransactionEntity) {
+        if (transaction.isInstallment && transaction.installmentGroupId != null) {
+            android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Transação Parcelada")
+                .setMessage("Deseja visualizar/editar apenas esta parcela ou todas do grupo?")
+                .setPositiveButton("Todas do Grupo") { _, _ ->
+                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(transaction.id, true)
+                    findNavController().navigate(action)
+                }
+                .setNegativeButton("Apenas Esta") { _, _ ->
+                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(transaction.id, false)
+                    findNavController().navigate(action)
+                }
+                .show()
+        } else {
+            val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(transaction.id, false)
+            findNavController().navigate(action)
+        }
     }
 }
