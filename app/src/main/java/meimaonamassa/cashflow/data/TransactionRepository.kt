@@ -18,8 +18,15 @@ class TransactionRepository(private val dao: TransactionDAO) {
     }
 
     fun getTransactionsByMonth(monthPrefix: String) = dao.getTransactionsByMonth(monthPrefix)
+
     fun getTotalIncomeByMonth(monthPrefix: String) = dao.getTotalIncomeByMonth(monthPrefix)
+
     fun getTotalExpenseByMonth(monthPrefix: String) = dao.getTotalExpenseByMonth(monthPrefix)
+
+    @WorkerThread
+    suspend fun getTransactionsByGroupId(groupId: String): List<TransactionEntity> {
+        return dao.getTransactionsByGroupId(groupId)
+    }
 
     fun exportTransactionsToCSV(transactions: List<TransactionEntity>): String {
         return CSVHelper.exportTransactions(transactions)
@@ -44,5 +51,10 @@ class TransactionRepository(private val dao: TransactionDAO) {
     @WorkerThread
     suspend fun delete(transaction: TransactionEntity) {
         dao.deleteTransaction(transaction)
+    }
+
+    @WorkerThread
+    suspend fun deleteTransactionGroup(groupId: String) {
+        dao.deleteTransactionGroup(groupId)
     }
 }
