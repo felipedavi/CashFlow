@@ -117,12 +117,11 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
             for (i in current..final) {
                 val currentMonthOffset = (i - current).toLong()
                 val installmentDate = date?.plusMonths(currentMonthOffset)
-                val installmentDesc = "$description - Par. $i/$final"
 
                 val transaction = TransactionEntity(
                     id = 0,
                     payerPayee = payerPayee,
-                    description = installmentDesc,
+                    description = description,
                     date = installmentDate,
                     monetaryValue = installmentValue,
                     transactionType = transactionType,
@@ -133,11 +132,10 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 viewModel.insert(transaction)
             }
         } else {
-            val installmentDesc = "$description - Par. $current/$final"
             val transaction = TransactionEntity(
                 id = 0,
                 payerPayee = payerPayee,
-                description = installmentDesc,
+                description = description,
                 date = date,
                 monetaryValue = totalValue,
                 transactionType = transactionType,
