@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:autofillHints="name"
         android:inputType="textPersonName"
+        android:labelFor="@id/edit_payer_payee"
         android:minHeight="48dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -136,8 +137,8 @@
         android:id="@+id/check_installment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parcelado"
         android:enabled="false"
+        android:text="@string/check_installment"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type" />
 
@@ -148,24 +149,26 @@
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/check_installment"
         app:layout_constraintLeft_toRightOf="@id/check_installment"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/check_installment"
-        app:layout_constraintBottom_toBottomOf="@id/check_installment">
+        app:layout_constraintTop_toTopOf="@id/check_installment">
 
         <EditText
             android:id="@+id/edit_installment_current"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Atual"
+            android:autofillHints="phone"
+            android:hint="@string/edit_installment_current"
             android:inputType="number" />
 
         <TextView
+            android:id="@+id/text_installment_slash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" / "
             android:paddingHorizontal="4dp"
+            android:text="@string/text_installment_slash"
             android:textSize="18sp" />
 
         <EditText
@@ -173,7 +176,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Final"
+            android:autofillHints="phone"
+            android:hint="@string/edit_installment_final"
             android:inputType="number" />
 
     </LinearLayout>
@@ -182,8 +186,8 @@
         android:id="@+id/button_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_update"
         android:layout_marginTop="32dp"
+        android:text="@string/button_update"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_installments" />
