@@ -171,7 +171,6 @@ class TransactionFragment : Fragment() {
             _binding?.balanceContainer?.textBalance?.text = balance.toCurrency()
         }
 
-        // Dentro do onViewCreated, remova as variáveis locais e adicione isto:
         viewModel.hasPreviousMonth.observe(viewLifecycleOwner) { hasPrevious ->
             binding.monthSelectorContainer.btnPreviousMonth.isEnabled = hasPrevious
             binding.monthSelectorContainer.btnPreviousMonth.alpha = if (hasPrevious) 1.0f else 0.3f
