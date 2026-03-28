@@ -169,25 +169,9 @@ class TransactionFragment : Fragment() {
     }
 
     private fun transactionListClickListener(transaction: TransactionEntity) {
-        if (transaction.isInstallment && transaction.installmentGroupId != null) {
-            android.app.AlertDialog.Builder(requireContext()).setTitle(getString(R.string.dialog_installment_transaction_title))
-                .setMessage(getString(R.string.dialog_installment_transaction_message))
-                .setPositiveButton(getString(R.string.dialog_installment_transaction_positive_button)) { _, _ ->
-                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(
-                        transaction.id, true
-                    )
-                    findNavController().navigate(action)
-                }.setNegativeButton(getString(R.string.dialog_installment_transaction_negative_button)) { _, _ ->
-                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(
-                        transaction.id, false
-                    )
-                    findNavController().navigate(action)
-                }.show()
-        } else {
-            val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(
-                transaction.id, false
-            )
-            findNavController().navigate(action)
-        }
+        val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(
+            transaction.id
+        )
+        findNavController().navigate(action)
     }
 }
