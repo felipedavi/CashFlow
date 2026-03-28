@@ -36,10 +36,6 @@
             android:name="transactionID"
             android:defaultValue="0"
             app:argType="integer" />
-        <argument
-            android:name="isGroupEdit"
-            android:defaultValue="false"
-            app:argType="boolean" />
     </fragment>
 
     <fragment
