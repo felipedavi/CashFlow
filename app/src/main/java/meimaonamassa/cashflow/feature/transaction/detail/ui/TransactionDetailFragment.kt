@@ -28,8 +28,6 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
     private lateinit var viewModel: TransactionDetailViewModel
     private lateinit var selectedTransaction: TransactionEntity
 
-    private var isEditAllMode = false
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -42,7 +40,6 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
         )[TransactionDetailViewModel::class.java]
 
         val id = args.transactionID
-        isEditAllMode = args.isGroupEdit
 
         viewModel.start(id)
 
@@ -84,15 +81,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                     installmentTotal = newTotal
                 )
 
-                if (selectedTransaction.isInstallment && selectedTransaction.installmentGroupId != null) {
-                    if (isEditAllMode) {
-                        viewModel.updateGroup(updatedTransaction, newTotal)
-                    } else {
-                        viewModel.update(updatedTransaction)
-                    }
-                } else {
-                    viewModel.update(updatedTransaction)
-                }
+                viewModel.update(updatedTransaction)
                 findNavController().navigateUp()
             }
         }
@@ -130,8 +119,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 binding.editInstallmentFinal.setText(selectedTransaction.installmentTotal?.toString())
 
                 binding.editInstallmentCurrent.isEnabled = true
-
-                binding.editInstallmentFinal.isEnabled = isEditAllMode
+                binding.editInstallmentFinal.isEnabled = false
             }
         }
     }
