@@ -11,21 +11,31 @@ import org.threeten.bp.format.DateTimeFormatter
 object CSVHelper {
     private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     private const val DELIMITER = ";"
-    private const val HEADER = "payerPayee${DELIMITER}description${DELIMITER}date${DELIMITER}monetaryValue${DELIMITER}transactionType"
+    private const val HEADER =
+        "payerPayee${DELIMITER}description${DELIMITER}date${DELIMITER}monetaryValue${DELIMITER}transactionType${DELIMITER}isInstallment${DELIMITER}installmentCurrent${DELIMITER}installmentTotal"
 
     fun exportTransactions(transactions: List<TransactionEntity>): String {
-        val csv = StringBuilder()
-        csv.append("$HEADER\n")
-
-        transactions.forEach {
-            csv.append("${escapeCSV(it.payerPayee)}$DELIMITER")
-            csv.append("${escapeCSV(it.description)}$DELIMITER")
-            val dateStr = it.date?.format(formatter) ?: ""
-            csv.append("$dateStr$DELIMITER")
-            csv.append("${it.monetaryValue}$DELIMITER")
-            csv.append("${it.transactionType}\n")
+        val rows = transactions.map { transaction ->
+            listOf(
+                escapeCSV(transaction.payerPayee),
+                escapeCSV(transaction.description),
+                transaction.date?.format(formatter) ?: "",
+                transaction.monetaryValue.toString(),
+                transaction.transactionType.toString(),
+                transaction.isInstallment.toString(),
+                transaction.installmentCurrent?.toString() ?: "",
+                transaction.installmentTotal?.toString() ?: ""
+            ).joinToString(DELIMITER)
         }
-        return csv.toString()
+
+        return buildString {
+            append(HEADER)
+            append("\n")
+            if (rows.isNotEmpty()) {
+                append(rows.joinToString("\n"))
+                append("\n")
+            }
+        }
     }
 
     fun importTransactions(inputStream: InputStream): List<TransactionEntity> {
@@ -42,10 +52,17 @@ object CSVHelper {
                     try {
                         val dateStr = tokens[2]
                         val parsedDate = if (dateStr.isNotEmpty()) {
-                            LocalDate.parse(dateStr, formatter).atStartOfDay(ZoneOffset.UTC).toOffsetDateTime()
+                            LocalDate.parse(dateStr, formatter).atStartOfDay(ZoneOffset.UTC)
+                                .toOffsetDateTime()
                         } else {
                             null
                         }
+
+                        val isInstallment = if (tokens.size > 5) tokens[5].toBoolean() else false
+                        val installmentCurrent =
+                            if (tokens.size > 6 && tokens[6].isNotEmpty()) tokens[6].toIntOrNull() else null
+                        val installmentTotal =
+                            if (tokens.size > 7 && tokens[7].isNotEmpty()) tokens[7].toIntOrNull() else null
 
                         val entity = TransactionEntity(
                             id = 0,
@@ -53,7 +70,10 @@ object CSVHelper {
                             description = tokens[1],
                             date = parsedDate,
                             monetaryValue = tokens[3].toDoubleOrNull() ?: 0.0,
-                            transactionType = tokens[4].toBoolean()
+                            transactionType = tokens[4].toBoolean(),
+                            isInstallment = isInstallment,
+                            installmentCurrent = installmentCurrent,
+                            installmentTotal = installmentTotal
                         )
                         transactions.add(entity)
                     } catch (e: Exception) {
