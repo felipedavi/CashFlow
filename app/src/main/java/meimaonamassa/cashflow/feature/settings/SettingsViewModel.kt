@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import meimaonamassa.cashflow.data.TransactionRepository
-import meimaonamassa.cashflow.data.export.CSVHelper
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -16,7 +15,7 @@ class SettingsViewModel(private val repository: TransactionRepository) : ViewMod
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val transactionsList = repository.getAllTransactionsStatic()
-                val csvData = CSVHelper.exportTransactions(transactionsList)
+                val csvData = repository.exportTransactionsToCSV(transactionsList)
 
                 outputStream.bufferedWriter().use { writer ->
                     writer.write(csvData)
@@ -34,7 +33,7 @@ class SettingsViewModel(private val repository: TransactionRepository) : ViewMod
     fun importData(inputStream: InputStream, onSuccess: () -> Unit, onError: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val transactions = CSVHelper.importTransactions(inputStream)
+                val transactions = repository.importTransactionsFromCSV(inputStream)
 
                 if (transactions.isNotEmpty()) {
                     transactions.forEach { repository.insert(it) }
