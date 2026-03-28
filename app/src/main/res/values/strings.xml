@@ -5,6 +5,7 @@
     <string name="fab_content_desc">add new transaction</string>
     <string name="hint_real_money">R$ 0,00</string>
     <!-- TransactionFragment -->
+    <string name="transaction_installment_format">%1$s - Par. %2$d/%3$d</string>
     <string name="remove">Remover</string>
     <string name="cancel">Cancelar</string>
     <string name="want_remove">Deseja remover a transação da lista?</string>
