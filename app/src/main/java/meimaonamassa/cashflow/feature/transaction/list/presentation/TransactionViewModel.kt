@@ -58,6 +58,24 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
         currentMonth.value = currentMonth.value.minusMonths(1)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val hasPreviousMonth: LiveData<Boolean> = currentMonth.flatMapLatest { month ->
+        val firstDayOfMonth = month.atDay(1).toString()
+        val now = YearMonth.now()
+        repository.hasTransactionsBefore(firstDayOfMonth).map { hasBefore ->
+            hasBefore || month >= now
+        }
+    }.asLiveData()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val hasNextMonth: LiveData<Boolean> = currentMonth.flatMapLatest { month ->
+        val firstDayOfNextMonth = month.plusMonths(1).atDay(1).toString()
+        val now = YearMonth.now()
+        repository.hasTransactionsAfter(firstDayOfNextMonth).map { hasAfter ->
+            hasAfter || month < now
+        }
+    }.asLiveData()
+
     fun delete(transaction: TransactionEntity) {
         viewModelScope.launch {
             repository.delete(transaction)
