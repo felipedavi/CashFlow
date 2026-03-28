@@ -24,7 +24,16 @@ class TransactionViewHolder(
     fun bind(data: TransactionEntity) {
         transaction = data
 
-        itemBinding.textItemTransaction.text = transaction.description
+        if (transaction.isInstallment) {
+            itemBinding.textItemTransaction.text = itemView.context.getString(
+                R.string.transaction_installment_format,
+                transaction.description,
+                transaction.installmentCurrent ?: 0,
+                transaction.installmentTotal ?: 0
+            )
+        } else {
+            itemBinding.textItemTransaction.text = transaction.description
+        }
         itemBinding.textItemTransactionDate.text =
             DateConverters.fromOffsetDateTime(transaction.date).toString().fromFormattedDate()
         itemBinding.textItemTransactionMonetaryValue.text = transaction.monetaryValue.toCurrency()
