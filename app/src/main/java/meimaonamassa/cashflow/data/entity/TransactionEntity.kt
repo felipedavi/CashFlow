@@ -16,5 +16,4 @@ data class TransactionEntity(
     @ColumnInfo(name = "is_installment") var isInstallment: Boolean = false,
     @ColumnInfo(name = "installment_current") var installmentCurrent: Int? = null,
     @ColumnInfo(name = "installment_total") var installmentTotal: Int? = null,
-    @ColumnInfo(name = "installment_group_id") var installmentGroupId: String? = null
 )
