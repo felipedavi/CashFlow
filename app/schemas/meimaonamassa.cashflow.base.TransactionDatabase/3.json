@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "99843e19126ead3668887bd4be7c42e6",
+    "identityHash": "1cc953beb7ee2f81b97f4f2a91ac719b",
     "entities": [
       {
         "tableName": "transaction_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transaction_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `payerPayee` TEXT NOT NULL, `description` TEXT NOT NULL, `date` TEXT, `monetary_value` REAL NOT NULL, `transaction_type` INTEGER NOT NULL, `is_installment` INTEGER NOT NULL, `installment_current` INTEGER, `installment_total` INTEGER, `installment_group_id` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transaction_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `payerPayee` TEXT NOT NULL, `description` TEXT NOT NULL, `date` TEXT, `monetary_value` REAL NOT NULL, `transaction_type` INTEGER NOT NULL, `is_installment` INTEGER NOT NULL, `installment_current` INTEGER, `installment_total` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -58,11 +58,6 @@
             "fieldPath": "installmentTotal",
             "columnName": "installment_total",
             "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "installmentGroupId",
-            "columnName": "installment_group_id",
-            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -75,7 +70,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '99843e19126ead3668887bd4be7c42e6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1cc953beb7ee2f81b97f4f2a91ac719b')"
     ]
   }
 }
