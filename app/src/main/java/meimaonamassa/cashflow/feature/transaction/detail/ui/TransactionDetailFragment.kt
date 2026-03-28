@@ -131,11 +131,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
 
                 binding.editInstallmentCurrent.isEnabled = true
 
-                if (isEditAllMode) {
-                    binding.editInstallmentFinal.isEnabled = true
-                } else {
-                    binding.editInstallmentFinal.isEnabled = false
-                }
+                binding.editInstallmentFinal.isEnabled = isEditAllMode
             }
         }
     }
