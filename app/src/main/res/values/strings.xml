@@ -9,6 +9,10 @@
     <string name="cancel">Cancelar</string>
     <string name="want_remove">Deseja remover a transação da lista?</string>
     <string name="transaction_removal">Remoção de transação</string>
+    <string name="dialog_installment_transaction_title">Transação Parcelada</string>
+    <string name="dialog_installment_transaction_message">Deseja visualizar/editar apenas esta parcela ou todas do grupo?</string>
+    <string name="dialog_installment_transaction_positive_button">Todas do Grupo</string>
+    <string name="dialog_installment_transaction_negative_button">Apenas Esta</string>
     <!-- BalanceTransactions -->
     <string name="text_label_balance">Saldo</string>
     <string name="text_label_income">Receitas</string>

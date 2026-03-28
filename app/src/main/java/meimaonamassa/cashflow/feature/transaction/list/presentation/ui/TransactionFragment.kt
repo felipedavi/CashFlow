@@ -2,18 +2,13 @@ package meimaonamassa.cashflow.feature.transaction.list.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -63,15 +58,29 @@ class TransactionFragment : Fragment() {
         setFragmentResultListener("settingsAction") { _, bundle ->
             when (bundle.getString("action")) {
                 "import" -> {
-                    Toast.makeText(requireContext(), getString(R.string.alert_import_data_success), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.alert_import_data_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     viewModel.currentMonth.value = YearMonth.now()
                 }
+
                 "delete" -> {
-                    Toast.makeText(requireContext(), getString(R.string.alert_reset_data_success), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.alert_reset_data_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     viewModel.currentMonth.value = YearMonth.now()
                 }
+
                 "export" -> {
-                    Toast.makeText(requireContext(), getString(R.string.alert_export_data_success), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.alert_export_data_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -87,7 +96,8 @@ class TransactionFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.currentMonth.collect { month ->
-                val formattedMonth = month.format(monthFormatter).replaceFirstChar { it.uppercase() }
+                val formattedMonth =
+                    month.format(monthFormatter).replaceFirstChar { it.uppercase() }
                 _binding?.monthSelectorContainer?.textCurrentMonth?.text = formattedMonth
             }
         }
@@ -112,7 +122,8 @@ class TransactionFragment : Fragment() {
                     groupedByDate.keys.sortedByDescending { it }.forEach { date ->
                         date?.let { d ->
                             groupedList.add(ListItem.Header(d.fromFormattedDate()))
-                            val sortedItems = groupedByDate[d]?.sortedByDescending { it.monetaryValue }
+                            val sortedItems =
+                                groupedByDate[d]?.sortedByDescending { it.monetaryValue }
                             sortedItems?.forEach { transaction ->
                                 groupedList.add(ListItem.TransactionItem(transaction))
                             }
@@ -159,20 +170,23 @@ class TransactionFragment : Fragment() {
 
     private fun transactionListClickListener(transaction: TransactionEntity) {
         if (transaction.isInstallment && transaction.installmentGroupId != null) {
-            android.app.AlertDialog.Builder(requireContext())
-                .setTitle("Transação Parcelada")
-                .setMessage("Deseja visualizar/editar apenas esta parcela ou todas do grupo?")
-                .setPositiveButton("Todas do Grupo") { _, _ ->
-                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(transaction.id, true)
+            android.app.AlertDialog.Builder(requireContext()).setTitle(getString(R.string.dialog_installment_transaction_title))
+                .setMessage(getString(R.string.dialog_installment_transaction_message))
+                .setPositiveButton(getString(R.string.dialog_installment_transaction_positive_button)) { _, _ ->
+                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(
+                        transaction.id, true
+                    )
                     findNavController().navigate(action)
-                }
-                .setNegativeButton("Apenas Esta") { _, _ ->
-                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(transaction.id, false)
+                }.setNegativeButton(getString(R.string.dialog_installment_transaction_negative_button)) { _, _ ->
+                    val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(
+                        transaction.id, false
+                    )
                     findNavController().navigate(action)
-                }
-                .show()
+                }.show()
         } else {
-            val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(transaction.id, false)
+            val action = TransactionFragmentDirections.navigateToTransactionDetailFragment(
+                transaction.id, false
+            )
             findNavController().navigate(action)
         }
     }
