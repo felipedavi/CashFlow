@@ -23,7 +23,6 @@ import meimaonamassa.cashflow.util.extension.fromCurrency
 import meimaonamassa.cashflow.util.extension.hideKeyboard
 import meimaonamassa.cashflow.util.extension.isValid
 import meimaonamassa.cashflow.util.extension.toFormattedDate
-import java.util.UUID
 
 class TransactionAddFragment : Fragment(), View.OnClickListener {
     private lateinit var viewModel: TransactionAddViewModel
@@ -68,16 +67,15 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                     if (currentStr.isNotEmpty() && finalStr.isNotEmpty()) {
                         val current = currentStr.toInt()
                         val final = finalStr.toInt()
-                        val groupId = UUID.randomUUID().toString()
 
                         AlertDialog.Builder(requireContext())
                             .setTitle("Salvar parcelas")
                             .setMessage("Deseja salvar as demais parcelas automaticamente?")
                             .setPositiveButton("Sim") { _, _ ->
-                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, groupId, true)
+                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, true)
                             }
                             .setNegativeButton("Não") { _, _ ->
-                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, groupId, false)
+                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, false)
                             }
                             .show()
                     } else {
@@ -110,7 +108,6 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
         transactionType: Boolean,
         current: Int,
         final: Int,
-        groupId: String,
         saveAll: Boolean
     ) {
         val totalInstallmentsToSave = final - current + 1
