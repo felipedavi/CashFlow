@@ -40,31 +40,16 @@ class TransactionViewHolder(
         }
 
         itemView.setOnLongClickListener {
-            if (transaction.isInstallment && transaction.installmentGroupId != null) {
-                AlertDialog.Builder(itemView.context)
-                    .setTitle(R.string.transaction_removal)
-                    .setMessage("Deseja remover apenas esta parcela ou todas do grupo?")
-                    .setPositiveButton("Todas do Grupo") { _, _ ->
-                        viewModel.deleteGroup(transaction.installmentGroupId!!)
-                    }
-                    .setNegativeButton("Apenas Esta") { _, _ ->
-                        viewModel.delete(transaction)
-                    }
-                    .setNeutralButton(R.string.cancel, null)
-                    .show()
-            } else {
-                AlertDialog.Builder(itemView.context)
-                    .setTitle(R.string.transaction_removal)
-                    .setMessage(R.string.want_remove)
-                    .setPositiveButton(R.string.remove) { _, _ ->
-                        viewModel.delete(transaction)
-                    }
-                    .setNeutralButton(R.string.cancel, null)
-                    .show()
-            }
+            AlertDialog.Builder(itemView.context)
+                .setTitle(R.string.transaction_removal)
+                .setMessage(R.string.want_remove)
+                .setPositiveButton(R.string.remove) { _, _ ->
+                    viewModel.delete(transaction)
+                }
+                .setNeutralButton(R.string.cancel, null)
+                .show()
             true
         }
-
     }
 
     override fun onClick(v: View?) {

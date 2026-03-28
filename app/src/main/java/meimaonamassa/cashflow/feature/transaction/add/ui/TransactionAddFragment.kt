@@ -93,8 +93,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                         transactionType = transactionType,
                         isInstallment = false,
                         installmentCurrent = null,
-                        installmentTotal = null,
-                        installmentGroupId = null
+                        installmentTotal = null
                     )
                     viewModel.insert(transaction)
                     findNavController().navigateUp()
@@ -132,8 +131,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                     transactionType = transactionType,
                     isInstallment = true,
                     installmentCurrent = i,
-                    installmentTotal = final,
-                    installmentGroupId = groupId
+                    installmentTotal = final
                 )
                 viewModel.insert(transaction)
             }
@@ -148,8 +146,7 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 transactionType = transactionType,
                 isInstallment = true,
                 installmentCurrent = current,
-                installmentTotal = final,
-                installmentGroupId = groupId
+                installmentTotal = final
             )
             viewModel.insert(transaction)
         }
