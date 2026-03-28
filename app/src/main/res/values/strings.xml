@@ -32,6 +32,10 @@
     <string name="text_transaction_type">Tipo de Transação</string>
     <string name="radio_income">Receita</string>
     <string name="radio_expense">Despesa</string>
+    <string name="check_installment">Parcelado</string>
+    <string name="edit_installment_current">Atual</string>
+    <string name="text_installment_slash">" / "</string>
+    <string name="edit_installment_final">Final</string>
     <string name="edit_error">Esse campo não pode ficar vazio</string>
     <string name="group_radio_error">Você não selecionou nenhum tipo de transação</string>
     <!-- Empty List Screen -->
