@@ -1,9 +1,12 @@
 package meimaonamassa.cashflow.feature.transaction.detail
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import meimaonamassa.cashflow.data.TransactionRepository
 import meimaonamassa.cashflow.data.entity.TransactionEntity
-import kotlinx.coroutines.launch
 
 class TransactionDetailViewModel(private val repository: TransactionRepository) : ViewModel() {
     private val _id = MutableLiveData<Int>()
@@ -20,59 +23,62 @@ class TransactionDetailViewModel(private val repository: TransactionRepository) 
 
     fun update(transaction: TransactionEntity) {
         viewModelScope.launch {
-            repository.update(transaction)
+            withContext(Dispatchers.IO + NonCancellable) {
+                repository.update(transaction)
+            }
         }
     }
 
     fun updateGroup(transaction: TransactionEntity, newTotal: Int) {
         viewModelScope.launch {
-            val groupId = transaction.installmentGroupId ?: return@launch
-            val existingInstallments = repository.getTransactionsByGroupId(groupId).sortedBy { it.installmentCurrent }
+            withContext(Dispatchers.IO + NonCancellable) {
+                val groupId = transaction.installmentGroupId ?: return@withContext
+                val existingInstallments = repository.getTransactionsByGroupId(groupId).sortedBy { it.installmentCurrent }
 
-            if (existingInstallments.isEmpty()) return@launch
+                if (existingInstallments.isEmpty()) return@withContext
 
-            val originalTotal = existingInstallments.size
-            val editedCurrent = transaction.installmentCurrent ?: 1
-            val editedDate = transaction.date
-            val newValuePerInstallment = kotlin.math.round(transaction.monetaryValue * 100) / 100.0
+                val originalTotal = existingInstallments.size
+                val editedCurrent = transaction.installmentCurrent ?: 1
+                val editedDate = transaction.date
 
-            for (existing in existingInstallments) {
-                if (existing.installmentCurrent!! <= newTotal) {
-                    val monthOffset = (existing.installmentCurrent!! - editedCurrent).toLong()
-                    val updatedDate = editedDate?.plusMonths(monthOffset)
+                for (existing in existingInstallments) {
+                    if (existing.installmentCurrent!! <= newTotal) {
+                        val monthOffset = (existing.installmentCurrent!! - editedCurrent).toLong()
+                        val updatedDate = editedDate?.plusMonths(monthOffset)
 
-                    val updated = existing.copy(
-                        payerPayee = transaction.payerPayee,
-                        description = transaction.description,
-                        date = updatedDate,
-                        monetaryValue = newValuePerInstallment,
-                        transactionType = transaction.transactionType,
-                        installmentTotal = newTotal
-                    )
-                    repository.update(updated)
-                } else {
-                    repository.delete(existing)
+                        val updated = existing.copy(
+                            payerPayee = transaction.payerPayee,
+                            description = transaction.description,
+                            date = updatedDate,
+                            monetaryValue = transaction.monetaryValue,
+                            transactionType = transaction.transactionType,
+                            installmentTotal = newTotal
+                        )
+                        repository.update(updated)
+                    } else {
+                        repository.delete(existing)
+                    }
                 }
-            }
 
-            if (newTotal > originalTotal) {
-                for (i in (originalTotal + 1)..newTotal) {
-                    val currentMonthOffset = (i - editedCurrent).toLong()
-                    val newDate = editedDate?.plusMonths(currentMonthOffset)
+                if (newTotal > originalTotal) {
+                    for (i in (originalTotal + 1)..newTotal) {
+                        val currentMonthOffset = (i - editedCurrent).toLong()
+                        val newDate = editedDate?.plusMonths(currentMonthOffset)
 
-                    val newInstallment = TransactionEntity(
-                        id = 0,
-                        payerPayee = transaction.payerPayee,
-                        description = transaction.description,
-                        date = newDate,
-                        monetaryValue = newValuePerInstallment,
-                        transactionType = transaction.transactionType,
-                        isInstallment = true,
-                        installmentCurrent = i,
-                        installmentTotal = newTotal,
-                        installmentGroupId = groupId
-                    )
-                    repository.insert(newInstallment)
+                        val newInstallment = TransactionEntity(
+                            id = 0,
+                            payerPayee = transaction.payerPayee,
+                            description = transaction.description,
+                            date = newDate,
+                            monetaryValue = transaction.monetaryValue,
+                            transactionType = transaction.transactionType,
+                            isInstallment = true,
+                            installmentCurrent = i,
+                            installmentTotal = newTotal,
+                            installmentGroupId = groupId
+                        )
+                        repository.insert(newInstallment)
+                    }
                 }
             }
         }
