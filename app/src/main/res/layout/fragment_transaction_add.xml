@@ -139,7 +139,7 @@
         android:id="@+id/check_installment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parcelado"
+        android:text="@string/check_installment"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type" />
 
@@ -160,14 +160,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Atual"
-            android:inputType="number" />
+            android:autofillHints="phone"
+            android:hint="@string/edit_installment_current"
+            android:inputType="number"
+            android:minHeight="48dp" />
 
         <TextView
+            android:id="@+id/text_installment_slash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="4dp"
-            android:text=" / "
+            android:text="@string/text_installment_slash"
             android:textSize="18sp" />
 
         <EditText
@@ -175,8 +178,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Final"
-            android:inputType="number" />
+            android:autofillHints="phone"
+            android:hint="@string/edit_installment_final"
+            android:inputType="number"
+            android:minHeight="48dp" />
 
     </LinearLayout>
 
