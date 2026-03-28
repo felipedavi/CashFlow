@@ -23,6 +23,9 @@ class TransactionRepository(private val dao: TransactionDAO) {
 
     fun getTotalExpenseByMonth(monthPrefix: String) = dao.getTotalExpenseByMonth(monthPrefix)
 
+    fun hasTransactionsBefore(date: String) = dao.hasTransactionsBefore(date)
+    fun hasTransactionsAfter(date: String) = dao.hasTransactionsAfter(date)
+
     fun exportTransactionsToCSV(transactions: List<TransactionEntity>): String {
         return CSVHelper.exportTransactions(transactions)
     }
