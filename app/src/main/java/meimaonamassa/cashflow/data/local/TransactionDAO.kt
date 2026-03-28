@@ -25,6 +25,12 @@ interface TransactionDAO {
     @Query("SELECT SUM(monetary_value) FROM transaction_table WHERE transaction_type = 0 AND date LIKE :monthPrefix || '%'")
     fun getTotalExpenseByMonth(monthPrefix: String): Flow<Double?>
 
+    @Query("SELECT EXISTS(SELECT 1 FROM transaction_table WHERE date < :date)")
+    fun hasTransactionsBefore(date: String): Flow<Boolean>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM transaction_table WHERE date >= :date)")
+    fun hasTransactionsAfter(date: String): Flow<Boolean>
+
     @Update
     suspend fun updateTransaction(transaction: TransactionEntity)
 
