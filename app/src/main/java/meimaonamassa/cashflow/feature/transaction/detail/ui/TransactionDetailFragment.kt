@@ -118,7 +118,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 binding.editInstallmentCurrent.setText(selectedTransaction.installmentCurrent?.toString())
                 binding.editInstallmentFinal.setText(selectedTransaction.installmentTotal?.toString())
 
-                binding.editInstallmentCurrent.isEnabled = true
+                binding.editInstallmentCurrent.isEnabled = false
                 binding.editInstallmentFinal.isEnabled = false
             }
         }
