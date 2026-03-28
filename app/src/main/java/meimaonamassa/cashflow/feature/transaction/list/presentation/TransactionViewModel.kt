@@ -61,18 +61,16 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
     @OptIn(ExperimentalCoroutinesApi::class)
     val hasPreviousMonth: LiveData<Boolean> = currentMonth.flatMapLatest { month ->
         val firstDayOfMonth = month.atDay(1).toString()
-        val now = YearMonth.now()
         repository.hasTransactionsBefore(firstDayOfMonth).map { hasBefore ->
-            hasBefore || month >= now
+            hasBefore
         }
     }.asLiveData()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val hasNextMonth: LiveData<Boolean> = currentMonth.flatMapLatest { month ->
         val firstDayOfNextMonth = month.plusMonths(1).atDay(1).toString()
-        val now = YearMonth.now()
         repository.hasTransactionsAfter(firstDayOfNextMonth).map { hasAfter ->
-            hasAfter || month < now
+            hasAfter
         }
     }.asLiveData()
 
