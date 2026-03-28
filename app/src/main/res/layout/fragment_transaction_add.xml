@@ -25,6 +25,8 @@
         android:layout_height="wrap_content"
         android:autofillHints="name"
         android:inputType="textPersonName"
+        android:labelFor="@id/edit_payer_payee"
+        android:minHeight="48dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_payer_payee" />
