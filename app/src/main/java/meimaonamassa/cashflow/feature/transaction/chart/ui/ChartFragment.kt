@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.animation.Easing
@@ -13,7 +14,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import meimaonamassa.cashflow.databinding.FragmentChartBinding
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
-import androidx.core.graphics.toColorInt
 import com.github.mikephil.charting.components.Legend
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
@@ -24,9 +24,7 @@ class ChartFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TransactionViewModel by activityViewModels {
-        TransactionViewModelFactory(
-            (requireActivity().application as MainApplication).repository
-        )
+        TransactionViewModelFactory((requireActivity().application as MainApplication).repository)
     }
 
     override fun onCreateView(
