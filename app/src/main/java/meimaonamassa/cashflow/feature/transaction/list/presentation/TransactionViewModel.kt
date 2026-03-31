@@ -39,14 +39,21 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
         .map { it ?: 0.0 }
         .asLiveData()
 
-    val balance: LiveData<Double> = MediatorLiveData<Double>().apply {
-        value = (totalIncome.value ?: 0.0) - (totalExpense.value ?: 0.0)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val previousBalance: LiveData<Double> = monthPrefixFlow
+        .flatMapLatest { prefix -> repository.getPreviousBalance(prefix) }
+        .map { it ?: 0.0 }
+        .asLiveData()
 
+    val balance: LiveData<Double> = MediatorLiveData<Double>().apply {
+        addSource(previousBalance) { prev ->
+            value = (prev ?: 0.0) + (totalIncome.value ?: 0.0) - (totalExpense.value ?: 0.0)
+        }
         addSource(totalIncome) { income ->
-            value = income - (totalExpense.value ?: 0.0)
+            value = (previousBalance.value ?: 0.0) + (income ?: 0.0) - (totalExpense.value ?: 0.0)
         }
         addSource(totalExpense) { expense ->
-            value = (totalIncome.value ?: 0.0) - expense
+            value = (previousBalance.value ?: 0.0) + (totalIncome.value ?: 0.0) - (expense ?: 0.0)
         }
     }
 
