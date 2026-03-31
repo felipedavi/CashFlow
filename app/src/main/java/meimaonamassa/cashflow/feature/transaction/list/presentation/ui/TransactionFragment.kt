@@ -71,6 +71,10 @@ class TransactionFragment : Fragment() {
                         findNavController().navigate(R.id.navigateToTransactionSettingsFragment)
                         true
                     }
+                    R.id.action_summary -> {
+                        findNavController().navigate(R.id.navigateToSummaryFragment)
+                        true
+                    }
                     else -> false
                 }
             }
