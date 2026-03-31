@@ -28,8 +28,8 @@
     <string name="transaction_detail_fragment">Editar Transação</string>
     <string name="button_update">Atualizar</string>
     <!-- ChartFragment -->
-    <string name="chart_menu_fragment">Resumo</string>
     <string name="transaction_chart_fragment">Gráficos</string>
+    <string name="text_chart_title">Distribuição Mensal</string>
     <!-- TransactionAddFragment and TransactionDetailFragment -->
     <string name="text_payer">Pagador</string>
     <string name="text_payee">Recebedor</string>
