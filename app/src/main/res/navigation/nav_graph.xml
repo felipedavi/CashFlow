@@ -43,4 +43,9 @@
         android:name="meimaonamassa.cashflow.feature.settings.ui.SettingsFragment"
         android:label="@string/transaction_settings_fragment"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="meimaonamassa.cashflow.feature.transaction.chart.ChartFragment"
+        android:label="@string/transaction_chart_fragment"
+        tools:layout="@layout/fragment_chart" />
 </navigation>
