@@ -7,7 +7,7 @@
     <item
         android:id="@+id/action_summary"
         android:icon="@drawable/ic_pie_chart"
-        android:title="Resumo"
+        android:title="@string/chart_fragment"
         app:showAsAction="ifRoom" />
 
     <item
