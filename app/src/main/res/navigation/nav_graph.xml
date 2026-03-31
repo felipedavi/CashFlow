@@ -21,6 +21,9 @@
         <action
             android:id="@+id/navigateToTransactionSettingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/navigateToSummaryFragment"
+            app:destination="@id/chartFragment" />
     </fragment>
     <fragment
         android:id="@+id/transactionAddFragment"
