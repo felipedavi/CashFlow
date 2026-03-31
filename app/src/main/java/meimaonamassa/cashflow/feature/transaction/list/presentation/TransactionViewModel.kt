@@ -1,12 +1,12 @@
 package meimaonamassa.cashflow.feature.transaction.list.presentation
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -40,22 +40,24 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
         .asLiveData()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val previousBalance: LiveData<Double> = monthPrefixFlow
-        .flatMapLatest { prefix -> repository.getPreviousBalance(prefix) }
-        .map { it ?: 0.0 }
-        .asLiveData()
+    val monthlyTotals: LiveData<Pair<Double, Double>> = monthPrefixFlow.flatMapLatest { prefix ->
+        combine(
+            repository.getTotalIncomeByMonth(prefix),
+            repository.getTotalExpenseByMonth(prefix)
+        ) { income, expense ->
+            Pair(income ?: 0.0, expense ?: 0.0)
+        }
+    }.asLiveData()
 
-    val balance: LiveData<Double> = MediatorLiveData<Double>().apply {
-        addSource(previousBalance) { prev ->
-            value = (prev ?: 0.0) + (totalIncome.value ?: 0.0) - (totalExpense.value ?: 0.0)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val balance: LiveData<Double> = monthPrefixFlow.flatMapLatest { prefix ->
+        combine(
+            repository.getTotalIncomeByMonth(prefix),
+            repository.getTotalExpenseByMonth(prefix)
+        ) { income, expense ->
+            (income ?: 0.0) - (expense ?: 0.0)
         }
-        addSource(totalIncome) { income ->
-            value = (previousBalance.value ?: 0.0) + (income ?: 0.0) - (totalExpense.value ?: 0.0)
-        }
-        addSource(totalExpense) { expense ->
-            value = (previousBalance.value ?: 0.0) + (totalIncome.value ?: 0.0) - (expense ?: 0.0)
-        }
-    }
+    }.asLiveData()
 
     fun nextMonth() {
         currentMonth.value = currentMonth.value.plusMonths(1)
@@ -70,11 +72,7 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
         val firstDayOfMonth = month.atDay(1).toString()
         val now = YearMonth.now()
         repository.hasTransactionsBefore(firstDayOfMonth).map { hasBefore ->
-            if (month > now) {
-                true
-            } else {
-                hasBefore
-            }
+            if (month > now) true else hasBefore
         }
     }.asLiveData()
 
@@ -83,11 +81,7 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
         val firstDayOfNextMonth = month.plusMonths(1).atDay(1).toString()
         val now = YearMonth.now()
         repository.hasTransactionsAfter(firstDayOfNextMonth).map { hasAfter ->
-            if (month < now) {
-                true
-            } else {
-                hasAfter
-            }
+            if (month < now) true else hasAfter
         }
     }.asLiveData()
 
