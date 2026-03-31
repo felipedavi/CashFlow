@@ -38,8 +38,16 @@ class ChartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.pieChart.clear()
         setupChartConfiguration()
         observeFinancialData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.monthlyTotals.value?.let { totals ->
+            updateChartData(totals.first, totals.second)
+        }
     }
 
     private fun setupChartConfiguration() {
@@ -57,10 +65,12 @@ class ChartFragment : Fragment() {
     }
 
     private fun observeFinancialData() {
+        val currentTotals = viewModel.monthlyTotals.value
+        if (currentTotals != null) {
+            updateChartData(currentTotals.first, currentTotals.second)
+        }
         viewModel.monthlyTotals.observe(viewLifecycleOwner) { totals ->
-            val income = totals.first
-            val expense = totals.second
-            updateChartData(income, expense)
+            updateChartData(totals.first, totals.second)
         }
     }
 
