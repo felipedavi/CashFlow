@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <item
+        android:id="@+id/action_summary"
+        android:icon="@drawable/ic_pie_chart"
+        android:title="Resumo"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
