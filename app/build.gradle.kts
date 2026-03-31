@@ -73,6 +73,9 @@ android {
 
         // Backport Android ThreeTen
         implementation(libs.threetenabp)
+
+        // MPAndroidchart
+        implementation(libs.mpandroidchart)
     }
 
 java {
