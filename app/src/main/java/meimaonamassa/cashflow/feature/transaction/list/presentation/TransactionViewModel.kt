@@ -45,7 +45,7 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
             repository.getTotalIncomeByMonth(prefix),
             repository.getTotalExpenseByMonth(prefix)
         ) { income, expense ->
-            Pair(income ?: 0.0, expense ?: 0.0)
+            Pair(income ?: 0.0, expense ?: 0.0) // Pair(Receita, Despesa)
         }
     }.asLiveData()
 
