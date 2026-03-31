@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -18,11 +19,13 @@ import com.github.mikephil.charting.components.Legend
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
 import meimaonamassa.cashflow.util.extension.toCurrency
+import org.threeten.bp.YearMonth
 
 class ChartFragment : Fragment() {
     private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
 
+    private val args: ChartFragmentArgs by navArgs()
     private val viewModel: TransactionViewModel by activityViewModels {
         TransactionViewModelFactory((requireActivity().application as MainApplication).repository)
     }
@@ -39,15 +42,17 @@ class ChartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.pieChart.clear()
+        try {
+            val selectedMonth = YearMonth.parse(args.selectedMonth)
+            if (viewModel.currentMonth.value != selectedMonth) {
+                viewModel.currentMonth.value = selectedMonth
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         setupChartConfiguration()
         observeFinancialData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.monthlyTotals.value?.let { totals ->
-            updateChartData(totals.first, totals.second)
-        }
     }
 
     private fun setupChartConfiguration() {
@@ -76,9 +81,17 @@ class ChartFragment : Fragment() {
 
     private fun updateChartData(income: Double, expense: Double) {
         val entries = ArrayList<PieEntry>()
+        val dynamicColors = ArrayList<Int>()
 
-        if (income > 0) entries.add(PieEntry(income.toFloat(), "Receitas"))
-        if (expense > 0) entries.add(PieEntry(expense.toFloat(), "Despesas"))
+        if (income > 0) {
+            entries.add(PieEntry(income.toFloat(), "Receitas"))
+            dynamicColors.add("#4CAF50".toColorInt())
+        }
+
+        if (expense > 0) {
+            entries.add(PieEntry(expense.toFloat(), "Despesas"))
+            dynamicColors.add("#F44336".toColorInt())
+        }
 
         if (entries.isEmpty()) {
             binding.pieChart.clear()
@@ -88,10 +101,7 @@ class ChartFragment : Fragment() {
         }
 
         val dataSet = PieDataSet(entries, "")
-        dataSet.colors = listOf(
-            "#4CAF50".toColorInt(),
-            "#F44336".toColorInt()
-        )
+        dataSet.colors = dynamicColors
         dataSet.valueTextSize = 14f
         dataSet.valueTextColor = Color.WHITE
         dataSet.sliceSpace = 2f
