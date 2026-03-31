@@ -19,7 +19,7 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
     val currentMonth = MutableStateFlow(YearMonth.now())
 
     private val monthPrefixFlow = currentMonth.map {
-        "${it.year}-${it.monthValue.toString().padStart(2, '0')}"
+        it.toString()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -45,7 +45,7 @@ class TransactionViewModel(private val repository: TransactionRepository): ViewM
             repository.getTotalIncomeByMonth(prefix),
             repository.getTotalExpenseByMonth(prefix)
         ) { income, expense ->
-            Pair(income ?: 0.0, expense ?: 0.0) // Pair(Receita, Despesa)
+            Pair(income ?: 0.0, expense ?: 0.0)
         }
     }.asLiveData()
 
