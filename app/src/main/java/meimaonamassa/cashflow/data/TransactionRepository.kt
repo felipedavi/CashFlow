@@ -23,6 +23,8 @@ class TransactionRepository(private val dao: TransactionDAO) {
 
     fun getTotalExpenseByMonth(monthPrefix: String) = dao.getTotalExpenseByMonth(monthPrefix)
 
+    fun getPreviousBalance(monthPrefix: String) = dao.getPreviousBalance(monthPrefix)
+
     fun hasTransactionsBefore(date: String) = dao.hasTransactionsBefore(date)
     fun hasTransactionsAfter(date: String) = dao.hasTransactionsAfter(date)
 
