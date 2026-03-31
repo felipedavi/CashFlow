@@ -72,7 +72,9 @@ class TransactionFragment : Fragment() {
                         true
                     }
                     R.id.action_summary -> {
-                        findNavController().navigate(R.id.navigateToSummaryFragment)
+                        val monthStr = viewModel.currentMonth.value.toString()
+                        val action = TransactionFragmentDirections.navigateToSummaryFragment(monthStr) // monthStr com 'r'
+                        findNavController().navigate(action)
                         true
                     }
                     else -> false
