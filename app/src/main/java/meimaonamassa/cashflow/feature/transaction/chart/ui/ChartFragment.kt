@@ -1,4 +1,4 @@
-package meimaonamassa.cashflow.feature.transaction.chart
+package meimaonamassa.cashflow.feature.transaction.chart.ui
 
 import android.graphics.Color
 import android.os.Bundle
@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.PieEntry
 import meimaonamassa.cashflow.databinding.FragmentChartBinding
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
 import androidx.core.graphics.toColorInt
+import com.github.mikephil.charting.components.Legend
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
 import meimaonamassa.cashflow.util.extension.toCurrency
@@ -51,21 +52,17 @@ class ChartFragment : Fragment() {
             setEntryLabelColor(Color.WHITE)
             setEntryLabelTextSize(12f)
             legend.isEnabled = true
-            legend.verticalAlignment = com.github.mikephil.charting.components.Legend.LegendVerticalAlignment.BOTTOM
-            legend.horizontalAlignment = com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment.CENTER
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
             setNoDataText("Nenhuma movimentação neste mês")
         }
     }
 
     private fun observeFinancialData() {
-        viewModel.totalIncome.observe(viewLifecycleOwner) { income ->
-            val expense = viewModel.totalExpense.value ?: 0.0
-            updateChartData(income ?: 0.0, expense)
-        }
-
-        viewModel.totalExpense.observe(viewLifecycleOwner) { expense ->
-            val income = viewModel.totalIncome.value ?: 0.0
-            updateChartData(income, expense ?: 0.0)
+        viewModel.monthlyTotals.observe(viewLifecycleOwner) { totals ->
+            val income = totals.first
+            val expense = totals.second
+            updateChartData(income, expense)
         }
     }
 
