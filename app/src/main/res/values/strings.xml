@@ -27,6 +27,8 @@
     <!-- TransactionDetailFragment -->
     <string name="transaction_detail_fragment">Editar Transação</string>
     <string name="button_update">Atualizar</string>
+    <!-- ChartFragment -->
+    <string name="transaction_chart_fragment">Gráficos</string>
     <!-- TransactionAddFragment and TransactionDetailFragment -->
     <string name="text_payer">Pagador</string>
     <string name="text_payee">Recebedor</string>
