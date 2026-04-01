@@ -50,40 +50,48 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val id: Int? = v?.id
-        if (id == R.id.button_update) {
-            if (!binding.editPayerPayee.isValid() || !binding.editDescription.isValid() || !binding.editDate.isValid() || !binding.editMoney.isValid()) {
+        if (v?.id == R.id.button_update) {
+            // 1. Validação de campos de texto
+            val isFieldsValid = binding.editPayerPayee.isValid() &&
+                    binding.editDescription.isValid() &&
+                    binding.editDate.isValid() &&
+                    binding.editMoney.isValid()
+
+            if (!isFieldsValid) {
                 Log.i("Validation", "Field validation failed.")
-            } else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
-                Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
-            } else {
-                val payerPayee = binding.editPayerPayee.text.toString().trim()
-                val description = binding.editDescription.text.toString().trim()
-                val date = DateConverters.toOffsetDateTime(
-                    binding.editDate.text.toString().toFormattedDate()
-                )
-                val monetaryValue = binding.editMoney.text.toString().fromCurrency()
-                val transactionType = binding.radioIncome.isChecked
-
-                val newCurrentStr = binding.editInstallmentCurrent.text.toString()
-                val newCurrent = if (newCurrentStr.isNotEmpty()) newCurrentStr.toInt() else selectedTransaction.installmentCurrent ?: 1
-
-                val newTotalStr = binding.editInstallmentFinal.text.toString()
-                val newTotal = if (newTotalStr.isNotEmpty()) newTotalStr.toInt() else selectedTransaction.installmentTotal ?: 1
-
-                val updatedTransaction = selectedTransaction.copy(
-                    payerPayee = payerPayee,
-                    description = description,
-                    date = date,
-                    monetaryValue = monetaryValue,
-                    transactionType = transactionType,
-                    installmentCurrent = newCurrent,
-                    installmentTotal = newTotal
-                )
-
-                viewModel.update(updatedTransaction)
-                findNavController().navigateUp()
+                return
             }
+
+            if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
+                Toast.makeText(context, R.string.group_radio_error, Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            if (binding.groupCategory.checkedRadioButtonId == -1) {
+                Toast.makeText(context, "Selecione uma categoria (50-30-20)", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val payerPayee = binding.editPayerPayee.text.toString().trim()
+            val description = binding.editDescription.text.toString().trim()
+            val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString().toFormattedDate())
+            val monetaryValue = binding.editMoney.text.toString().fromCurrency()
+            val transactionType = binding.radioIncome.isChecked
+            val category = getSelectedCategory()
+
+
+            val updatedTransaction = selectedTransaction.copy(
+                payerPayee = payerPayee,
+                description = description,
+                date = date,
+                monetaryValue = monetaryValue,
+                transactionType = transactionType,
+                category = category
+            )
+
+            viewModel.update(updatedTransaction)
+            findNavController().navigateUp()
+
         }
     }
 
@@ -121,6 +129,12 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 binding.editInstallmentCurrent.isEnabled = false
                 binding.editInstallmentFinal.isEnabled = false
             }
+
+            when (selectedTransaction.category) {
+                "Necessidades" -> binding.radioNeeds.isChecked = true
+                "Desejos" -> binding.radioWants.isChecked = true
+                "Investimentos" -> binding.radioInvestments.isChecked = true
+            }
         }
     }
 
@@ -154,5 +168,14 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
         }
 
         binding.buttonUpdate.setOnClickListener(this)
+    }
+
+    private fun getSelectedCategory(): String? {
+        return when (binding.groupCategory.checkedRadioButtonId) {
+            R.id.radio_needs -> "Necessidades"
+            R.id.radio_wants -> "Desejos"
+            R.id.radio_investments -> "Investimentos"
+            else -> null
+        }
     }
 }
