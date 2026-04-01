@@ -12,7 +12,7 @@ object CSVHelper {
     private val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     private const val DELIMITER = ";"
     private const val HEADER =
-        "payerPayee${DELIMITER}description${DELIMITER}date${DELIMITER}monetaryValue${DELIMITER}transactionType${DELIMITER}isInstallment${DELIMITER}installmentCurrent${DELIMITER}installmentTotal"
+        "payerPayee${DELIMITER}description${DELIMITER}date${DELIMITER}monetaryValue${DELIMITER}transactionType${DELIMITER}isInstallment${DELIMITER}installmentCurrent${DELIMITER}installmentTotal${DELIMITER}category"
 
     fun exportTransactions(transactions: List<TransactionEntity>): String {
         val rows = transactions.map { transaction ->
@@ -24,7 +24,8 @@ object CSVHelper {
                 transaction.transactionType.toString(),
                 transaction.isInstallment.toString(),
                 transaction.installmentCurrent?.toString() ?: "",
-                transaction.installmentTotal?.toString() ?: ""
+                transaction.installmentTotal?.toString() ?: "",
+                escapeCSV(transaction.category ?: "")
             ).joinToString(DELIMITER)
         }
 
@@ -42,10 +43,10 @@ object CSVHelper {
         val transactions = mutableListOf<TransactionEntity>()
         val reader = BufferedReader(InputStreamReader(inputStream))
 
-        reader.use { reader ->
-            reader.readLine()
+        reader.use { r ->
+            r.readLine()
 
-            var line: String? = reader.readLine()
+            var line: String? = r.readLine()
             while (line != null) {
                 val tokens = parseCSVLine(line)
                 if (tokens.size >= 5) {
@@ -64,6 +65,8 @@ object CSVHelper {
                         val installmentTotal =
                             if (tokens.size > 7 && tokens[7].isNotEmpty()) tokens[7].toIntOrNull() else null
 
+                        val category = if (tokens.size > 8 && tokens[8].isNotEmpty()) tokens[8] else null
+
                         val entity = TransactionEntity(
                             id = 0,
                             payerPayee = tokens[0],
@@ -73,14 +76,15 @@ object CSVHelper {
                             transactionType = tokens[4].toBoolean(),
                             isInstallment = isInstallment,
                             installmentCurrent = installmentCurrent,
-                            installmentTotal = installmentTotal
+                            installmentTotal = installmentTotal,
+                            category = category
                         )
                         transactions.add(entity)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
-                line = reader.readLine()
+                line = r.readLine()
             }
         }
         return transactions
@@ -98,13 +102,13 @@ object CSVHelper {
         var currentToken = StringBuilder()
         var inQuotes = false
 
-        for (i in line.indices) {
+        var i = 0
+        while (i < line.length) {
             val char = line[i]
             if (char == '"') {
                 if (inQuotes && i + 1 < line.length && line[i + 1] == '"') {
-                    continue
-                } else if (i > 0 && line[i - 1] == '"' && inQuotes) {
                     currentToken.append('"')
+                    i++
                 } else {
                     inQuotes = !inQuotes
                 }
@@ -114,6 +118,7 @@ object CSVHelper {
             } else {
                 currentToken.append(char)
             }
+            i++
         }
         tokens.add(currentToken.toString())
         return tokens
