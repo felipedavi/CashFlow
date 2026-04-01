@@ -67,4 +67,6 @@
     <string name="alert_export_data_success">Backup exportado com sucesso</string>
     <string name="alert_import_data_success">Dados importados com sucesso!</string>
     <string name="error_import_failed">Falha na importação: O arquivo é inválido ou está vazio.</string>
+    <string name="input_layout_buget">Orçamento Mensal Total</string>
+    <string name="button_save_budget">Salvar Orçamento</string>
 </resources>
