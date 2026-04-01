@@ -162,8 +162,15 @@ class ChartFragment : Fragment() {
 
     private fun updateCategoryUI(label: TextView, bar: ProgressBar, spent: Double, limit: Double, title: String) {
         val remaining = limit - spent
-        label.text = String.format("%s: %s / %s (Resta %s)",
-            title, spent.toCurrency(), limit.toCurrency(), remaining.toCurrency())
+
+        val statusText = if (remaining >= 0) {
+            "Resta ${remaining.toCurrency()}"
+        } else {
+            "Ultrapassou ${kotlin.math.abs(remaining).toCurrency()}"
+        }
+
+        label.text = String.format("%s: %s / %s (%s)",
+            title, spent.toCurrency(), limit.toCurrency(), statusText)
 
         bar.max = 100
 
