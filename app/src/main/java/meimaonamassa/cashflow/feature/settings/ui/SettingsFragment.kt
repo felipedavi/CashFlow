@@ -1,10 +1,12 @@
 package meimaonamassa.cashflow.feature.settings.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -15,6 +17,11 @@ import meimaonamassa.cashflow.R
 import meimaonamassa.cashflow.databinding.FragmentSettingsBinding
 import meimaonamassa.cashflow.feature.settings.SettingsViewModel
 import meimaonamassa.cashflow.feature.settings.SettingsViewModelFactory
+import meimaonamassa.cashflow.util.CurrencyTextWatcher
+import meimaonamassa.cashflow.util.extension.toCurrency
+import androidx.core.content.edit
+import meimaonamassa.cashflow.util.extension.fromCurrency
+import meimaonamassa.cashflow.util.extension.hideKeyboard
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -76,6 +83,23 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val sharedPref = requireActivity().getSharedPreferences("config_prefs", Context.MODE_PRIVATE)
+
+        val currentBudget = sharedPref.getFloat("monthly_budget", 0f).toDouble()
+        binding.editMonthlyBudget.setText(currentBudget.toCurrency())
+
+        binding.editMonthlyBudget.addTextChangedListener(CurrencyTextWatcher(binding.editMonthlyBudget))
+
+        binding.buttonSaveBudget.setOnClickListener {
+            val budgetString = binding.editMonthlyBudget.text.toString()
+            val budgetValue = budgetString.fromCurrency().toFloat()
+            sharedPref.edit {
+                putFloat("monthly_budget", budgetValue)
+            }
+            Toast.makeText(requireContext(), "Orçamento salvo com sucesso!", Toast.LENGTH_SHORT).show()
+            hideKeyboard(it)
+        }
 
         binding.buttonExport.setOnClickListener {
             val dateFormat =
