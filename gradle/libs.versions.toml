@@ -8,12 +8,11 @@ mpandroidchart = "v3.1.0"
 navigation = "2.9.7"
 coroutines = "1.10.2"
 review = "2.0.2"
-reviewKtx = "2.0.1"
+reviewKtx = "2.0.2"
 room = "2.8.4"
 lifecycle = "2.10.0"
 threetenabp = "1.4.9"
 ksp = "2.3.5"
-coreKtx = "1.10.3"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
