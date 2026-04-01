@@ -61,10 +61,10 @@ class SettingsFragment : Fragment() {
                             findNavController().popBackStack()
                         },
                         onError = {
-                            android.widget.Toast.makeText(
+                            Toast.makeText(
                                 requireContext(),
                                 getString(R.string.error_import_failed),
-                                android.widget.Toast.LENGTH_SHORT
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
                     )
