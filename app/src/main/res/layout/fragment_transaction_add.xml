@@ -148,7 +148,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/check_installment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toRightOf="@id/check_installment"
+        app:layout_constraintStart_toEndOf="@id/check_installment"
         app:layout_constraintTop_toTopOf="@id/check_installment">
 
         <EditText
@@ -172,6 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/edit_installment_final"
+            android:importantForAutofill="no"
             android:inputType="number" />
     </LinearLayout>
 
