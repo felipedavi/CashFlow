@@ -69,4 +69,8 @@
     <string name="error_import_failed">Falha na importação: O arquivo é inválido ou está vazio.</string>
     <string name="input_layout_buget">Orçamento Mensal Total</string>
     <string name="button_save_budget">Salvar Orçamento</string>
+    <string name="text_category">Categoria (50–30–20)</string>
+    <string name="need_category_radio">50% (Necessidades)</string>
+    <string name="wants_category_radio">30% (Desejos)</string>
+    <string name="investments_category_radio">20% (Investimentos)</string>
 </resources>
