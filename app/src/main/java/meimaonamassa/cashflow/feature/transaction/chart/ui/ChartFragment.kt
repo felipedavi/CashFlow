@@ -12,14 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import meimaonamassa.cashflow.databinding.FragmentChartBinding
-import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
-import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.formatter.PercentFormatter
 import meimaonamassa.cashflow.MainApplication
 import meimaonamassa.cashflow.data.entity.TransactionEntity
+import meimaonamassa.cashflow.databinding.FragmentChartBinding
+import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
 import meimaonamassa.cashflow.util.PreferenceManager
 import meimaonamassa.cashflow.util.extension.toCurrency
@@ -66,6 +67,8 @@ class ChartFragment : Fragment() {
         binding.pieChart.apply {
             description.isEnabled = false
             isDrawHoleEnabled = true
+            setUsePercentValues(true)
+            setDrawEntryLabels(false)
             setHoleColor(Color.TRANSPARENT)
             setEntryLabelColor(Color.WHITE)
             setEntryLabelTextSize(12f)
@@ -106,18 +109,21 @@ class ChartFragment : Fragment() {
 
         if (entries.isEmpty()) {
             binding.pieChart.clear()
-            binding.pieChart.setNoDataText("Nenhuma movimentação neste mês")
             binding.pieChart.invalidate()
             return
         }
 
-        val dataSet = PieDataSet(entries, "")
-        dataSet.colors = dynamicColors
-        dataSet.valueTextSize = 14f
-        dataSet.valueTextColor = Color.WHITE
-        dataSet.sliceSpace = 2f
+        val dataSet = PieDataSet(entries, "").apply {
+            colors = listOf("#4CAF50".toColorInt(), "#F44336".toColorInt())
+            valueTextSize = 14f
+            valueTextColor = Color.WHITE
+            sliceSpace = 2f
+        }
 
         val pieData = PieData(dataSet)
+
+        pieData.setValueFormatter(PercentFormatter(binding.pieChart))
+
         binding.pieChart.apply {
             data = pieData
             centerText = "Saldo Mensal\n${(income - expense).toCurrency()}"
