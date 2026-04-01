@@ -165,14 +165,15 @@ class ChartFragment : Fragment() {
         label.text = String.format("%s: %s / %s (Resta %s)",
             title, spent.toCurrency(), limit.toCurrency(), remaining.toCurrency())
 
+        bar.max = 100
+
         val progressPercent = if (limit > 0) ((spent / limit) * 100).toInt() else 0
         bar.progress = progressPercent
 
-        if (spent > limit) {
-            bar.progressDrawable.setTint(Color.RED)
-        } else {
-            bar.progressDrawable.setTint("#4CAF50".toColorInt())
-        }
+        val color = if (spent > limit) Color.RED else "#4CAF50".toColorInt()
+
+        bar.progressTintList = android.content.res.ColorStateList.valueOf(color)
+
     }
 
     override fun onDestroyView() {
