@@ -7,16 +7,15 @@
     android:focusableInTouchMode="true"
     android:padding="16dp"
     tools:context="meimaonamassa.cashflow.feature.transaction.add.ui.TransactionAddFragment">
-
-
+    
     <TextView
         android:id="@+id/text_payer_payee"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/text_payer_payee"
         android:textColor="#546E7A"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -27,19 +26,18 @@
         android:inputType="textPersonName"
         android:labelFor="@id/edit_payer_payee"
         android:minHeight="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_payer_payee" />
 
     <TextView
         android:id="@+id/text_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:labelFor="@id/edit_description"
         android:text="@string/text_description"
         android:textColor="#546E7A"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_payer_payee" />
 
     <EditText
@@ -49,20 +47,18 @@
         android:importantForAutofill="no"
         android:inputType="text"
         android:minHeight="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_description"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_description" />
 
     <TextView
         android:id="@+id/text_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:labelFor="@id/edit_date"
         android:text="@string/text_date"
         android:textColor="#546E7A"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_description" />
 
     <EditText
@@ -73,20 +69,18 @@
         android:inputType="date"
         android:maxLength="10"
         android:minHeight="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_date"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_date" />
 
     <TextView
         android:id="@+id/text_money"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:labelFor="@id/edit_money"
         android:text="@string/text_money"
         android:textColor="#546E7A"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_date" />
 
     <EditText
@@ -98,40 +92,42 @@
         android:inputType="number"
         android:maxLength="19"
         android:minHeight="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_money" />
 
     <TextView
         android:id="@+id/text_transaction_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/text_transaction_type"
         android:textColor="#546E7A"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_money" />
 
     <RadioGroup
         android:id="@+id/group_radio_transaction_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_transaction_type">
 
         <RadioButton
             android:id="@+id/radio_income"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
+            android:layout_weight="1"
             android:text="@string/radio_income" />
 
         <RadioButton
             android:id="@+id/radio_expense"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
+            android:layout_weight="1"
             android:text="@string/radio_expense" />
     </RadioGroup>
 
@@ -140,7 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/check_installment"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type" />
 
     <LinearLayout
@@ -151,9 +147,9 @@
         android:orientation="horizontal"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/check_installment"
-        app:layout_constraintLeft_toRightOf="@id/check_installment"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_radio_transaction_type">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toRightOf="@id/check_installment"
+        app:layout_constraintTop_toTopOf="@id/check_installment">
 
         <EditText
             android:id="@+id/edit_installment_current"
@@ -166,32 +162,74 @@
             android:minHeight="48dp" />
 
         <TextView
-            android:id="@+id/text_installment_slash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="4dp"
-            android:text="@string/text_installment_slash"
-            android:textSize="18sp" />
+            android:text="@string/text_installment_slash" />
 
         <EditText
             android:id="@+id/edit_installment_final"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:autofillHints="phone"
             android:hint="@string/edit_installment_final"
-            android:inputType="number"
-            android:minHeight="48dp" />
-
+            android:inputType="number" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_category"
+        android:textColor="#546E7A"
+        app:layout_constraintTop_toBottomOf="@id/check_installment" />
+
+    <RadioGroup
+        android:id="@+id/group_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:divider="?android:attr/dividerVertical"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_category">
+
+        <RadioButton
+            android:id="@+id/radio_needs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/need_category_radio"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/radio_wants"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/wants_category_radio"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/radio_investments"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/investments_category_radio"
+            android:textSize="11sp" />
+    </RadioGroup>
 
     <Button
         android:id="@+id/button_save"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="@string/button_save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/group_category" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
