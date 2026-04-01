@@ -65,6 +65,8 @@ android {
 
         // Room components
         implementation(libs.androidx.room.ktx)
+        implementation(libs.review)
+        implementation(libs.review.ktx)
         ksp(libs.androidx.room.compiler)
 
         // Lifecycle components

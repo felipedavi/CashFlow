@@ -7,10 +7,13 @@ constraintlayout = "2.2.1"
 mpandroidchart = "v3.1.0"
 navigation = "2.9.7"
 coroutines = "1.10.2"
+review = "2.0.2"
+reviewKtx = "2.0.1"
 room = "2.8.4"
 lifecycle = "2.10.0"
 threetenabp = "1.4.9"
 ksp = "2.3.5"
+coreKtx = "1.10.3"
 
 [libraries]
 androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -25,6 +28,8 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+review = { module = "com.google.android.play:review", version.ref = "review" }
+review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "reviewKtx" }
 threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
 
 [plugins]
