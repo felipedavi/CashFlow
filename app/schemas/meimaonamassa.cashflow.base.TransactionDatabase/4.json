@@ -1,0 +1,81 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "f0900553691df9d579c300b71289b582",
+    "entities": [
+      {
+        "tableName": "transaction_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`transaction_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `payerPayee` TEXT NOT NULL, `description` TEXT NOT NULL, `date` TEXT, `monetary_value` REAL NOT NULL, `transaction_type` INTEGER NOT NULL, `is_installment` INTEGER NOT NULL, `installment_current` INTEGER, `installment_total` INTEGER, `category` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "transaction_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "payerPayee",
+            "columnName": "payerPayee",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "monetaryValue",
+            "columnName": "monetary_value",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "transactionType",
+            "columnName": "transaction_type",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isInstallment",
+            "columnName": "is_installment",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "installmentCurrent",
+            "columnName": "installment_current",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "installmentTotal",
+            "columnName": "installment_total",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "transaction_id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f0900553691df9d579c300b71289b582')"
+    ]
+  }
+}
