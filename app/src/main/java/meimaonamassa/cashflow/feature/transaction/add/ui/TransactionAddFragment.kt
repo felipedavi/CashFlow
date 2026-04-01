@@ -24,7 +24,7 @@ import meimaonamassa.cashflow.util.extension.hideKeyboard
 import meimaonamassa.cashflow.util.extension.isValid
 import meimaonamassa.cashflow.util.extension.toFormattedDate
 
-class TransactionAddFragment : Fragment(), View.OnClickListener {
+class TransactionAddFragment : Fragment() {
     private lateinit var viewModel: TransactionAddViewModel
     private var _binding: FragmentTransactionAddBinding? = null
     private val binding get() = _binding!!
@@ -42,62 +42,68 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
-    override fun onClick(v: View?) {
-        val id: Int? = v?.id
-        if (id == R.id.button_save) {
-            if (!binding.editPayerPayee.isValid() || !binding.editDescription.isValid() || !binding.editDate.isValid() || !binding.editMoney.isValid()) {
-                Log.i("Validation", "Field validation failed.")
-            } else if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
-                Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
-            } else {
-                val payerPayer = binding.editPayerPayee.text.toString().trim()
-                val description = binding.editDescription.text.toString().trim()
-                val date = DateConverters.toOffsetDateTime(
-                    binding.editDate.text.toString().toFormattedDate()
-                )
-                val monetaryValue = binding.editMoney.text.toString().fromCurrency()
-                val transactionType = binding.radioIncome.isChecked
+    private fun handleSaveClick() {
+        if (!validateFields()) return
 
-                val isInstallment = binding.checkInstallment.isChecked
+        val payerPayer = binding.editPayerPayee.text.toString().trim()
+        val description = binding.editDescription.text.toString().trim()
+        val date = DateConverters.toOffsetDateTime(binding.editDate.text.toString().toFormattedDate())
+        val monetaryValue = binding.editMoney.text.toString().fromCurrency()
+        val transactionType = binding.radioIncome.isChecked
+        val category = getSelectedCategory()
 
-                if (isInstallment) {
-                    val currentStr = binding.editInstallmentCurrent.text.toString()
-                    val finalStr = binding.editInstallmentFinal.text.toString()
+        if (binding.checkInstallment.isChecked) {
+            val currentStr = binding.editInstallmentCurrent.text.toString()
+            val finalStr = binding.editInstallmentFinal.text.toString()
 
-                    if (currentStr.isNotEmpty() && finalStr.isNotEmpty()) {
-                        val current = currentStr.toInt()
-                        val final = finalStr.toInt()
+            if (currentStr.isNotEmpty() && finalStr.isNotEmpty()) {
+                val current = currentStr.toInt()
+                val final = finalStr.toInt()
 
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Salvar parcelas")
-                            .setMessage("Deseja salvar as demais parcelas automaticamente?")
-                            .setPositiveButton("Sim") { _, _ ->
-                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, true)
-                            }
-                            .setNegativeButton("Não") { _, _ ->
-                                saveInstallments(payerPayer, description, date, monetaryValue, transactionType, current, final, false)
-                            }
-                            .show()
-                    } else {
-                        Toast.makeText(context, "Preencha as parcelas.", Toast.LENGTH_SHORT).show()
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Salvar parcelas")
+                    .setMessage("Deseja salvar as demais parcelas automaticamente?")
+                    .setPositiveButton("Sim") { _, _ ->
+                        saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, current, final, true)
                     }
-                } else {
-                    val transaction = TransactionEntity(
-                        id = 0,
-                        payerPayee = payerPayer,
-                        description = description,
-                        date = date,
-                        monetaryValue = monetaryValue,
-                        transactionType = transactionType,
-                        isInstallment = false,
-                        installmentCurrent = null,
-                        installmentTotal = null
-                    )
-                    viewModel.insert(transaction)
-                    findNavController().navigateUp()
-                }
+                    .setNegativeButton("Não") { _, _ ->
+                        saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, current, final, false)
+                    }
+                    .show()
+            } else {
+                Toast.makeText(context, "Preencha as parcelas.", Toast.LENGTH_SHORT).show()
             }
+        } else {
+            val transaction = TransactionEntity(
+                id = 0,
+                payerPayee = payerPayer,
+                description = description,
+                date = date,
+                monetaryValue = monetaryValue,
+                transactionType = transactionType,
+                isInstallment = false,
+                category = category
+            )
+            saveAndExit(transaction)
         }
+    }
+
+    private fun validateFields(): Boolean {
+        val fieldsValid = binding.editPayerPayee.isValid() &&
+                binding.editDescription.isValid() &&
+                binding.editDate.isValid() &&
+                binding.editMoney.isValid()
+
+        if (!fieldsValid) {
+            Log.i("Validation", "Field validation failed.")
+            return false
+        }
+
+        if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
+            Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 
     private fun saveInstallments(
@@ -106,19 +112,20 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
         date: org.threeten.bp.OffsetDateTime?,
         totalValue: Double,
         transactionType: Boolean,
+        category: String?,
         current: Int,
         final: Int,
         saveAll: Boolean
     ) {
-        val totalInstallmentsToSave = final - current + 1
-        val installmentValue = if (totalInstallmentsToSave > 0) totalValue / totalInstallmentsToSave else totalValue
-
         if (saveAll) {
+            val totalInstallmentsToSave = final - current + 1
+            val installmentValue = if (totalInstallmentsToSave > 0) totalValue / totalInstallmentsToSave else totalValue
+
             for (i in current..final) {
                 val currentMonthOffset = (i - current).toLong()
                 val installmentDate = date?.plusMonths(currentMonthOffset)
 
-                val transaction = TransactionEntity(
+                viewModel.insert(TransactionEntity(
                     id = 0,
                     payerPayee = payerPayee,
                     description = description,
@@ -127,10 +134,11 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                     transactionType = transactionType,
                     isInstallment = true,
                     installmentCurrent = i,
-                    installmentTotal = final
-                )
-                viewModel.insert(transaction)
+                    installmentTotal = final,
+                    category = category
+                ))
             }
+            findNavController().navigateUp()
         } else {
             val transaction = TransactionEntity(
                 id = 0,
@@ -141,23 +149,20 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
                 transactionType = transactionType,
                 isInstallment = true,
                 installmentCurrent = current,
-                installmentTotal = final
+                installmentTotal = final,
+                category = category
             )
-            viewModel.insert(transaction)
+            saveAndExit(transaction)
         }
+    }
+
+    private fun saveAndExit(transaction: TransactionEntity) {
+        viewModel.insert(transaction)
         findNavController().navigateUp()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun setListeners() {
-        binding.editMoney.run {
-            addTextChangedListener(CurrencyTextWatcher(this))
-        }
-
+        binding.editMoney.addTextChangedListener(CurrencyTextWatcher(binding.editMoney))
         binding.editDate.keyListener = null
 
         binding.editDate.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
@@ -171,27 +176,32 @@ class TransactionAddFragment : Fragment(), View.OnClickListener {
         }
 
         binding.groupRadioTransactionType.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.radio_income -> {
-                    binding.textPayerPayee.text = getString(R.string.text_payer)
-                }
-
-                R.id.radio_expense -> {
-                    binding.textPayerPayee.text = getString(R.string.text_payee)
-                }
-            }
+            binding.textPayerPayee.text = if (checkedId == R.id.radio_income)
+                getString(R.string.text_payer) else getString(R.string.text_payee)
         }
 
         binding.checkInstallment.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.layoutInstallments.visibility = View.VISIBLE
-            } else {
-                binding.layoutInstallments.visibility = View.GONE
+            binding.layoutInstallments.visibility = if (isChecked) View.VISIBLE else View.GONE
+            if (!isChecked) {
                 binding.editInstallmentCurrent.text.clear()
                 binding.editInstallmentFinal.text.clear()
             }
         }
 
-        binding.buttonSave.setOnClickListener(this)
+        binding.buttonSave.setOnClickListener { handleSaveClick() }
+    }
+
+    private fun getSelectedCategory(): String? {
+        return when (binding.groupCategory.checkedRadioButtonId) {
+            R.id.radio_needs -> "Necessidades"
+            R.id.radio_wants -> "Desejos"
+            R.id.radio_investments -> "Investimentos"
+            else -> null
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
