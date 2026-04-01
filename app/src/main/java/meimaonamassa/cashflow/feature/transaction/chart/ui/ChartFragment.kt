@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,13 +19,17 @@ import meimaonamassa.cashflow.databinding.FragmentChartBinding
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModel
 import com.github.mikephil.charting.components.Legend
 import meimaonamassa.cashflow.MainApplication
+import meimaonamassa.cashflow.data.entity.TransactionEntity
 import meimaonamassa.cashflow.feature.transaction.list.presentation.TransactionViewModelFactory
+import meimaonamassa.cashflow.util.PreferenceManager
 import meimaonamassa.cashflow.util.extension.toCurrency
 import org.threeten.bp.YearMonth
 
 class ChartFragment : Fragment() {
     private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var prefManager: PreferenceManager
 
     private val args: ChartFragmentArgs by navArgs()
     private val viewModel: TransactionViewModel by activityViewModels {
@@ -36,6 +42,7 @@ class ChartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChartBinding.inflate(inflater, container, false)
+        prefManager = PreferenceManager(requireContext())
         return binding.root
     }
 
@@ -77,6 +84,10 @@ class ChartFragment : Fragment() {
         viewModel.monthlyTotals.observe(viewLifecycleOwner) { totals ->
             updateChartData(totals.first, totals.second)
         }
+        viewModel.allTransactions.observe(viewLifecycleOwner) { transactions ->
+            val budget = prefManager.getMonthlyBudget()
+            updateBudgetStatus(transactions, budget)
+        }
     }
 
     private fun updateChartData(income: Double, expense: Double) {
@@ -113,6 +124,54 @@ class ChartFragment : Fragment() {
             setCenterTextSize(16f)
             animateY(1000, Easing.EaseInOutQuad)
             invalidate()
+        }
+    }
+
+    private fun updateBudgetStatus(transactions: List<TransactionEntity>, totalBudget: Float) {
+        if (totalBudget <= 0) {
+            binding.layoutBudgetStatus.visibility = View.GONE
+            return
+        }
+
+        binding.layoutBudgetStatus.visibility = View.VISIBLE
+
+        val spent = mutableMapOf("Necessidades" to 0.0, "Desejos" to 0.0, "Investimentos" to 0.0)
+
+        transactions.filter { !it.transactionType }.forEach { trans ->
+            val cat = trans.category ?: ""
+            if (spent.containsKey(cat)) {
+                spent[cat] = spent[cat]!! + trans.monetaryValue
+            }
+        }
+
+        updateCategoryUI(
+            binding.textNeedsStatus, binding.progressNeeds,
+            spent["Necessidades"] ?: 0.0, totalBudget * 0.5, "Necessidades (50%)"
+        )
+
+        updateCategoryUI(
+            binding.textWantsStatus, binding.progressWants,
+            spent["Desejos"] ?: 0.0, totalBudget * 0.3, "Desejos (30%)"
+        )
+
+        updateCategoryUI(
+            binding.textInvestmentsStatus, binding.progressInvestments,
+            spent["Investimentos"] ?: 0.0, totalBudget * 0.2, "Investimentos (20%)"
+        )
+    }
+
+    private fun updateCategoryUI(label: TextView, bar: ProgressBar, spent: Double, limit: Double, title: String) {
+        val remaining = limit - spent
+        label.text = String.format("%s: %s / %s (Resta %s)",
+            title, spent.toCurrency(), limit.toCurrency(), remaining.toCurrency())
+
+        val progressPercent = if (limit > 0) ((spent / limit) * 100).toInt() else 0
+        bar.progress = progressPercent
+
+        if (spent > limit) {
+            bar.progressDrawable.setTint(Color.RED)
+        } else {
+            bar.progressDrawable.setTint("#4CAF50".toColorInt())
         }
     }
 
