@@ -1,7 +1,6 @@
 package meimaonamassa.cashflow.feature.transaction.detail.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,12 @@ import meimaonamassa.cashflow.feature.transaction.detail.TransactionDetailViewMo
 import meimaonamassa.cashflow.feature.transaction.detail.TransactionDetailViewModelFactory
 import meimaonamassa.cashflow.util.CurrencyTextWatcher
 import meimaonamassa.cashflow.util.DatePickerFragment
-import meimaonamassa.cashflow.util.extension.*
+import meimaonamassa.cashflow.util.extension.fromCurrency
+import meimaonamassa.cashflow.util.extension.fromFormattedDate
+import meimaonamassa.cashflow.util.extension.hideKeyboard
+import meimaonamassa.cashflow.util.extension.isValid
+import meimaonamassa.cashflow.util.extension.toCurrency
+import meimaonamassa.cashflow.util.extension.toFormattedDate
 
 class TransactionDetailFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentTransactionDetailBinding? = null
@@ -51,24 +55,23 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.button_update) {
-            // 1. Validação de campos de texto
             val isFieldsValid = binding.editPayerPayee.isValid() &&
                     binding.editDescription.isValid() &&
                     binding.editDate.isValid() &&
                     binding.editMoney.isValid()
 
-            if (!isFieldsValid) {
-                Log.i("Validation", "Field validation failed.")
-                return
-            }
+            if (!isFieldsValid) return
 
             if (binding.groupRadioTransactionType.checkedRadioButtonId == -1) {
                 Toast.makeText(context, R.string.group_radio_error, Toast.LENGTH_SHORT).show()
                 return
             }
 
-            if (binding.groupCategory.checkedRadioButtonId == -1) {
-                Toast.makeText(context, "Selecione uma categoria (50-30-20)", Toast.LENGTH_SHORT).show()
+            val isExpense = binding.radioExpense.isChecked
+            val noCategorySelected = binding.groupCategory.checkedRadioButtonId == -1
+
+            if (isExpense && noCategorySelected) {
+                Toast.makeText(context, "Selecione uma categoria para despesas", Toast.LENGTH_SHORT).show()
                 return
             }
 
@@ -78,7 +81,6 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
             val monetaryValue = binding.editMoney.text.toString().fromCurrency()
             val transactionType = binding.radioIncome.isChecked
             val category = getSelectedCategory()
-
 
             val updatedTransaction = selectedTransaction.copy(
                 payerPayee = payerPayee,
@@ -91,7 +93,6 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
 
             viewModel.update(updatedTransaction)
             findNavController().navigateUp()
-
         }
     }
 
@@ -177,7 +178,7 @@ class TransactionDetailFragment : Fragment(), View.OnClickListener {
                 binding.groupCategory.clearCheck()
             }
         }
-        
+
     }
 
     private fun getSelectedCategory(): String? {
