@@ -182,6 +182,55 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/text_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_category"
+        android:textColor="#546E7A"
+        app:layout_constraintTop_toBottomOf="@id/check_installment" />
+
+    <RadioGroup
+        android:id="@+id/group_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:divider="?android:attr/dividerVertical"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_category">
+
+        <RadioButton
+            android:id="@+id/radio_needs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/need_category_radio"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/radio_wants"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/wants_category_radio"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/radio_investments"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/investments_category_radio"
+            android:textSize="11sp" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/button_update"
         android:layout_width="wrap_content"
@@ -190,6 +239,6 @@
         android:text="@string/button_update"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_installments" />
+        app:layout_constraintTop_toBottomOf="@id/group_category" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
