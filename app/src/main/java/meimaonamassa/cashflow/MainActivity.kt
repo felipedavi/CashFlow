@@ -10,7 +10,9 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.android.play.core.review.ReviewManagerFactory
 import meimaonamassa.cashflow.databinding.ActivityMainBinding
+import meimaonamassa.cashflow.util.ReviewHelper
 import meimaonamassa.cashflow.util.extension.hideKeyboard
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +35,12 @@ class MainActivity : AppCompatActivity() {
 
         NavigationUI.setupActionBarWithNavController(this, navController)
 
+        ReviewHelper.updateLaunchCount(this)
+
+        if (ReviewHelper.shouldShowReview(this)) {
+            requestInAppReview()
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -52,5 +60,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(event)
+    }
+
+    private fun requestInAppReview() {
+        val manager = ReviewManagerFactory.create(this)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val reviewInfo = task.result
+                val flow = manager.launchReviewFlow(this, reviewInfo)
+                flow.addOnCompleteListener {
+                    ReviewHelper.markAsReviewed(this)
+                }
+            }
+        }
     }
 }
