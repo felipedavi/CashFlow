@@ -197,6 +197,15 @@ class TransactionAddFragment : Fragment() {
             }
         }
 
+        binding.groupRadioTransactionType.setOnCheckedChangeListener { _, checkedId ->
+            val isIncome = checkedId == R.id.radio_income
+            binding.textPayerPayee.text = if (isIncome) getString(R.string.text_payer) else getString(R.string.text_payee)
+
+            if (isIncome) {
+                binding.groupCategory.clearCheck()
+            }
+        }
+
         binding.buttonSave.setOnClickListener { handleSaveClick() }
     }
 
