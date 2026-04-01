@@ -103,6 +103,15 @@ class TransactionAddFragment : Fragment() {
             Toast.makeText(context, getText(R.string.group_radio_error), Toast.LENGTH_SHORT).show()
             return false
         }
+
+        val isExpense = binding.radioExpense.isChecked
+        val noCategorySelected = binding.groupCategory.checkedRadioButtonId == -1
+
+        if (isExpense && noCategorySelected) {
+            Toast.makeText(context, "Selecione uma categoria para despesas", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
         return true
     }
 
