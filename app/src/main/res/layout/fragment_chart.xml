@@ -58,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                android:max="100"
                 android:progressDrawable="@drawable/rounded_border" />
 
             <TextView
@@ -73,7 +74,8 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:max="100" />
 
             <TextView
                 android:id="@+id/text_investments_status"
@@ -87,7 +89,8 @@
                 android:id="@+id/progress_investments"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:max="100" />
 
         </LinearLayout>
 
