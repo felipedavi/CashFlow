@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import meimaonamassa.cashflow.data.entity.TransactionEntity
 import meimaonamassa.cashflow.data.local.TransactionDAO
 
-@Database(entities = [TransactionEntity::class], version = 3)
+@Database(entities = [TransactionEntity::class], version = 4)
 @TypeConverters(DateConverters::class)
 abstract class TransactionDatabase : RoomDatabase() {
     abstract fun transactionDAO() : TransactionDAO
