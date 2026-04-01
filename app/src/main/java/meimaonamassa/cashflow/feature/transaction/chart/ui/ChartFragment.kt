@@ -122,7 +122,11 @@ class ChartFragment : Fragment() {
 
         val pieData = PieData(dataSet)
 
-        pieData.setValueFormatter(PercentFormatter(binding.pieChart))
+        pieData.setValueFormatter(object : PercentFormatter(binding.pieChart) {
+            override fun getFormattedValue(value: Float): String {
+                return if (value >= 99.9f) "" else super.getFormattedValue(value)
+            }
+        })
 
         binding.pieChart.apply {
             data = pieData
