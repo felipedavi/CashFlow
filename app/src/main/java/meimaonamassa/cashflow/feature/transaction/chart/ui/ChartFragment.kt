@@ -124,7 +124,7 @@ class ChartFragment : Fragment() {
 
         pieData.setValueFormatter(object : PercentFormatter(binding.pieChart) {
             override fun getFormattedValue(value: Float): String {
-                return if (value >= 99.9f) "" else super.getFormattedValue(value)
+                return if (value < 2f) "" else super.getFormattedValue(value)
             }
         })
 
@@ -172,25 +172,23 @@ class ChartFragment : Fragment() {
 
     private fun updateCategoryUI(label: TextView, bar: ProgressBar, spent: Double, limit: Double, title: String) {
         val remaining = limit - spent
+        val remainingPercent = if (limit > 0) (remaining / limit) * 100 else 0.0
 
         val statusText = if (remaining >= 0) {
-            "Resta ${remaining.toCurrency()}"
+            "Resta ${remaining.toCurrency()} (%.1f%% do orçamento)".format(remainingPercent)
         } else {
             "Ultrapassou ${kotlin.math.abs(remaining).toCurrency()}"
         }
 
-        label.text = String.format("%s: %s / %s (%s)",
+        label.text = String.format("%s: %s / %s\n(%s)",
             title, spent.toCurrency(), limit.toCurrency(), statusText)
 
         bar.max = 100
-
         val progressPercent = if (limit > 0) ((spent / limit) * 100).toInt() else 0
         bar.progress = progressPercent
 
         val color = if (spent > limit) Color.RED else "#4CAF50".toColorInt()
-
         bar.progressTintList = android.content.res.ColorStateList.valueOf(color)
-
     }
 
     override fun onDestroyView() {
