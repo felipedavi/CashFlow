@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -18,10 +19,11 @@ import meimaonamassa.cashflow.databinding.FragmentSettingsBinding
 import meimaonamassa.cashflow.feature.settings.SettingsViewModel
 import meimaonamassa.cashflow.feature.settings.SettingsViewModelFactory
 import meimaonamassa.cashflow.util.CurrencyTextWatcher
-import meimaonamassa.cashflow.util.extension.toCurrency
-import androidx.core.content.edit
 import meimaonamassa.cashflow.util.extension.fromCurrency
 import meimaonamassa.cashflow.util.extension.hideKeyboard
+import meimaonamassa.cashflow.util.extension.toCurrency
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -35,7 +37,7 @@ class SettingsFragment : Fragment() {
     private val exportCsvLauncher =
         registerForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri ->
             uri?.let {
-                val outputStream = requireContext().contentResolver.openOutputStream(it)
+                val outputStream = requireContext().contentResolver.openOutputStream(it, "wt")
                 outputStream?.let { stream ->
                     viewModel.exportData(stream) {
                         val result = Bundle()
@@ -102,8 +104,7 @@ class SettingsFragment : Fragment() {
         }
 
         binding.buttonExport.setOnClickListener {
-            val dateFormat =
-                java.text.SimpleDateFormat("yyyyMMdd-HHmmss", java.util.Locale.getDefault())
+            val dateFormat = SimpleDateFormat("yyyyMMdd-HHmmss", Locale.getDefault())
             val currentTime = dateFormat.format(java.util.Date())
             exportCsvLauncher.launch("cashflow_backup_$currentTime.csv")
         }
