@@ -114,7 +114,7 @@ class ChartFragment : Fragment() {
         }
 
         val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf("#4CAF50".toColorInt(), "#F44336".toColorInt())
+            colors = dynamicColors
             valueTextSize = 14f
             valueTextColor = Color.WHITE
             sliceSpace = 2f
