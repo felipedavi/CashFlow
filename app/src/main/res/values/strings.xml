@@ -46,6 +46,7 @@
     <string name="edit_installment_final">Final</string>
     <string name="edit_error">Esse campo não pode ficar vazio</string>
     <string name="group_radio_error">Você não selecionou nenhum tipo de transação</string>
+    <string name="calculator_desc_image_button">Image of the button for calculating the installment amount of the transaction.</string>
     <!-- Empty List Screen -->
     <string name="desc_icon_empty">something wrong icon</string>
     <string name="text_title_empty">Whoops!!!</string>
