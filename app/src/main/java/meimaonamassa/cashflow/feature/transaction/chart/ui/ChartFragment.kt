@@ -156,21 +156,31 @@ class ChartFragment : Fragment() {
 
         updateCategoryUI(
             binding.textNeedsStatus, binding.progressNeeds,
-            spent["Necessidades"] ?: 0.0, totalBudget * 0.5, "Necessidades (50%)"
+            spent["Necessidades"] ?: 0.0, totalBudget * 0.5, "Necessidades (50%)",
+            "#2196F3".toColorInt()
         )
 
         updateCategoryUI(
             binding.textWantsStatus, binding.progressWants,
-            spent["Desejos"] ?: 0.0, totalBudget * 0.3, "Desejos (30%)"
+            spent["Desejos"] ?: 0.0, totalBudget * 0.3, "Desejos (30%)",
+            "#FFC107".toColorInt()
         )
 
         updateCategoryUI(
             binding.textInvestmentsStatus, binding.progressInvestments,
-            spent["Investimentos"] ?: 0.0, totalBudget * 0.2, "Investimentos (20%)"
+            spent["Investimentos"] ?: 0.0, totalBudget * 0.2, "Investimentos (20%)",
+            "#9C27B0".toColorInt()
         )
     }
 
-    private fun updateCategoryUI(label: TextView, bar: ProgressBar, spent: Double, limit: Double, title: String) {
+    private fun updateCategoryUI(
+        label: TextView,
+        bar: ProgressBar,
+        spent: Double,
+        limit: Double,
+        title: String,
+        categoryColor: Int
+    ) {
         val remaining = limit - spent
         val remainingPercent = if (limit > 0) (remaining / limit) * 100 else 0.0
 
@@ -187,8 +197,8 @@ class ChartFragment : Fragment() {
         val progressPercent = if (limit > 0) ((spent / limit) * 100).toInt() else 0
         bar.progress = progressPercent
 
-        val color = if (spent > limit) Color.RED else "#4CAF50".toColorInt()
-        bar.progressTintList = android.content.res.ColorStateList.valueOf(color)
+        val finalColor = if (spent > limit) Color.RED else categoryColor
+        bar.progressTintList = android.content.res.ColorStateList.valueOf(finalColor)
     }
 
     override fun onDestroyView() {
