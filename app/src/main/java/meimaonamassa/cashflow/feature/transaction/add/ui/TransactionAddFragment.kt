@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +23,7 @@ import meimaonamassa.cashflow.util.DatePickerFragment
 import meimaonamassa.cashflow.util.extension.fromCurrency
 import meimaonamassa.cashflow.util.extension.hideKeyboard
 import meimaonamassa.cashflow.util.extension.isValid
+import meimaonamassa.cashflow.util.extension.toCurrency
 import meimaonamassa.cashflow.util.extension.toFormattedDate
 
 class TransactionAddFragment : Fragment() {
@@ -184,6 +186,10 @@ class TransactionAddFragment : Fragment() {
             }
         }
 
+        binding.buttonCalculator.setOnClickListener {
+            showCalculatorDialog()
+        }
+
         binding.groupRadioTransactionType.setOnCheckedChangeListener { _, checkedId ->
             binding.textPayerPayee.text = if (checkedId == R.id.radio_income)
                 getString(R.string.text_payer) else getString(R.string.text_payee)
@@ -191,6 +197,7 @@ class TransactionAddFragment : Fragment() {
 
         binding.checkInstallment.setOnCheckedChangeListener { _, isChecked ->
             binding.layoutInstallments.visibility = if (isChecked) View.VISIBLE else View.GONE
+            binding.buttonCalculator.visibility = if (isChecked) View.VISIBLE else View.GONE
             if (!isChecked) {
                 binding.editInstallmentCurrent.text.clear()
                 binding.editInstallmentFinal.text.clear()
@@ -207,6 +214,36 @@ class TransactionAddFragment : Fragment() {
         }
 
         binding.buttonSave.setOnClickListener { handleSaveClick() }
+    }
+
+    private fun showCalculatorDialog() {
+        val finalInstallmentStr = binding.editInstallmentFinal.text.toString()
+
+        if (finalInstallmentStr.isEmpty()) {
+            Toast.makeText(context, "Preencha o número final de parcelas primeiro.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val input = EditText(requireContext()).apply {
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            hint = "Valor total da compra"
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Calcular Valor da Parcela")
+            .setMessage("Digite o valor total para dividir por $finalInstallmentStr parcelas:")
+            .setView(input)
+            .setPositiveButton("Calcular") { _, _ ->
+                val totalValue = input.text.toString().toDoubleOrNull() ?: 0.0
+                val installments = finalInstallmentStr.toDoubleOrNull() ?: 1.0
+
+                if (installments > 0) {
+                    val installmentValue = totalValue / installments
+                    binding.editMoney.setText(installmentValue.toCurrency())
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
     private fun getSelectedCategory(): String? {
