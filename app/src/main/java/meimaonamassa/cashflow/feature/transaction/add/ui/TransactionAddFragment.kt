@@ -222,16 +222,31 @@ class TransactionAddFragment : Fragment() {
         }
 
         val input = EditText(requireContext()).apply {
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
-            hint = "Valor total da compra"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            hint = "R$ 0,00"
+
+            addTextChangedListener(CurrencyTextWatcher(this))
+            val paddingPx = (16 * resources.displayMetrics.density).toInt()
+            setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
         }
+
+        val container = android.widget.FrameLayout(requireContext())
+        val params = android.widget.FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply {
+            val marginPx = (20 * resources.displayMetrics.density).toInt()
+            setMargins(marginPx, 8, marginPx, 8)
+        }
+        input.layoutParams = params
+        container.addView(input)
 
         AlertDialog.Builder(requireContext())
             .setTitle("Calcular Valor da Parcela")
             .setMessage("Digite o valor total para dividir por $finalInstallmentStr parcelas:")
-            .setView(input)
+            .setView(container)
             .setPositiveButton("Calcular") { _, _ ->
-                val totalValue = input.text.toString().toDoubleOrNull() ?: 0.0
+                val totalValue = input.text.toString().fromCurrency()
                 val installments = finalInstallmentStr.toDoubleOrNull() ?: 1.0
 
                 if (installments > 0) {
