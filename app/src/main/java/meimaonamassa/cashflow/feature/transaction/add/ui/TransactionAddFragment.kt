@@ -129,9 +129,6 @@ class TransactionAddFragment : Fragment() {
         saveAll: Boolean
     ) {
         if (saveAll) {
-            val totalInstallmentsToSave = final - current + 1
-            val installmentValue = if (totalInstallmentsToSave > 0) totalValue / totalInstallmentsToSave else totalValue
-
             for (i in current..final) {
                 val currentMonthOffset = (i - current).toLong()
                 val installmentDate = date?.plusMonths(currentMonthOffset)
@@ -141,7 +138,7 @@ class TransactionAddFragment : Fragment() {
                     payerPayee = payerPayee,
                     description = description,
                     date = installmentDate,
-                    monetaryValue = installmentValue,
+                    monetaryValue = totalValue,
                     transactionType = transactionType,
                     isInstallment = true,
                     installmentCurrent = i,
