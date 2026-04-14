@@ -59,19 +59,20 @@ class TransactionAddFragment : Fragment() {
             val finalStr = binding.editInstallmentFinal.text.toString()
 
             if (currentStr.isNotEmpty() && finalStr.isNotEmpty()) {
-                val current = currentStr.toInt()
-                val final = finalStr.toInt()
-
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Salvar parcelas")
-                    .setMessage("Deseja salvar as demais parcelas automaticamente?")
-                    .setPositiveButton("Sim") { _, _ ->
-                        saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, current, final, true)
-                    }
-                    .setNegativeButton("Não") { _, _ ->
-                        saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, current, final, false)
-                    }
-                    .show()
+                if (currentStr == finalStr) {
+                    saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, currentStr.toInt(), currentStr.toInt(), false)
+                } else {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Salvar parcelas")
+                        .setMessage("Deseja salvar as demais parcelas automaticamente?")
+                        .setPositiveButton("Sim") { _, _ ->
+                            saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, currentStr.toInt(), currentStr.toInt(), true)
+                        }
+                        .setNegativeButton("Não") { _, _ ->
+                            saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, currentStr.toInt(), currentStr.toInt(), false)
+                        }
+                        .show()
+                }
             } else {
                 Toast.makeText(context, "Preencha as parcelas.", Toast.LENGTH_SHORT).show()
             }
