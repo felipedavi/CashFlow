@@ -87,14 +87,28 @@
         android:id="@+id/edit_money"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:clickable="false"
         android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="19"
         android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_calculator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_money" />
+
+    <ImageButton
+        android:id="@+id/button_calculator"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/calculator_desc_image_button"
+        android:src="@drawable/ic_calculate"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/edit_money"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/edit_money"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/text_transaction_type"
