@@ -66,7 +66,7 @@ class TransactionAddFragment : Fragment() {
                         .setTitle("Salvar parcelas")
                         .setMessage("Deseja salvar as demais parcelas automaticamente?")
                         .setPositiveButton("Sim") { _, _ ->
-                            saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, currentStr.toInt(), currentStr.toInt(), true)
+                            saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, currentStr.toInt(), finalStr.toInt(), true)
                         }
                         .setNegativeButton("Não") { _, _ ->
                             saveInstallments(payerPayer, description, date, monetaryValue, transactionType, category, currentStr.toInt(), currentStr.toInt(), false)
