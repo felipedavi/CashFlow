@@ -154,21 +154,23 @@ class ChartFragment : Fragment() {
             }
         }
 
+        val budgetDouble = totalBudget.toDouble()
+
         updateCategoryUI(
             binding.textNeedsStatus, binding.progressNeeds,
-            spent["Necessidades"] ?: 0.0, totalBudget * 0.5, "Necessidades (50%)",
+            spent["Necessidades"] ?: 0.0, budgetDouble * 0.5, budgetDouble, "Necessidades",
             "#2196F3".toColorInt()
         )
 
         updateCategoryUI(
             binding.textWantsStatus, binding.progressWants,
-            spent["Desejos"] ?: 0.0, totalBudget * 0.3, "Desejos (30%)",
+            spent["Desejos"] ?: 0.0, budgetDouble * 0.3, budgetDouble, "Desejos",
             "#FFC107".toColorInt()
         )
 
         updateCategoryUI(
             binding.textInvestmentsStatus, binding.progressInvestments,
-            spent["Investimentos"] ?: 0.0, totalBudget * 0.2, "Investimentos (20%)",
+            spent["Investimentos"] ?: 0.0, budgetDouble * 0.2, budgetDouble, "Investimentos",
             "#9C27B0".toColorInt()
         )
     }
@@ -178,20 +180,29 @@ class ChartFragment : Fragment() {
         bar: ProgressBar,
         spent: Double,
         limit: Double,
+        totalBudget: Double,
         title: String,
         categoryColor: Int
     ) {
+        val locale = java.util.Locale.forLanguageTag("pt-BR")
+        val spentPercentTotal = if (totalBudget > 0) (spent / totalBudget) * 100 else 0.0
         val remaining = limit - spent
-        val remainingPercent = if (limit > 0) (remaining / limit) * 100 else 0.0
 
-        val statusText = if (remaining >= 0) {
-            "Resta ${remaining.toCurrency()} (%.1f%% do orçamento)".format(remainingPercent)
+        val statusLine2 = if (remaining >= 0) {
+            "Resta ${remaining.toCurrency()}"
         } else {
             "Ultrapassou ${kotlin.math.abs(remaining).toCurrency()}"
         }
 
-        label.text = String.format("%s: %s / %s\n(%s)",
-            title, spent.toCurrency(), limit.toCurrency(), statusText)
+        label.text = String.format(
+            locale,
+            "%s : %s / %s (%.1f%% do total)\n%s",
+            title,
+            spent.toCurrency(),
+            limit.toCurrency(),
+            spentPercentTotal,
+            statusLine2
+        )
 
         bar.max = 100
         val progressPercent = if (limit > 0) ((spent / limit) * 100).toInt() else 0
