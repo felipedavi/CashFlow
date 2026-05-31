@@ -11,6 +11,7 @@
         android:id="@+id/text_payer_payee"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:labelFor="@id/edit_payer_payee"
         android:text="@string/text_payer_payee"
         android:textColor="#546E7A"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -22,8 +23,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints="name"
+        app:layout_constraintWidth_max="488dp"
         android:inputType="textPersonName"
-        android:labelFor="@id/edit_payer_payee"
         android:minHeight="48dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -36,6 +37,7 @@
         android:labelFor="@id/edit_description"
         android:text="@string/text_description"
         android:textColor="#546E7A"
+        app:layout_constraintWidth_max="488dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_payer_payee" />
@@ -46,6 +48,7 @@
         android:layout_height="wrap_content"
         android:importantForAutofill="no"
         android:inputType="text"
+        app:layout_constraintWidth_max="488dp"
         android:minHeight="48dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -71,6 +74,7 @@
         android:inputType="date"
         android:maxLength="10"
         android:minHeight="48dp"
+        app:layout_constraintWidth_max="488dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_date"
@@ -96,6 +100,7 @@
         android:inputType="number"
         android:maxLength="19"
         android:minHeight="48dp"
+        app:layout_constraintWidth_max="488dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_money" />
@@ -201,7 +206,8 @@
         android:showDividers="middle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_category">
+        app:layout_constraintTop_toBottomOf="@id/text_category"
+        app:layout_constraintWidth_max="488dp">
 
         <RadioButton
             android:id="@+id/radio_needs"
