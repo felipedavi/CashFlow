@@ -197,6 +197,8 @@
         android:layout_marginTop="16dp"
         android:text="@string/text_category"
         android:textColor="#546E7A"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/check_installment" />
 
     <RadioGroup
@@ -207,6 +209,8 @@
         android:divider="?android:attr/dividerVertical"
         android:orientation="horizontal"
         android:showDividers="middle"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_category">

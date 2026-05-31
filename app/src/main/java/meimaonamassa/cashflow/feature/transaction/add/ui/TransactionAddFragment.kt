@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -194,8 +196,8 @@ class TransactionAddFragment : Fragment() {
         }
 
         binding.checkInstallment.setOnCheckedChangeListener { _, isChecked ->
-            binding.layoutInstallments.visibility = if (isChecked) View.VISIBLE else View.GONE
-            binding.buttonCalculator.visibility = if (isChecked) View.VISIBLE else View.GONE
+            binding.layoutInstallments.visibility = if (isChecked) View.VISIBLE else GONE
+            binding.buttonCalculator.visibility = if (isChecked) View.VISIBLE else GONE
             if (!isChecked) {
                 binding.editInstallmentCurrent.text.clear()
                 binding.editInstallmentFinal.text.clear()
@@ -204,11 +206,13 @@ class TransactionAddFragment : Fragment() {
 
         binding.groupRadioTransactionType.setOnCheckedChangeListener { _, checkedId ->
             val isIncome = checkedId == R.id.radio_income
-            binding.textPayerPayee.text = if (isIncome) getString(R.string.text_payer) else getString(R.string.text_payee)
-
-            if (isIncome) {
+            val isExpense = checkedId == R.id.radio_expense
+            binding.textPayerPayee.text =
+                if (isIncome) getString(R.string.text_payer) else getString(R.string.text_payee)
+            if (isIncome)
                 binding.groupCategory.clearCheck()
-            }
+            binding.groupCategory.isVisible = isExpense
+            binding.textCategory.isVisible = isExpense
         }
 
         binding.buttonSave.setOnClickListener { handleSaveClick() }
