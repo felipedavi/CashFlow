@@ -28,7 +28,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_payer_payee" />
+        app:layout_constraintTop_toBottomOf="@id/text_payer_payee"
+        app:layout_constraintWidth_max="488dp" />
 
     <TextView
         android:id="@+id/text_description"
@@ -49,7 +50,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_description" />
+        app:layout_constraintTop_toBottomOf="@id/text_description"
+        app:layout_constraintWidth_max="488dp" />
 
     <TextView
         android:id="@+id/text_date"
@@ -71,7 +73,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_date" />
+        app:layout_constraintTop_toBottomOf="@id/text_date"
+        app:layout_constraintWidth_max="488dp" />
 
     <TextView
         android:id="@+id/text_money"
@@ -95,7 +98,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/button_calculator"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_money" />
+        app:layout_constraintTop_toBottomOf="@id/text_money"
+        app:layout_constraintWidth_max="488dp" />
 
     <ImageButton
         android:id="@+id/button_calculator"
@@ -128,7 +132,8 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_transaction_type">
+        app:layout_constraintTop_toBottomOf="@id/text_transaction_type"
+        app:layout_constraintWidth_max="488dp">
 
         <RadioButton
             android:id="@+id/radio_income"
@@ -198,8 +203,8 @@
         android:text="@string/text_category"
         android:textColor="#546E7A"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/check_installment" />
+        app:layout_constraintTop_toBottomOf="@id/check_installment"
+        tools:visibility="visible" />
 
     <RadioGroup
         android:id="@+id/group_category"
@@ -210,10 +215,11 @@
         android:orientation="horizontal"
         android:showDividers="middle"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_category">
+        app:layout_constraintTop_toBottomOf="@id/text_category"
+        app:layout_constraintWidth_max="488dp"
+        tools:visibility="visible">
 
         <RadioButton
             android:id="@+id/radio_needs"
@@ -245,10 +251,13 @@
 
     <Button
         android:id="@+id/button_save"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/button_save"
-        app:layout_constraintTop_toBottomOf="@id/group_category" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/group_category"
+        app:layout_constraintWidth_max="320dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
