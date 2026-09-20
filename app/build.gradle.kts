@@ -1,4 +1,4 @@
-import com.android.sdklib.AndroidVersion.VersionCodes.M
+import com.android.sdklib.AndroidVersion.VersionCodes.N
 import com.android.sdklib.AndroidVersion.VersionCodes.VANILLA_ICE_CREAM
 
 plugins {
@@ -15,14 +15,12 @@ room {
 android {
     namespace = "meimaonamassa.cashflow"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
+        version = release(37)
     }
 
-        defaultConfig {
+    defaultConfig {
             applicationId = "meimaonamassa.cashflow"
-            minSdk = M
+            minSdk = N
             targetSdk = VANILLA_ICE_CREAM
             versionCode = 7
             versionName = "2.5.0"
