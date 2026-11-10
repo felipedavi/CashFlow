@@ -110,8 +110,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun transactionListClickListener(id: Int) {
-        val directions = TransactionFragmentDirections.navigateToTransactionDetailFragment()
-        directions.transactionID = id
+        val directions = TransactionFragmentDirections.navigateToTransactionDetailFragment(transactionID = id)
         findNavController().navigate(directions)
     }
 }
