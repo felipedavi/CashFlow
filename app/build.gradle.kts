@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.ksp)
-    id("androidx.navigation.safeargs")
+    alias(libs.plugins.androidx.navigation.safeargs)
 }
 
 configure<ApplicationExtension> {
@@ -14,7 +14,7 @@ configure<ApplicationExtension> {
 
     defaultConfig {
         applicationId = "meimaonamassa.cashflow"
-        minSdk = 21
+        minSdk = 24
         targetSdk = VANILLA_ICE_CREAM
         versionCode = 5
         versionName = "1.1.2"
