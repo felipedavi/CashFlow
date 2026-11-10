@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.ksp)
     id("androidx.navigation.safeargs")
@@ -11,7 +10,7 @@ plugins {
 
 android {
     namespace = "meimaonamassa.cashflow"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "meimaonamassa.cashflow"
@@ -24,6 +23,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
