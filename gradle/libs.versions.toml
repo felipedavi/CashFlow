@@ -1,7 +1,6 @@
 [versions]
 agp = "9.5.1"
 ktx = "1.19.1"
-kotlin = "2.4.21"
 appcompat = "1.8.0"
 material = "1.14.0"
 constraintlayout = "2.2.2"
@@ -28,7 +27,6 @@ threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
