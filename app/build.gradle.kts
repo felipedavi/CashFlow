@@ -64,7 +64,6 @@ dependencies {
 
     // Room components
     implementation(libs.androidx.room.ktx)
-    annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
 
     // Lifecycle components
