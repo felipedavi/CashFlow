@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.sdklib.AndroidVersion.VersionCodes.VANILLA_ICE_CREAM
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -8,7 +9,7 @@ plugins {
     id("androidx.navigation.safeargs")
 }
 
-android {
+configure<ApplicationExtension> {
     namespace = "meimaonamassa.cashflow"
     compileSdk = 37
 
@@ -24,29 +25,25 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
-        }
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
         viewBinding = true
     }
+}
 
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
-
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
